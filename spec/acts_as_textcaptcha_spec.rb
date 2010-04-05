@@ -17,8 +17,28 @@ describe "ActsAsTextcaptcha" do
   before(:each) do
     @comment = Comment.new
   end
-  
-  it "does something"
-  
-  
+
+  describe "validations" do
+
+  end
+
+  describe "with textcaptcha api" do
+
+    it "should generate spam question" do
+      @comment.generate_spam_question
+      puts @comment.spam_question
+
+    end
+
+
+
+  end
+
+  describe "without textcaptcha api" do
+
+    it "should fall back to random config question" do
+
+    end
+  end
+
 end
