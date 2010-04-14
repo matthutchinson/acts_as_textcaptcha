@@ -1,2 +1,2 @@
-ActiveRecord::Base.extend ActsAsTextcaptcha
-ActionController::Base.include TextcaptchaHelper
+ActiveRecord::Base.extend ActiveRecord::Acts::Textcaptcha
+ActionController::Base.include TextcaptchaHelper if defined? ActionController

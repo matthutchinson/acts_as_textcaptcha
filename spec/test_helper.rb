@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec'
 require 'active_record'
 
-require 'lib/acts_as_textcaptcha'
+require 'lib/active_record/acts/textcaptcha'
 require File.dirname(__FILE__) + '/../init.rb'
 
 config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
