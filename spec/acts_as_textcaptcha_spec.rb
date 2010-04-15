@@ -6,12 +6,12 @@ class Widget < ActiveRecord::Base
 end
 
 class Comment < ActiveRecord::Base
-  # uses inline options for configuration
-  acts_as_textcaptcha({'api_key' => '8u5ixtdnq9csc84cok0owswgo'})
+  # uses inline api_key only for configuration
+  acts_as_textcaptcha '8u5ixtdnq9csc84cok0owswgo' 
 end
 
 class Review < ActiveRecord::Base
-  # uses inline options for configuration, including users own spam questions
+  # uses inline options hash for configuration, including users own spam questions
   acts_as_textcaptcha({'api_key' => 'not going to work',
                        'questions' => [{'question' => '1+1', 'answers' => '2,two'},
                                        {'question' => 'The green hat is what color?', 'answers' => 'green'},

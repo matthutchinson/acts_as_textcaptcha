@@ -11,11 +11,13 @@ module ActiveRecord
   module Acts #:nodoc:
     module Textcaptcha #:nodoc:
 
-      def acts_as_textcaptcha(options = {})
+      def acts_as_textcaptcha(options = nil)
         cattr_accessor :config, :logger
         attr_accessor  :spam_answer, :spam_question, :possible_answers
-
-        if options.is_a?(Hash) && options['api_key']
+        
+        if options.is_a?(String)
+          self.config = {'api_key' => options}
+        elsif options.is_a?(Hash) && options['api_key']
           self.config = options 
         else
           begin
@@ -28,13 +30,15 @@ module ActiveRecord
         include InstanceMethods
       end
       
-            
-
       module InstanceMethods
 
         def skip_spam_check; false end
 
-        def allowed; true end
+        def allowed; true end  
+        
+        def errors_on(attribute)
+          errors.on(attribute) || []
+        end
 
         def validate
           if new_record?
@@ -45,11 +49,7 @@ module ActiveRecord
             end
           end
         end
-
-        def errors_on(attribute)
-          errors.on(attribute) || []
-        end
-
+        
         def validate_spam_answer
           return true  if skip_spam_check
           return false if !spam_answer || !possible_answers
