@@ -1,4 +1,4 @@
-h1. Act as Text Captcha
+h1. Act as TextCaptcha
 
 h2. About
 
