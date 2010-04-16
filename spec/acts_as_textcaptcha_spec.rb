@@ -20,92 +20,163 @@ class Review < ActiveRecord::Base
                                          {'question' => 'Which is bigger: 67, 14 or 6', 'answers' => '67,sixtyseven,sixty seven,sixty-seven'}]})
 end
 
+class Note < ActiveRecord::Base
+  # inline options with user defined questions only (no textcaptcha service)
+  acts_as_textcaptcha('questions' => [{'question' => '1+1', 'answers' => '2,two'}])
+end
 
-describe "ActsAsTextcaptcha" do
+
+describe 'ActsAsTextcaptcha' do
 
   before(:each) do
-    @widget  = Widget.new
     @comment = Comment.new
     @review  = Review.new
+    @note    = Note.new
   end
 
-  describe "validations" do
-
-    it "should validate spam answer with possible answers" do
-
+  describe 'validations' do   
+    
+    before(:each) do
+      @note.generate_spam_question
+      @note.validate.should be_false
     end
 
-    it "should strip whitespace and downcase spam answer" do
+    it 'should validate spam answer with possible answers' do
+      @note.spam_answer = '2'
+      @note.validate.should be_true
+      
+      @note.spam_answer = 'two'
+      @note.validate.should be_true
+      
+      @note.spam_answer = 'wrong'
+      @note.validate.should be_false
+    end
 
+    it 'should strip whitespace and downcase spam answer' do
+      @note.spam_answer = ' tWo '
+      @note.validate.should be_true
+      
+      @note.spam_answer = ' 2   '
+      @note.validate.should be_true
+    end 
+    
+    it 'should always validate if not a new record' do
+      @note.spam_answer = '2'
+      @note.save!
+      @note.generate_spam_question
+      @note.new_record?.should be_false
+      @note.validate.should be_true
     end
   end
 
-  describe "encryption" do
+  describe 'encryption' do
 
-    it "should encrypt answers" do
-
+    it 'should encrypt answers' do
+      @review.encrypt_answers(['123', '456']).should eql(['$2a$10$j0bmycH.SVfD1b5mpEGPperNj9IlIHoieNk38UDQFdtREOmRFKgou', 
+                                                          '$2a$10$j0bmycH.SVfD1b5mpEGPpeqf88jqdV6gIgeJLQNjUnufIn8dys1fW']) 
     end
 
-    it "should encrypt a single answer" do
-
-    end
-  end
-
-  describe "flags" do
-
-    it "should always be valid if skip_spam_check? is true" do
-
-    end
-
-    it "should always fail validation if allowed? is false" do
-
+    it 'should encrypt a single answer' do
+      @review.encrypt_answer('123').should eql('$2a$10$j0bmycH.SVfD1b5mpEGPperNj9IlIHoieNk38UDQFdtREOmRFKgou')
+    end    
+    
+    it 'should not encrypt if no bycrpt-salt set' do
+      @comment.encrypt_answer('123').should eql('123')
+      @comment.encrypt_answers(['123', '456']).should eql(['123', '456'])
     end
   end
 
-  describe "with inline options hash" do
+  describe 'flags' do
 
-    it "should be configurable from inline options" do
-      #puts Review.config.inspect
-    end
-
-    it "should be configurable with only an api_key" do
-      #puts Comment.config.inspect
-    end
-
-    it "should generate spam question" do
+    it 'should always be valid if skip_spam_check? is true' do
       @comment.generate_spam_question
-      #puts @comment.spam_question
+      @comment.validate.should be_false
+      @comment.stub!(:skip_spam_check?).and_return(true)
+      @comment.validate.should be_true
+      @comment.should be_valid
     end
 
-    describe "and textcaptcha unavailable" do
+    it 'should always fail validation if allowed? is false' do   
+      @comment.validate.should be_true
+      @comment.stub!(:allowed?).and_return(false)
+      @comment.validate.should be_false
+      @comment.errors.on(:base).should eql('Sorry, comments are currently disabled')
+      @comment.should_not be_valid
+    end
+  end
 
-      it "should fall back to random user defined question when set" do
-        @review.generate_spam_question
-        #puts @review.spam_question
+  describe 'with inline options hash' do
+
+    it 'should be configurable from inline options' do
+      @comment.textcaptcha_config.should eql({'api_key' => '8u5ixtdnq9csc84cok0owswgo'})
+      @review.textcaptcha_config.should eql({'bcrypt_cost'=>'3', 'questions'=>[{'question'=>'1+1', 'answers'=>'2,two'}, {'question'=>'The green hat is what color?', 'answers'=>'green'}, {'question'=>'Which is bigger: 67, 14 or 6', 'answers'=>'67,sixtyseven,sixty seven,sixty-seven'}], 'bcrypt_salt'=>'$2a$10$j0bmycH.SVfD1b5mpEGPpe', 'api_key'=>'8u5ixtdnq9csc84cok0owswgo'})
+      @note.textcaptcha_config .should eql({'questions'=>[{'question'=>'1+1', 'answers'=>'2,two'}]})
+    end
+
+    it 'should generate spam question from textcaptcha service' do
+      @comment.generate_spam_question
+      @comment.spam_question.should_not be_nil
+      @comment.possible_answers.should_not be_nil
+      @comment.possible_answers.should be_an(Array)  
+      @comment.validate.should be_false
+    end
+
+    describe 'and textcaptcha unavailable' do
+                                                                       
+      before(:each) do
+        Net::HTTP.stub(:get).and_raise(SocketError)
       end
 
-      it "should not generate any spam question/answer if no user defined questions set" do
+      it 'should fall back to random user defined question when set' do
+        @review.generate_spam_question
+        @review.spam_question.should_not be_nil
+        @review.possible_answers.should_not be_nil
+        @review.possible_answers.should be_an(Array)
+        @review.validate.should be_false
+      end
+
+      it 'should not generate any spam question/answer if no user defined questions set' do
         @comment.generate_spam_question
-        #puts @comment.spam_question
+        @comment.spam_question.should be_nil
+        @comment.possible_answers.should be_nil
+        @comment.validate.should be_true
       end
     end
   end
 
-  describe "with textcaptcha yaml config file" do
-
-    it "should be configurable from config/textcaptcha.yml file" do
-      #puts Widget.config.inspect
+  describe 'with textcaptcha yaml config file' do    
+    
+    before(:each) do
+      @widget = Widget.new
     end
 
-    it "should generate spam question" do
+    it 'should be configurable from config/textcaptcha.yml file' do
+      @widget.textcaptcha_config['api_key'].should eql('8u5ixtdnq9csc84cok0owswgo')
+      @widget.textcaptcha_config['bcrypt_salt'].should eql('$2a$10$j0bmycH.SVfD1b5mpEGPpe')
+      @widget.textcaptcha_config['bcrypt_cost'].should eql(10)
+      @widget.textcaptcha_config['questions'].length.should eql(10)
+    end
+
+    it 'should generate spam question' do
       @widget.generate_spam_question
-      #puts @widget.spam_question
+      @widget.spam_question.should_not be_nil
+      @widget.possible_answers.should_not be_nil
+      @widget.possible_answers.should be_an(Array)
+      @widget.validate.should be_false
     end
-
-    describe "and textcaptcha unavailable" do
-      it "should fall back to a random user defined question" do
+    
+    describe 'and textcaptcha unavailable' do   
+      
+      before(:each) do
+        Net::HTTP.stub(:get).and_raise(SocketError)
+      end
+      
+      it 'should fall back to a random user defined question' do
         @widget.generate_spam_question
-        #puts @widget.spam_question
+        @widget.spam_question.should_not be_nil
+        @widget.possible_answers.should_not be_nil
+        @widget.possible_answers.should be_an(Array)
+        @widget.validate.should be_false
       end
     end
   end

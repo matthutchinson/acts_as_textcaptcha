@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: ActiveRecord::Acts::Textcaptcha::InstanceMethods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">ActiveRecord::Acts::Textcaptcha::InstanceMethods</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../../files/lib/active_record/acts/textcaptcha_rb.html">
+                lib/active_record/acts/textcaptcha.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000002">allowed?</a>&nbsp;&nbsp;
+      <a href="#M000006">encrypt_answer</a>&nbsp;&nbsp;
+      <a href="#M000005">encrypt_answers</a>&nbsp;&nbsp;
+      <a href="#M000007">generate_spam_question</a>&nbsp;&nbsp;
+      <a href="#M000001">skip_spam_check?</a>&nbsp;&nbsp;
+      <a href="#M000003">validate</a>&nbsp;&nbsp;
+      <a href="#M000004">validate_spam_answer</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
+
+        <div class="method-heading">
+          <a href="#M000002" class="method-signature">
+          <span class="method-name">allowed?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000002-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 37</span>
+37:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">allowed?</span>; <span class="ruby-keyword kw">true</span> <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000006" class="method-detail">
+        <a name="M000006"></a>
+
+        <div class="method-heading">
+          <a href="#M000006" class="method-signature">
+          <span class="method-name">encrypt_answer</span><span class="method-args">(answer)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000006-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 62</span>
+62:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt_answer</span>(<span class="ruby-identifier">answer</span>)          
+63:           <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">answer</span> <span class="ruby-keyword kw">unless</span>(<span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'bcrypt_salt'</span>])
+64:           <span class="ruby-constant">BCrypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Engine</span>.<span class="ruby-identifier">hash_secret</span>(<span class="ruby-identifier">answer</span>, <span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'bcrypt_salt'</span>], (<span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'bcrypt_cost'</span>] <span class="ruby-operator">||</span> <span class="ruby-value">10</span>))
+65:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000005" class="method-detail">
+        <a name="M000005"></a>
+
+        <div class="method-heading">
+          <a href="#M000005" class="method-signature">
+          <span class="method-name">encrypt_answers</span><span class="method-args">(answers)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000005-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 58</span>
+58:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt_answers</span>(<span class="ruby-identifier">answers</span>)   
+59:           <span class="ruby-identifier">answers</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">answer</span><span class="ruby-operator">|</span> <span class="ruby-identifier">encrypt_answer</span>(<span class="ruby-identifier">answer</span>) }
+60:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+          <a href="#M000007" class="method-signature">
+          <span class="method-name">generate_spam_question</span><span class="method-args">(use_textcaptcha = true)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 67</span>
+67:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">generate_spam_question</span>(<span class="ruby-identifier">use_textcaptcha</span> = <span class="ruby-keyword kw">true</span>)
+68:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">use_textcaptcha</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">textcaptcha_config</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'api_key'</span>]
+69:             <span class="ruby-keyword kw">begin</span>
+70:               <span class="ruby-identifier">resp</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-value str">'http://textcaptcha.com/api/'</span><span class="ruby-operator">+</span><span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'api_key'</span>]))
+71:               <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">resp</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">xml</span> = <span class="ruby-constant">XML</span><span class="ruby-operator">::</span><span class="ruby-constant">Parser</span>.<span class="ruby-identifier">string</span>(<span class="ruby-identifier">resp</span>).<span class="ruby-identifier">parse</span>
+72:                 <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">spam_question</span>    = <span class="ruby-identifier">xml</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value str">'/captcha/question'</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">inner_xml</span>
+73:                 <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">possible_answers</span> = <span class="ruby-identifier">encrypt_answers</span>(<span class="ruby-identifier">xml</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value str">'/captcha/answer'</span>).<span class="ruby-identifier">map</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:inner_xml</span>))
+74:               <span class="ruby-keyword kw">end</span>
+75:               <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">possible_answers</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">spam_question</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">possible_answers</span>.<span class="ruby-identifier">empty?</span>
+76:             <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">SocketError</span>, <span class="ruby-constant">Timeout</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">EINVAL</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ECONNRESET</span>, <span class="ruby-constant">EOFError</span>, <span class="ruby-constant">Errno</span><span class="ruby-operator">::</span><span class="ruby-constant">ECONNREFUSED</span>,
+77:                    <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPBadResponse</span>, <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPHeaderSyntaxError</span>, <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">ProtocolError</span>, <span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidURIError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+78:               <span class="ruby-identifier">log_textcaptcha</span>(<span class="ruby-node">&quot;failed to load or parse textcaptcha with key '#{textcaptcha_config['api_key']}'; #{e}&quot;</span>)
+79:             <span class="ruby-keyword kw">end</span>
+80:           <span class="ruby-keyword kw">end</span>
+81: 
+82:           <span class="ruby-comment cmt"># fall back to textcaptcha_config questions</span>
+83:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">textcaptcha_config</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'questions'</span>]
+84:             <span class="ruby-identifier">log_textcaptcha</span>(<span class="ruby-value str">'falling back to random logic question from config'</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'api_key'</span>]
+85:             <span class="ruby-identifier">random_question</span>       = <span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'questions'</span>][<span class="ruby-identifier">rand</span>(<span class="ruby-identifier">textcaptcha_config</span>[<span class="ruby-value str">'questions'</span>].<span class="ruby-identifier">size</span>)]
+86:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">spam_question</span>    = <span class="ruby-identifier">random_question</span>[<span class="ruby-value str">'question'</span>]
+87:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">possible_answers</span> = <span class="ruby-identifier">encrypt_answers</span>(<span class="ruby-identifier">random_question</span>[<span class="ruby-value str">'answers'</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">map!</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">ans</span><span class="ruby-operator">|</span> <span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">hexdigest</span>(<span class="ruby-identifier">ans</span>)})
+88:           <span class="ruby-keyword kw">end</span>     
+89:           <span class="ruby-identifier">possible_answers</span>
+90:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000001" class="method-detail">
+        <a name="M000001"></a>
+
+        <div class="method-heading">
+          <a href="#M000001" class="method-signature">
+          <span class="method-name">skip_spam_check?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000001-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000001-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 35</span>
+35:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">skip_spam_check?</span>; <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000003" class="method-detail">
+        <a name="M000003"></a>
+
+        <div class="method-heading">
+          <a href="#M000003" class="method-signature">
+          <span class="method-name">validate</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000003-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 39</span>
+39:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>     
+40:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_record?</span>
+41:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">allowed?</span>
+42:               <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">possible_answers</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">skip_spam_check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">validate_spam_answer</span>
+43:                 <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">:spam_answer</span>, <span class="ruby-value str">'is incorrect, try another question instead'</span>) 
+44:                 <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+45:               <span class="ruby-keyword kw">end</span>
+46:             <span class="ruby-keyword kw">else</span>
+47:               <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add_to_base</span>(<span class="ruby-node">&quot;Sorry, #{self.class.name.pluralize.downcase} are currently disabled&quot;</span>)
+48:               <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+49:             <span class="ruby-keyword kw">end</span>
+50:           <span class="ruby-keyword kw">end</span>
+51:           <span class="ruby-keyword kw">true</span>
+52:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000004" class="method-detail">
+        <a name="M000004"></a>
+
+        <div class="method-heading">
+          <a href="#M000004" class="method-signature">
+          <span class="method-name">validate_spam_answer</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000004-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/active_record/acts/textcaptcha.rb, line 54</span>
+54:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate_spam_answer</span>
+55:           <span class="ruby-identifier">spam_answer</span> <span class="ruby-value">? </span><span class="ruby-identifier">possible_answers</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">encrypt_answer</span>(<span class="ruby-constant">Digest</span><span class="ruby-operator">::</span><span class="ruby-constant">MD5</span>.<span class="ruby-identifier">hexdigest</span>(<span class="ruby-identifier">spam_answer</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span>))) <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>
+56:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
