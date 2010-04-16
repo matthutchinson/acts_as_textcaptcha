@@ -5,6 +5,7 @@ require 'spec'
 
 desc 'Default: run spec tests.'
 task :default => :spec
+task :test    => :spec
 
 desc "Run all specs"
 Spec::Rake::SpecTask.new(:spec) do |t|
@@ -13,7 +14,7 @@ Spec::Rake::SpecTask.new(:spec) do |t|
 end 
 
 desc "Run all specs with RCov"
-Spec::Rake::SpecTask.new('rcov') do |t|
+Spec::Rake::SpecTask.new(:rcov) do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec']
