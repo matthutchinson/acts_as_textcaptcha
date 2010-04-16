@@ -1,0 +1,37 @@
+= Act as TextCaptcha
+
+== About
+
+== Caveats
+
+Ongoing issues with this project include;
+
+* needs tests
+
+== Setup / Using
+
+=== Requirements
+
+What do you need?
+
+=== Installing
+
+  script/plugin install git://github.com/hiddenloop/acts_as_textcaptcha
+
+== Using
+
+== What does the code do?
+
+== Credits
+
+Who's who?
+
+* Authored by "Matthew Hutchinson":http://matthewhutchinson.net
+
+== Get out clause
+
+Right now this script is provided without warranty, or support from the author.
+
+== Creative Commons License
+
+<a rel="license" href="http://creativecommons.org/licenses/by/2.0/uk/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/2.0/uk/80x15.png" /></a>

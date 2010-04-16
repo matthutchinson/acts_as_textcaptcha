@@ -23,8 +23,8 @@ end
 desc 'Generate documentation for the acts_as_textcaptcha plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'doc'
-  rdoc.title    = 'acts_as_options_attr'
+  rdoc.title    = 'acts_as_textcaptcha'
   rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README.textile')
+  rdoc.rdoc_files.include('README.rdoc', 'LICENSE')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

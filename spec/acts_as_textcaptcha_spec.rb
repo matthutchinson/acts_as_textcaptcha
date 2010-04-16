@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'test_helper')
+require File.join(File.dirname(__FILE__), 'spec_helper')
 
 class Widget < ActiveRecord::Base
   # uses textcaptcha.yml file for configuration
@@ -34,8 +34,8 @@ describe 'ActsAsTextcaptcha' do
     @note    = Note.new
   end
 
-  describe 'validations' do   
-    
+  describe 'validations' do
+
     before(:each) do
       @note.generate_spam_question
       @note.validate.should be_false
@@ -44,10 +44,10 @@ describe 'ActsAsTextcaptcha' do
     it 'should validate spam answer with possible answers' do
       @note.spam_answer = '2'
       @note.validate.should be_true
-      
+
       @note.spam_answer = 'two'
       @note.validate.should be_true
-      
+
       @note.spam_answer = 'wrong'
       @note.validate.should be_false
     end
@@ -55,11 +55,11 @@ describe 'ActsAsTextcaptcha' do
     it 'should strip whitespace and downcase spam answer' do
       @note.spam_answer = ' tWo '
       @note.validate.should be_true
-      
+
       @note.spam_answer = ' 2   '
       @note.validate.should be_true
-    end 
-    
+    end
+
     it 'should always validate if not a new record' do
       @note.spam_answer = '2'
       @note.save!
@@ -72,14 +72,14 @@ describe 'ActsAsTextcaptcha' do
   describe 'encryption' do
 
     it 'should encrypt answers' do
-      @review.encrypt_answers(['123', '456']).should eql(['$2a$10$j0bmycH.SVfD1b5mpEGPperNj9IlIHoieNk38UDQFdtREOmRFKgou', 
-                                                          '$2a$10$j0bmycH.SVfD1b5mpEGPpeqf88jqdV6gIgeJLQNjUnufIn8dys1fW']) 
+      @review.encrypt_answers(['123', '456']).should eql(['$2a$10$j0bmycH.SVfD1b5mpEGPperNj9IlIHoieNk38UDQFdtREOmRFKgou',
+                                                          '$2a$10$j0bmycH.SVfD1b5mpEGPpeqf88jqdV6gIgeJLQNjUnufIn8dys1fW'])
     end
 
     it 'should encrypt a single answer' do
       @review.encrypt_answer('123').should eql('$2a$10$j0bmycH.SVfD1b5mpEGPperNj9IlIHoieNk38UDQFdtREOmRFKgou')
-    end    
-    
+    end
+
     it 'should not encrypt if no bycrpt-salt set' do
       @comment.encrypt_answer('123').should eql('123')
       @comment.encrypt_answers(['123', '456']).should eql(['123', '456'])
@@ -96,7 +96,7 @@ describe 'ActsAsTextcaptcha' do
       @comment.should be_valid
     end
 
-    it 'should always fail validation if allowed? is false' do   
+    it 'should always fail validation if allowed? is false' do
       @comment.validate.should be_true
       @comment.stub!(:allowed?).and_return(false)
       @comment.validate.should be_false
@@ -117,12 +117,12 @@ describe 'ActsAsTextcaptcha' do
       @comment.generate_spam_question
       @comment.spam_question.should_not be_nil
       @comment.possible_answers.should_not be_nil
-      @comment.possible_answers.should be_an(Array)  
+      @comment.possible_answers.should be_an(Array)
       @comment.validate.should be_false
     end
 
     describe 'and textcaptcha unavailable' do
-                                                                       
+
       before(:each) do
         Net::HTTP.stub(:get).and_raise(SocketError)
       end
@@ -144,8 +144,8 @@ describe 'ActsAsTextcaptcha' do
     end
   end
 
-  describe 'with textcaptcha yaml config file' do    
-    
+  describe 'with textcaptcha yaml config file' do
+
     before(:each) do
       @widget = Widget.new
     end
@@ -164,13 +164,13 @@ describe 'ActsAsTextcaptcha' do
       @widget.possible_answers.should be_an(Array)
       @widget.validate.should be_false
     end
-    
-    describe 'and textcaptcha unavailable' do   
-      
+
+    describe 'and textcaptcha unavailable' do
+
       before(:each) do
         Net::HTTP.stub(:get).and_raise(SocketError)
       end
-      
+
       it 'should fall back to a random user defined question' do
         @widget.generate_spam_question
         @widget.spam_question.should_not be_nil
