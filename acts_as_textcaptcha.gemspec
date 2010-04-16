@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{acts_as_textcaptcha}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matthew Hutchinson"]
@@ -15,8 +15,8 @@ For more reasons on why logic questions are useful, see here; http://textcaptcha
     'README.rdoc',
     'Rakefile',
     'config/textcaptcha.yml',
-    'init.rb',
-    'lib/active_record/acts/textcaptcha.rb',
+    'rails/init.rb',
+    'lib/acts_as_textcaptcha.rb',
     'lib/textcaptcha_helper.rb',
     'spec/acts_as_textcaptcha_spec.rb',
     'spec/database.yml',
