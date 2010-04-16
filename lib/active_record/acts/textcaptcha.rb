@@ -32,13 +32,13 @@ module ActiveRecord
 
       module InstanceMethods
 
-        def skip_spam_check; false end
+        def skip_spam_check?; false end
 
-        def allowed; true end
+        def allowed?; true end
 
         def validate     
           if new_record?
-            if allowed
+            if allowed?
               errors.add(:spam_answer, 'is incorrect, try another question instead') unless validate_spam_answer
             else
               errors.add_to_base("Sorry, #{self.class.name.pluralize.downcase} are currently disabled")
@@ -47,13 +47,8 @@ module ActiveRecord
         end     
         
         def validate_spam_answer            
-          return true  if skip_spam_check
-          return false if !spam_answer || !possible_answers    
-          
-          possible_answers.each do |poss|
-            puts "poss => #{poss}"
-          end
-          
+          return true  if skip_spam_check?
+          return false if !spam_answer || !possible_answers
           possible_answers.include?(encrypt_answer(Digest::MD5.hexdigest(spam_answer.strip.downcase.to_s)))
         end
          
