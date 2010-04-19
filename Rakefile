@@ -27,4 +27,22 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc', 'LICENSE')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end   
+
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "acts_as_textcaptcha"
+    gemspec.summary = "Spam protection for your models via logic questions and the excellent textcaptcha.com api"
+    gemspec.description = "Spam protection for your ActiveRecord models using logic questions and the excellent textcaptcha api. See textcaptcha.com for more details and to get your api key.
+  The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.
+  For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why"
+    gemspec.email = "matt@hiddenloop.com"
+    gemspec.homepage = "http://github.com/hiddenloop/acts_as_textcaptcha"
+    gemspec.authors = ["Matthew Hutchinson"]
+  end           
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
 end
