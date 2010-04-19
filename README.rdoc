@@ -35,10 +35,25 @@ Add to your ActiveRecord models like so;
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha({'api_key' => 'yourtextcaptchaapikey'})
-  end
+  end          
+  
+In your controller 'new' actions do;
 
-More configurations are available and will be explained in here shortly.  If your'e interested now, jump into the code.
+  def new
+    @comment = Comment.new
+    spamify(@comment)
+  end               
+  
+And in your form/view erb do;
 
+  <%- if @comment.validate_spam_answer -%>
+    <%= f.hidden_field :spam_answer, :value => @comment.spam_answer -%>
+  <%- else -%>
+    <%= f.label :spam_answer, @comment.spam_question %>
+    <%= f.text_field :spam_answer, :value => '' %>
+  <%- end -%>
+
+More configurations are available and will be explained here shortly.  If your'e interested now, jump into the code.
 
 == What does the code do?  
 
