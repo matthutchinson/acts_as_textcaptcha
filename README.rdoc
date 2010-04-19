@@ -6,7 +6,7 @@ Spam protection for your ActiveRecord models using logic questions and the excel
 
 The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why
 
-A more detailed REAME will be available here soon.
+A more detailed REAME and a working demo on heroku will be available soon.
 
 
 == Setup / Using
@@ -16,9 +16,9 @@ A more detailed REAME will be available here soon.
 What do you need?
 
 * Rails >= 2.3
-* Ruby  > 1.8.7
-* Textcaptcha API key, get one here; http://textcaptcha.com/register  (optional, since you can define your own logic questions)
-* bcrypt-ruby gem (sudo gem install bcrypt); http://bcrypt-ruby.rubyforge.org/  (optional, to securely encrypt the spam answers in your session)
+* Ruby > 1.8.7
+* Textcaptcha API key - get one http://textcaptcha.com/register  (optional, since you can define your own logic questions)
+* bcrypt-ruby - sudo gem install bcrypt-ruby (optional, to securely encrypt the spam answers in your session)
  
 === Installing
   
@@ -29,11 +29,14 @@ What do you need?
   script/plugin install git://github.com/hiddenloop/acts_as_textcaptcha    
   
 == Using             
+                 
+In your environment.rb file, add the gem to your configuration like so;
+
+  config.gem "acts_as_textcaptcha"
 
 Add to your ActiveRecord models like so;
 
   class Comment < ActiveRecord::Base
-    # inline options with api_key only
     acts_as_textcaptcha({'api_key' => 'yourtextcaptchaapikey'})
   end
 
