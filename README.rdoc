@@ -42,7 +42,7 @@ Next configure your models to be spam protected like so; (this is the most basic
     acts_as_textcaptcha({'api_key' => 'your_textcaptcha_api_key'})
   end          
                
-Next in your controller *new* and *create* actions you'll want to _spamify_ your model like so.  This generates a new spam question on the model;
+Next in your controller *new* and *create* actions you'll want to _spamify_ your model and merge the answers. Like so;
 
   def new
     @comment = Comment.new
@@ -50,12 +50,12 @@ Next in your controller *new* and *create* actions you'll want to _spamify_ your
   end                                                                                
 
   def create
-    @comment = Comment.new(params[:comment])
+    @comment = Comment.new(params[:comment].merge(:possible_answers => session[:possible_answers]))
     if @comment.save
       ...
     else
       spamify(@comment)
-       render :action => 'new'
+      render :action => 'new'
     end
   end       
       

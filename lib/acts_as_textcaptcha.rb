@@ -37,10 +37,11 @@ module ActsAsTextcaptcha #:nodoc:
     # if returning false model.validate will always be false with errors on base
     def allowed?; true end
 
-    def validate     
+    def validate 
+      super
       if new_record?
         if allowed?
-          if possible_answers && perform_spam_check? && !validate_spam_answer
+          if perform_spam_check? && !validate_spam_answer
             errors.add(:spam_answer, 'is incorrect, try another question instead') 
             return false
           end
@@ -49,11 +50,11 @@ module ActsAsTextcaptcha #:nodoc:
           return false
         end
       end
-      super
+      true
     end     
     
     def validate_spam_answer
-      spam_answer ? possible_answers.include?(encrypt_answer(Digest::MD5.hexdigest(spam_answer.strip.downcase.to_s))) : false
+      (spam_answer && possible_answers) ? possible_answers.include?(encrypt_answer(Digest::MD5.hexdigest(spam_answer.strip.downcase.to_s))) : false
     end
      
     def encrypt_answers(answers)   
