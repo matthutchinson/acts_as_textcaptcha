@@ -8,7 +8,7 @@ Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved
   
 == Demo
 
-A {fully working demo on heroku}[http://textcaptcha.heroku.com] will be available soon.
+Here's a {fully working demo on heroku}[http://textcaptcha.heroku.com]!
 
 == Requirements
 
@@ -26,23 +26,23 @@ Install the gems
 
   sudo gem install acts_as_textcaptcha bcrypt-ruby
   
-Or you can install it as a Rails plugin 
+Or you can install acts_as_textcaptcha as a Rails plugin 
 
   script/plugin install git://github.com/hiddenloop/acts_as_textcaptcha    
   
 == Using             
            
-First, in your environment.rb file, add the gem to your config like so;
+First, add the gem in your environment.rb file;
 
   config.gem 'acts_as_textcaptcha'
                                                        
-Next configure your models to be spam protected like so; (this is the most basic way to configure the gem, with an api key only)
+Next configure your models to be spam protected; (this is the most basic way to configure the gem, with an api key only)
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha({'api_key' => 'your_textcaptcha_api_key'})
   end          
                
-Next in your controller *new* and *create* actions you'll want to _spamify_ your model and merge the answers. Like so;
+Next in your controller *new* and *create* actions you'll want to _spamify_ your model and merge in the answers. Like so;
 
   def new
     @comment = Comment.new
@@ -67,16 +67,12 @@ Finally, in your form/view erb do something like the following;
     <%= f.label :spam_answer, @comment.spam_question %>
     <%= f.text_field :spam_answer, :value => '' %>
   <%- end -%>
-
-More configurations are available and will be explained here shortly.  If your'e interested now, jump into the code.
     
 == More Configurations    
 
-You can also configure ActAsTextcaptcha in the following ways.
+You can also configure spam protection in the following ways.
 
 === Options hash
-
-You can configure your models with the following options.
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha({'api_key'     => 'your_textcaptcha_api_key',
@@ -86,7 +82,7 @@ You can configure your models with the following options.
                                            {'question' => 'The green hat is what color?', 'answers' => 'green'}]})
   end 
   
-* *api_key* (from textcaptcha)
+* *api_key* (from Text CAPTCHA)
 * *bcrypt_salt* - used to encrypt valid possible answers in your session (recommended if you are using cookie session storage)  NOTE: this  must be a valid bcrypt salt; for security PLEASE CHANGE THIS, open irb and enter; require 'bcrypt'; BCrypt::Engine.generate_salt
 * *bcrypt_cost* - an optional logarithmic var which determines how computational expensive the bcrypt hash is to calculate (a cost of 4 is twice as much work as a cost of 3 - default is 10)
 * *questions* - an array of question and answer hashes (see above)  A random question from this array will be asked if the textcaptcha web service fails
@@ -105,26 +101,34 @@ It *also* is possible to configure without an api_key, and provide your own logi
 
 Will explain more soon, until then examine the code on github or browse the rdocs.
 
-== Rake
+== Rake Tasks
 
 * rake spec (run the tests)
 * rake rcov (run tests showing coverage)
 * rake rdoc (generate docs)
 
-== Credits
+== Links
+   
+* {Code}[http://github.com/hiddenloop/acts_as_textcaptcha]
+* {Documentation}[http://rdoc.info/projects/hiddenloop/acts_as_textcaptcha] (rdoc)
+* {Wiki}[http://wiki.github.com/hiddenloop/acts_as_textcaptcha/]
+* {Bug Tracker}[http://github.com/hiddenloop/acts_as_textcaptcha/issues]
+* {Gem}[http://rubygems.org/gems/acts_as_textcaptcha]   
+
+* {Text CAPTCHA}[http://textcaptcha.com/] web service
+* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem
 
 Who's who?
 
 * {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] authored by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
-* Gem and code kindly hosted at {rubygems.org}[http://rubygems.org/gems/acts_as_textcaptcha] and {github.com}[http://github.com/hiddenloop/acts_as_textcaptcha]
 
 == Usage
 
-This code is currently used in a number of production websites and applications. It was originally extracted from code developed for  {Bugle}[http://bugleblogs.com]
+This code is currently used in a number of production websites and apps. It was originally extracted from code developed for {Bugle}[http://bugleblogs.com]
 
 * {matthewhutchinson.net}[http://matthewhutchinson.net]
 * {pmFAQtory.com}[http://pmfaqtory.com]
 * {The FAQtory}[http://faqtory.heroku.com]
 
-(if you're happily using acts_as_textcaptcha in production, let me know and I'll add your site/app to the list)
+(if you're happily using acts_as_textcaptcha in production, let me know and I'll add you to this list)
