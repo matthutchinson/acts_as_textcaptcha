@@ -91,7 +91,7 @@ describe 'ActsAsTextcaptcha' do
     it 'should always be valid if skip_spam_check? is true' do
       @comment.generate_spam_question
       @comment.validate.should be_false
-      @comment.stub!(:skip_spam_check?).and_return(true)
+      @comment.stub!(:perform_spam_check?).and_return(false)
       @comment.validate.should be_true
       @comment.should be_valid
     end

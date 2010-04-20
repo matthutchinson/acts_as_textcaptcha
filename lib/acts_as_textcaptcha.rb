@@ -41,7 +41,7 @@ module ActsAsTextcaptcha #:nodoc:
       super
       if new_record?
         if allowed?
-          if perform_spam_check? && !validate_spam_answer
+          if possible_answers && perform_spam_check? && !validate_spam_answer
             errors.add(:spam_answer, 'is incorrect, try another question instead') 
             return false
           end
