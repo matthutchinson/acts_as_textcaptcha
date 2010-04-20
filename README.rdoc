@@ -91,7 +91,7 @@ You can also configure spam protection in the following ways.
 
 All the above options can be expressed in a {textcaptcha.yml}[http://github.com/hiddenloop/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  
 
-== _Without_ the Text CAPTCHA web service    
+=== _Without_ the Text CAPTCHA web service    
 
 It *also* is possible to configure to use only your own user defined logic questions.  To do so, just ommit the api_key and set at least 1 logic question in your options.
 
