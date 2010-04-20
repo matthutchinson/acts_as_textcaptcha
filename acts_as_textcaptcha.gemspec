@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "acts_as_textcaptcha.gemspec",
      "config/textcaptcha.yml",
      "init.rb",
      "lib/acts_as_textcaptcha.rb",
