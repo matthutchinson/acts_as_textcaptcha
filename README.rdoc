@@ -101,7 +101,7 @@ It *also* is possible to configure to use only your own user defined logic quest
 * if the textcaptcha service is down, the gem will look for user defined questions defined in the options
 * if no questions are found, AND the service is down no spam protection will take place and the model will be valid
 
-Will explain more soon, until then examine the code on github or browse the rdocs.
+Will explain more soon, until then browse the {docs}[http://rdoc.info/projects/hiddenloop/acts_as_textcaptcha] or the {source code}[http://github.com/hiddenloop/acts_as_textcaptcha]
 
 == Rake Tasks
 
