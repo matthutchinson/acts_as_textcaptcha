@@ -29,15 +29,18 @@ module ActsAsTextcaptcha #:nodoc:
   
 
   module InstanceMethods
-
-    def skip_spam_check?; false end
-
+                        
+    # override this method to toggle spam checking, default is on (true)
+    def perform_spam_check?; true end
+    
+    # override this method to toggle allowing the model to be created, default is on (true) 
+    # if returning false model.validate will always be false with errors on base
     def allowed?; true end
 
     def validate     
       if new_record?
         if allowed?
-          if possible_answers && !skip_spam_check? && !validate_spam_answer
+          if possible_answers && perform_spam_check? && !validate_spam_answer
             errors.add(:spam_answer, 'is incorrect, try another question instead') 
             return false
           end
@@ -46,7 +49,7 @@ module ActsAsTextcaptcha #:nodoc:
           return false
         end
       end
-      true
+      super
     end     
     
     def validate_spam_answer

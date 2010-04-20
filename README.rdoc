@@ -1,50 +1,65 @@
-= Act as TextCaptcha   
+= ActAsTextcaptcha   
 
-Spam protection for your ActiveRecord models using logic questions and the excellent textcaptcha api. See textcaptcha.com for more details and to get your api key.
+Spam protection for your ActiveRecord models using logic questions and the excellent {Text CAPTCHA}[http://textcaptcha.com] service.  
 
-The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why
+ActAsTextcaptcha can *also* be configured with your very own logic questions (to fall back on if the textcaptcha service is down) or as a replacement for the service.  The plugin can also make use of *bcrypt* *encryption*, to store the possible answers in your session (recommended if you are using the default Rails {CookieStore}[http://apidock.com/rails/CGI/Session/CookieStore])
 
-A more detailed REAME and a working demo on heroku will be available soon.
+Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
+  
+== Demo
 
-== Setup / Using
+A {fully working demo on heroku}[http://textcaptcha.heroku.com] will be available soon.
 
-=== Requirements
+== Requirements
 
 What do you need?
 
-* Rails >= 2.3
-* Ruby > 1.8.7
-* Textcaptcha API key - get one http://textcaptcha.com/register  (optional, since you can define your own logic questions)
-* bcrypt-ruby - sudo gem install bcrypt-ruby (optional, to securely encrypt the spam answers in your session)
+* {Rails}[http://github.com/rails/rails] >= 2.3
+* {Ruby}[http://ruby-lang.org/] >= 1.8.7                                                                                                                      
+* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt the spam answers in your session)
+* {Text CAPTCHA api key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions, see below for details)             
+* {Rspec}[http://rspec.info/] (_optional_ if you want to run the tests)
  
-=== Installing
+== Installing            
+
+Install the gems
+
+  sudo gem install acts_as_textcaptcha bcrypt-ruby
   
-  sudo gem install acts_as_textcaptcha      (gem is hosted at gemcutter.org; http://rubygems.org/gems/acts_as_textcaptcha)
-  
-  Or you can install as a Rails plugin 
+Or you can install it as a Rails plugin 
 
   script/plugin install git://github.com/hiddenloop/acts_as_textcaptcha    
   
 == Using             
-                 
-In your environment.rb file, add the gem to your configuration like so;
+           
+First, in your environment.rb file, add the gem to your config like so;
 
-  config.gem "acts_as_textcaptcha"
-
-Add to your ActiveRecord models like so;
+  config.gem 'acts_as_textcaptcha'
+                                                       
+Next configure your models to be spam protected like so; (this is the most basic way to configure the gem, with an api key only)
 
   class Comment < ActiveRecord::Base
-    acts_as_textcaptcha({'api_key' => 'yourtextcaptchaapikey'})
+    acts_as_textcaptcha({'api_key' => 'your_textcaptcha_api_key'})
   end          
-  
-In your controller 'new' actions do;
+               
+Next in your controller *new* and *create* actions you'll want to _spamify_ your model like so.  This generates a new spam question on the model;
 
   def new
     @comment = Comment.new
     spamify(@comment)
-  end               
-  
-And in your form/view erb do;
+  end                                                                                
+
+  def create
+    @comment = Comment.new(params[:comment])
+    if @comment.save
+      ...
+    else
+      spamify(@comment)
+       render :action => 'new'
+    end
+  end       
+      
+Finally, in your form/view erb do something like the following;
 
   <%- if @comment.validate_spam_answer -%>
     <%= f.hidden_field :spam_answer, :value => @comment.spam_answer -%>
@@ -54,13 +69,62 @@ And in your form/view erb do;
   <%- end -%>
 
 More configurations are available and will be explained here shortly.  If your'e interested now, jump into the code.
+    
+== More Configurations    
+
+You can also configure ActAsTextcaptcha in the following ways.
+
+=== Options hash
+
+You can configure your models with the following options.
+
+  class Comment < ActiveRecord::Base
+    acts_as_textcaptcha({'api_key'     => 'your_textcaptcha_api_key',
+                         'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
+                         'bcrypt_cost' => '3',
+                         'questions'   => [{'question' => '1+1', 'answers' => '2,two'},
+                                           {'question' => 'The green hat is what color?', 'answers' => 'green'}]})
+  end 
+  
+* *api_key* (from textcaptcha)
+* *bcrypt_salt* - used to encrypt valid possible answers in your session (recommended if you are using cookie session storage)  NOTE: this  must be a valid bcrypt salt; for security PLEASE CHANGE THIS, open irb and enter; require 'bcrypt'; BCrypt::Engine.generate_salt
+* *bcrypt_cost* - an optional logarithmic var which determines how computational expensive the bcrypt hash is to calculate (a cost of 4 is twice as much work as a cost of 3 - default is 10)
+* *questions* - an array of question and answer hashes (see above)  A random question from this array will be asked if the textcaptcha web service fails
+
+=== config/textcaptcha.yml
+
+The above options can also be expressed in {textcaptcha.yml}[http://github.com/hiddenloop/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] drop this into your Rails config folder.      
+
+It *also* is possible to configure without an api_key, and provide your own logic questions only.
 
 == What does the code do?  
+                            
+* spam answers are not case-sensitive and left/right white space is trimmed
+* if the textcaptcha service is down, the gem will look for user defined questions defined in the options
+* if no questions are found, AND the service is down no spam protection will take place and the model will be valid
 
-Will explain soon ...
+Will explain more soon, until then examine the code on github or browse the rdocs.
+
+== Rake
+
+* rake spec (run the tests)
+* rake rcov (run tests showing coverage)
+* rake rdoc (generate docs)
 
 == Credits
 
 Who's who?
 
-* Authored by http://matthewhutchinson.net
+* {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] authored by {Matthew Hutchinson}[http://matthewhutchinson.net]
+* {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
+* Gem and code kindly hosted at {rubygems.org}[http://rubygems.org/gems/acts_as_textcaptcha] and {github.com}[http://github.com/hiddenloop/acts_as_textcaptcha]
+
+== Usage
+
+This code is currently used in a number of production websites and applications. It was originally extracted from code developed for  {Bugle}[http://bugleblogs.com]
+
+* {matthewhutchinson.net}[http://matthewhutchinson.net]
+* {pmFAQtory.com}[http://pmfaqtory.com]
+* {The FAQtory}[http://faqtory.heroku.com]
+
+(if you're happily using acts_as_textcaptcha in production, let me know and I'll add your site/app to the list)
