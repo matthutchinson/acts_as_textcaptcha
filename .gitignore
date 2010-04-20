@@ -1,5 +1,4 @@
 acts_as_textcaptcha.sqlite3.db
-*.gemspec
 *.gem
 *.db      
 doc
