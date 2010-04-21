@@ -133,7 +133,7 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 == Who's who?
 
-* {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] and little robot drawing by {Matthew Hutchinson}[http://matthewhutchinson.net]
+* {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
 
