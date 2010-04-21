@@ -117,14 +117,12 @@ Will explain more soon, until then browse the {docs}[http://rdoc.info/projects/h
 * {Bug Tracker}[http://github.com/hiddenloop/acts_as_textcaptcha/issues]
 * {Gem}[http://rubygems.org/gems/acts_as_textcaptcha]   
 * {Code Metrics}[http://getcaliper.com/caliper/project?repo=http%3A%2F%2Frubygems.org%2Fgems%2Facts_as_textcaptcha] (flay, reek, churn etc.)
- 
-* {Text CAPTCHA}[http://textcaptcha.com/] web service
-* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem
 
 Who's who?
 
 * {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] authored by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
+* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
 
 == Usage
 
