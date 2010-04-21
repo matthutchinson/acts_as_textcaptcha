@@ -1,8 +1,10 @@
 = ActAsTextcaptcha   
 
-Spam protection for your ActiveRecord models using logic questions and the excellent {Text CAPTCHA}[http://textcaptcha.com] service.  
+ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  
 
-ActAsTextcaptcha can *also* be configured with your very own logic questions (to fall back on if the textcaptcha service is down) or as a replacement for the service.  The plugin can also make use of *bcrypt* *encryption*, to store the possible answers in your session (recommended if you are using the default Rails {CookieStore}[http://apidock.com/rails/CGI/Session/CookieStore])
+To get started, {grab an API key for your website}[http://textcaptcha.com/api] and follow along with the instructions below.
+
+The gem can be configured with your very own logic questions (to fall back on if the textcaptcha service is down) or as a replacement for the service.  It also makes use of {bcrypt}[http://bcrypt-ruby.rubyforge.org/] encryption when storing the answers in your session (recommended if you're using the default Rails CookieStore)                   
 
 Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
   
