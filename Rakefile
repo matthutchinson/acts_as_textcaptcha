@@ -9,13 +9,13 @@ task :test    => :spec
 
 desc "Run all specs"
 Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/*_spec.rb']
   t.spec_opts = ['--options', 'spec/spec.opts']
 end
 
 desc "Run all specs with RCov"
 Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/*_spec.rb']
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec']
 end
@@ -49,28 +49,30 @@ end
 begin
   require 'metric_fu'
   MetricFu::Configuration.run do |config|
-    config.metrics  = [:churn, :saikuro, :flog, :flay, :reek, :roodi, :rcov]
-    config.graphs   = [:flog, :flay, :reek, :roodi, :rcov]
+    config.metrics  = [ :churn, :saikuro, :flog, :flay, :reek, :roodi, :rcov ]
+    config.graphs   = [ :flog, :flay, :reek, :roodi, :rcov ]
     config.flay     = { :dirs_to_flay => ['lib'],
-                        :minimum_score => 100  }
+                        :minimum_score => 75  }
     config.flog     = { :dirs_to_flog => ['lib']  }
     config.reek     = { :dirs_to_reek => ['lib']  }
     config.roodi    = { :dirs_to_roodi => ['lib'] }
-    config.saikuro  = { :output_directory => 'tmp/saikuro',
+    config.saikuro  = { :output_directory => 'tmp/metric_fu/scratch/saikuro',
                         :input_directory => ['lib'],
                         :cyclo => "",
                         :filter_cyclo => "0",
                         :warn_cyclo => "5",
                         :error_cyclo => "7",
-                        :formater => "text"}
-    config.churn    = { :start_date => "1 year ago", :minimum_churn_count => 10}
+                        :formater => "text" }
+    config.churn    = { :start_date => "1 year ago", :minimum_churn_count => 10 }
     config.rcov     = { :environment => 'test',
-                        :test_files => ['spec/**/*_spec.rb'],
+                        :test_files => ['spec/*_spec.rb'],
                         :rcov_opts => ["--sort coverage",
                                        "--no-html",
                                        "--text-coverage",
                                        "--no-color",
-                                       "--profile"]}
+                                       "--profile",
+                                       "--rails",
+                                       "--exclude spec"]}
     config.graph_engine = :bluff
   end
 rescue LoadError
