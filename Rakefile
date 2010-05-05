@@ -40,6 +40,8 @@ begin
     gemspec.email = "matt@hiddenloop.com"
     gemspec.homepage = "http://github.com/hiddenloop/acts_as_textcaptcha"
     gemspec.authors = ["Matthew Hutchinson"]
+    
+    gemspec.add_dependency('bcrypt-ruby', '>= 2.1.2')
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
