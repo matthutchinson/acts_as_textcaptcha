@@ -30,7 +30,7 @@ Install the gems
   
 Or you can install acts_as_textcaptcha as a Rails plugin 
 
-  script/plugin install git://github.com/hiddenloop/acts_as_textcaptcha    
+  script/plugin install git://github.com/matthutchinson/acts_as_textcaptcha    
   
 == Using             
            
@@ -91,7 +91,7 @@ You can also configure spam protection in the following ways.
 
 === YAML config
 
-All the above options can be expressed in a {textcaptcha.yml}[http://github.com/hiddenloop/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  
+All the above options can be expressed in a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  
 
 === _Without_ the Text CAPTCHA web service    
 
@@ -113,7 +113,7 @@ If an error occurs in loading or parsing the web service XML, ActsAsTextcaptcha 
 
 If the web service fails or no-api key is specified AND no alternate questions are configured, the @model will not require spam checking and will pass as valid.
 
-For more details on the code please check the {documentation}[http://rdoc.info/projects/hiddenloop/acts_as_textcaptcha].
+For more details on the code please check the {documentation}[http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha].
 
 == Rake Tasks
 
@@ -123,17 +123,17 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 == Links
                                                           
-* {Documentation}[http://rdoc.info/projects/hiddenloop/acts_as_textcaptcha]
+* {Documentation}[http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha]
 * {Demo}[http://textcaptcha.heroku.com]
-* {Code}[http://github.com/hiddenloop/acts_as_textcaptcha]
-* {Wiki}[http://wiki.github.com/hiddenloop/acts_as_textcaptcha/]
-* {Bug Tracker}[http://github.com/hiddenloop/acts_as_textcaptcha/issues]
+* {Code}[http://github.com/matthutchinson/acts_as_textcaptcha]
+* {Wiki}[http://wiki.github.com/matthutchinson/acts_as_textcaptcha/]
+* {Bug Tracker}[http://github.com/matthutchinson/acts_as_textcaptcha/issues]
 * {Gem}[http://rubygems.org/gems/acts_as_textcaptcha]   
 * {Code Metrics}[http://getcaliper.com/caliper/project?repo=http%3A%2F%2Frubygems.org%2Fgems%2Facts_as_textcaptcha] (flay, reek, churn etc.)
 
 == Who's who?
 
-* {ActsAsTextcaptcha}[http://github.com/hiddenloop/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
+* {ActsAsTextcaptcha}[http://github.com/matthutchinson/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
 

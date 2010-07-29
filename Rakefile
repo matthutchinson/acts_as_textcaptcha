@@ -38,7 +38,7 @@ begin
   The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.
   For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why"
     gemspec.email = "matt@hiddenloop.com"
-    gemspec.homepage = "http://github.com/hiddenloop/acts_as_textcaptcha"
+    gemspec.homepage = "http://github.com/matthutchinson/acts_as_textcaptcha"
     gemspec.authors = ["Matthew Hutchinson"]
     
     gemspec.add_dependency('bcrypt-ruby', '>= 2.1.2')
