@@ -1,21 +1,24 @@
+require 'yaml'
+require 'net/http'
+require 'md5'
+require 'logger'
+require 'xml'     unless defined?(ActiveSupport::XmlMini)
+require 'railtie' if defined?(Rails::Railtie)
+
 begin
-  require 'xml'
-  require 'yaml'
-  require 'net/http'
-  require 'md5'
-  require 'logger'  
   require 'bcrypt'
-rescue LoadError
+rescue LoadError => e
+  puts "ActsAsTextcaptcha - please gem install bcrypt-ruby and add `gem \"bcrypt-ruby\"` to your Gemfile (or environment config)"
+  raise e
 end
 
-module ActsAsTextcaptcha #:nodoc:  
-
-  require 'lib/my_gem/railtie' if defined?(Rails)
+module ActsAsTextcaptcha #:nodoc:
 
   def acts_as_textcaptcha(options = nil)
     cattr_accessor :textcaptcha_config
-    attr_accessor  :spam_answer, :spam_question, :possible_answers
-                            
+    attr_accessor  :spam_answer, :spam_question, :possible_answers 
+    validate       :validate_textcaptcha_answer
+
     if options.is_a?(Hash)
       self.textcaptcha_config = options
     else
@@ -28,23 +31,22 @@ module ActsAsTextcaptcha #:nodoc:
 
     include InstanceMethods
   end
-  
+
 
   module InstanceMethods
-                        
+
     # override this method to toggle spam checking, default is on (true)
     def perform_spam_check?; true end
-    
-    # override this method to toggle allowing the model to be created, default is on (true) 
+
+    # override this method to toggle allowing the model to be created, default is on (true)
     # if returning false model.validate will always be false with errors on base
     def allowed?; true end
 
-    def validate 
-      super
+    def validate_textcaptcha_answer
       if new_record?
         if allowed?
           if possible_answers && perform_spam_check? && !validate_spam_answer
-            errors.add(:spam_answer, 'is incorrect, try another question instead') 
+            errors.add(:spam_answer, 'is incorrect, try another question instead')
             return false
           end
         else
@@ -53,28 +55,39 @@ module ActsAsTextcaptcha #:nodoc:
         end
       end
       true
-    end     
-    
+    end
+
     def validate_spam_answer
       (spam_answer && possible_answers) ? possible_answers.include?(encrypt_answer(Digest::MD5.hexdigest(spam_answer.strip.downcase.to_s))) : false
     end
-     
-    def encrypt_answers(answers)   
+
+    def encrypt_answers(answers)
       answers.map {|answer| encrypt_answer(answer) }
     end
-       
-    def encrypt_answer(answer)          
+
+    def encrypt_answer(answer)
       return answer unless(textcaptcha_config['bcrypt_salt'])
       BCrypt::Engine.hash_secret(answer, textcaptcha_config['bcrypt_salt'], (textcaptcha_config['bcrypt_cost'] || 10))
-    end            
-    
+    end
+
     def generate_spam_question(use_textcaptcha = true)
       if use_textcaptcha && textcaptcha_config && textcaptcha_config['api_key']
         begin
           resp = Net::HTTP.get(URI.parse('http://textcaptcha.com/api/'+textcaptcha_config['api_key']))
-          if !resp.empty? && xml = XML::Parser.string(resp).parse
-            self.spam_question    = xml.find('/captcha/question')[0].inner_xml
-            self.possible_answers = encrypt_answers(xml.find('/captcha/answer').map(&:inner_xml))
+          return [] if resp.empty?
+
+          if defined?(ActiveSupport::XmlMini)
+            parsed_xml = ActiveSupport::XmlMini.parse(resp)['captcha']
+            self.spam_question    = parsed_xml['question']['__content__']
+            if parsed_xml['answer'].is_a?(Array)
+              self.possible_answers = parsed_xml['answer'].collect {|a| a['__content__']}
+            else
+              self.possible_answers = [parsed_xml['answer']['__content__']]
+            end
+          else
+            parsed_xml            = XML::Parser.string(resp).parse
+            self.spam_question    = parsed_xml.find('/captcha/question')[0].inner_xml
+            self.possible_answers = encrypt_answers(parsed_xml.find('/captcha/answer').map(&:inner_xml))
           end
           return possible_answers if spam_question && !possible_answers.empty?
         rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
@@ -89,7 +102,7 @@ module ActsAsTextcaptcha #:nodoc:
         random_question       = textcaptcha_config['questions'][rand(textcaptcha_config['questions'].size)]
         self.spam_question    = random_question['question']
         self.possible_answers = encrypt_answers(random_question['answers'].split(',').map!{|ans| Digest::MD5.hexdigest(ans)})
-      end     
+      end
       possible_answers
     end
 
