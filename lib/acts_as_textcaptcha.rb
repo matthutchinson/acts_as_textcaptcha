@@ -16,8 +16,8 @@ module ActsAsTextcaptcha #:nodoc:
 
   def acts_as_textcaptcha(options = nil)
     cattr_accessor :textcaptcha_config
-    attr_accessor  :spam_answer, :spam_question, :possible_answers 
-    validate       :validate_textcaptcha_answer
+    attr_accessor  :spam_answer, :spam_question, :possible_answers
+    validate       :validate_textcaptcha
 
     if options.is_a?(Hash)
       self.textcaptcha_config = options
@@ -42,7 +42,7 @@ module ActsAsTextcaptcha #:nodoc:
     # if returning false model.validate will always be false with errors on base
     def allowed?; true end
 
-    def validate_textcaptcha_answer
+    def validate_textcaptcha
       if new_record?
         if allowed?
           if possible_answers && perform_spam_check? && !validate_spam_answer
@@ -50,7 +50,7 @@ module ActsAsTextcaptcha #:nodoc:
             return false
           end
         else
-          errors.add_to_base("Sorry, #{self.class.name.pluralize.downcase} are currently disabled")
+          errors.add(:base, "Sorry, #{self.class.name.pluralize.downcase} are currently disabled")
           return false
         end
       end
