@@ -2,9 +2,12 @@ require 'yaml'
 require 'net/http'
 require 'md5'
 require 'logger'
-require 'xml'     unless defined?(ActiveSupport::XmlMini)
 require 'railtie' if defined?(Rails::Railtie)
 
+# compatiblity with < Rails 3.0.0
+require 'xml'     unless defined?(ActiveSupport::XmlMini)
+
+# if using as a plugin in /vendor/plugins
 begin
   require 'bcrypt'
 rescue LoadError => e
