@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matthew Hutchinson"]
-  s.date = %q{2010-07-29}
+  s.date = %q{2010-08-31}
   s.description = %q{Spam protection for your ActiveRecord models using logic questions and the excellent textcaptcha api. See textcaptcha.com for more details and to get your api key.
   The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.
   For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why}
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
      "config/textcaptcha.yml",
      "init.rb",
      "lib/acts_as_textcaptcha.rb",
+     "lib/railtie.rb",
      "lib/textcaptcha_helper.rb",
      "rails/init.rb",
      "spec/acts_as_textcaptcha_spec.rb",
