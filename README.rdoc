@@ -8,9 +8,9 @@ The gem can be configured with your very own logic questions (to fall back on if
 
 Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
   
-== Rails3
+== Rails 3
 
-A Rails 3 compatible version of this plugin is in the works.
+This plugin/gem is now fully Rails 3 compatible.
   
 == Demo
 
@@ -20,7 +20,7 @@ Here's a {fully working demo on heroku}[http://textcaptcha.heroku.com]!
 
 What do you need?
 
-* {Rails}[http://github.com/rails/rails] >= 2.3 && < 3.0.0 (Rails 3 version of this plugin is in the works)
+* {Rails}[http://github.com/rails/rails] >= 2.3.x
 * {Ruby}[http://ruby-lang.org/] >= 1.8.7                                                                                                                      
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt the spam answers in your session)
 * {Text CAPTCHA api key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions, see below for details)             
@@ -28,19 +28,25 @@ What do you need?
  
 == Installing            
 
-Install the gems
+Install the gem
 
-  sudo gem install acts_as_textcaptcha bcrypt-ruby
+  sudo gem install acts_as_textcaptcha
   
-Or you can install acts_as_textcaptcha as a Rails plugin 
+Or you can install acts_as_textcaptcha as a Rails plugin
 
   script/plugin install git://github.com/matthutchinson/acts_as_textcaptcha    
+  (if you do this be sure to include {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] in your Gemfile or with config.gem in your environment)
   
-== Using             
+== Using           
+  
+First the gem to your Gemfile
+
+  gem "acts_as_textcaptcha"
            
-First, add the gem in your environment.rb file;
+OR add the gem in your environment.rb config;
 
   config.gem 'acts_as_textcaptcha'
+  
                                                        
 Next configure your models to be spam protected; (this is the most basic way to configure the gem, with an api key only)
 
@@ -67,11 +73,13 @@ Next in your controller *new* and *create* actions you'll want to _spamify_ your
       
 Finally, in your form/view erb do something like the following;
 
-  <%- if @comment.validate_spam_answer -%>
-    <%= f.hidden_field :spam_answer, :value => @comment.spam_answer -%>
-  <%- else -%>
-    <%= f.label :spam_answer, @comment.spam_question %>
-    <%= f.text_field :spam_answer, :value => '' %>
+  <%- if @comment.new_record? -%>
+    <%- if @comment.validate_spam_answer -%>
+      <%= f.hidden_field :spam_answer, :value => @comment.spam_answer -%>
+    <%- else -%>
+      <%= f.label :spam_answer, @comment.spam_question %>
+      <%= f.text_field :spam_answer, :value => '' %>
+    <%- end -%>
   <%- end -%>
     
 == More Configurations    
@@ -105,7 +113,7 @@ It *also* is possible to configure to use only your own user defined logic quest
                             
 The gem contains two parts, a module for your ActiveRecord models, and a tiny helper method (spamify).
 
-A call to spamify(@model) in your controller will query the Text CAPTCHA web service.  A restful GET request is made with Net::HTTP and parsed using the standard XML::Parser.  A spam_question is assigned to the model, and an array of possible answers are encrypted in the session.
+A call to spamify(@model) in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend (or the standard XML::Parser in older versions of Rails).  A spam_question is assigned to the model, and an array of possible answers are encrypted in the session.
 
 validate_spam_answer() is called on @model.validate() and checks that the @model.spam_answer matches one of those possible answers in the session.  This validation is _only_ carried out on new records, i.e. never on edit, only on create.  User's attempted spam answers are not case-sensitive and have trailing/leading white-space removed.
 
@@ -140,6 +148,10 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 * {ActsAsTextcaptcha}[http://github.com/matthutchinson/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] api and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
+
+== Todo
+
+* Test in other Ruby versions
 
 == Usage
 
