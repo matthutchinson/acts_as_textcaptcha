@@ -1,8 +1,9 @@
+require "acts_as_textcaptcha/framework/rails#{Rails::VERSION::MAJOR}" if defined?(Rails)
+
 require 'yaml'
 require 'net/http'
 require 'md5'
 require 'logger'
-require 'railtie' if defined?(Rails::Railtie)
 
 # compatiblity with < Rails 3.0.0
 require 'xml' unless defined?(ActiveSupport::XmlMini)
@@ -25,18 +26,8 @@ module ActsAsTextcaptcha #:nodoc:
     if options.is_a?(Hash)
       self.textcaptcha_config = options
     else
-      begin            
-        if defined?(Rails)
-          rails_dir = Rails.root.to_s    
-          rails_env = Rails.env
-        elsif defined?(RAILS_ROOT)
-          rails_dir = RAILS_ROOT 
-          rails_env = RAILS_ENV
-        else
-          rails_dir = '.'  
-          rails_env = 'test'
-        end
-        self.textcaptcha_config = YAML.load(File.read("#{rails_dir}/config/textcaptcha.yml"))[rails_env]
+      begin
+        self.textcaptcha_config = YAML.load(File.read("#{Rails.root.to_s}/config/textcaptcha.yml"))[Rails.env]
       rescue Errno::ENOENT
         raise('./config/textcaptcha.yml not found')
       end
