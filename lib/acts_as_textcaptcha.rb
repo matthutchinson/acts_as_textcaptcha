@@ -5,7 +5,7 @@ require 'logger'
 require 'railtie' if defined?(Rails::Railtie)
 
 # compatiblity with < Rails 3.0.0
-require 'xml'     unless defined?(ActiveSupport::XmlMini)
+require 'xml' unless defined?(ActiveSupport::XmlMini)
 
 # if using as a plugin in /vendor/plugins
 begin
@@ -25,8 +25,18 @@ module ActsAsTextcaptcha #:nodoc:
     if options.is_a?(Hash)
       self.textcaptcha_config = options
     else
-      begin
-        self.textcaptcha_config = YAML.load(File.read("#{(defined? RAILS_ROOT) ? "#{RAILS_ROOT}" : '.'}/config/textcaptcha.yml"))[((defined? RAILS_ENV) ? RAILS_ENV : 'test')]
+      begin            
+        if defined?(Rails)
+          rails_dir = Rails.root.to_s    
+          rails_env = Rails.env
+        elsif defined?(RAILS_ROOT)
+          rails_dir = RAILS_ROOT 
+          rails_env = RAILS_ENV
+        else
+          rails_dir = '.'  
+          rails_env = 'test'
+        end
+        self.textcaptcha_config = YAML.load(File.read("#{rails_dir}/config/textcaptcha.yml"))[rails_env]
       rescue Errno::ENOENT
         raise('./config/textcaptcha.yml not found')
       end
@@ -83,9 +93,9 @@ module ActsAsTextcaptcha #:nodoc:
             parsed_xml = ActiveSupport::XmlMini.parse(resp)['captcha']
             self.spam_question    = parsed_xml['question']['__content__']
             if parsed_xml['answer'].is_a?(Array)
-              self.possible_answers = parsed_xml['answer'].collect {|a| a['__content__']}
+              self.possible_answers = encrypt_answers(parsed_xml['answer'].collect {|a| a['__content__']})
             else
-              self.possible_answers = [parsed_xml['answer']['__content__']]
+              self.possible_answers = encrypt_answers([parsed_xml['answer']['__content__']])
             end
           else
             parsed_xml            = XML::Parser.string(resp).parse
