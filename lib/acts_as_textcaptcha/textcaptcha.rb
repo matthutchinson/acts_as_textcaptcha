@@ -13,8 +13,8 @@ rescue LoadError => e
   puts "ActsAsTextcaptcha - please gem install bcrypt-ruby and add `gem \"bcrypt-ruby\"` to your Gemfile (or environment config)"
   raise e
 end
- 
-module ActsAsTextcaptcha            
+
+module ActsAsTextcaptcha
   module Textcaptcha #:nodoc:
 
     def acts_as_textcaptcha(options = nil)
@@ -26,7 +26,7 @@ module ActsAsTextcaptcha
         self.textcaptcha_config = options
       else
         begin
-          self.textcaptcha_config = YAML.load(File.read("#{Rails.root.to_s}/config/textcaptcha.yml"))[Rails.env]
+          self.textcaptcha_config = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env]
         rescue Errno::ENOENT
           raise('./config/textcaptcha.yml not found')
         end
@@ -115,5 +115,5 @@ module ActsAsTextcaptcha
         logger.info "Textcaptcha >> #{message}"
       end
     end
-  end   
-end     
+  end
+end

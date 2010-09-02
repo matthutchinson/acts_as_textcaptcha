@@ -10,7 +10,7 @@ Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved
   
 == Rails 3
 
-This plugin/gem is now fully Rails 3 compatible.
+This gem is now fully Rails 3 compatible.
   
 == Demo
 
@@ -30,20 +30,15 @@ What do you need?
 
 Install the gem
 
-  sudo gem install acts_as_textcaptcha
-  
-Or you can install acts_as_textcaptcha as a Rails plugin
-
-  script/plugin install git://github.com/matthutchinson/acts_as_textcaptcha    
-  (if you do this be sure to include {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] in your Gemfile or with config.gem in your environment)
+  gem install acts_as_textcaptcha
   
 == Using           
   
-First the gem to your Gemfile
+First add the gem to your Gemfile
 
   gem "acts_as_textcaptcha"
            
-OR add the gem in your environment.rb config;
+OR add to your environment.rb config;
 
   config.gem 'acts_as_textcaptcha'
   
