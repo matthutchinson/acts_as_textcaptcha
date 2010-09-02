@@ -32,6 +32,18 @@ Install the gem
 
   gem install acts_as_textcaptcha
   
+Or install as a plugin with
+  
+  rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
+  OR
+  script/plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
+  
+If you do decide to install this as a Rails plugin, you'll have to manually include the bcrypt-ruby gem in your Gemfile or environment config. Like so;
+  
+  gem 'bcrypt-ruby', :require => 'bcrypt'
+  OR
+  config.gem 'bcrypt-ruby', :lib => 'bcrypt'
+  
 == Using           
   
 First add the gem to your Gemfile
