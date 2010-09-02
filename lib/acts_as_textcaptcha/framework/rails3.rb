@@ -1,10 +1,7 @@
-require 'acts_as_textcaptcha'
-require 'textcapcha_helper'
-
 ActiveSupport.on_load(:active_record) do
-  extend ActsAsTextcaptcha
+  extend ActsAsTextcaptcha::Textcaptcha
 end
 
 ActiveSupport.on_load(:action_controller) do
-  include TextcaptchaHelper
+  include ActsAsTextcaptcha::TextcaptchaHelper
 end
