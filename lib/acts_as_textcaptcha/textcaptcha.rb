@@ -1,6 +1,6 @@
 require 'yaml'
 require 'net/http'
-require 'md5'
+require 'digest/md5'
 require 'logger'
 
 # compatiblity with < Rails 3.0.0
@@ -70,7 +70,7 @@ module ActsAsTextcaptcha
 
       def encrypt_answer(answer)
         return answer unless(textcaptcha_config['bcrypt_salt'])
-        BCrypt::Engine.hash_secret(answer, textcaptcha_config['bcrypt_salt'], (textcaptcha_config['bcrypt_cost'] || 10))
+        BCrypt::Engine.hash_secret(answer, textcaptcha_config['bcrypt_salt'], (textcaptcha_config['bcrypt_cost'].to_i || 10))
       end
 
       def generate_spam_question(use_textcaptcha = true)
