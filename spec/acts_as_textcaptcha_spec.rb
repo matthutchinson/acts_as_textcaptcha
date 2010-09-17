@@ -23,6 +23,14 @@ end
 class Note < ActiveRecord::Base
   # inline options with user defined questions only (no textcaptcha service)
   acts_as_textcaptcha('questions' => [{'question' => '1+1', 'answers' => '2,two'}])
+end  
+
+class Contact
+  # non active record object         
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActsAsTextcaptcha::Textcaptcha 
+  acts_as_textcaptcha('questions' => [{'question' => '1+1', 'answers' => '2,two'}]) 
 end
 
 
@@ -31,7 +39,8 @@ describe 'ActsAsTextcaptcha' do
   before(:each) do
     @comment = Comment.new
     @review  = Review.new
-    @note    = Note.new
+    @note    = Note.new   
+    @contact = Contact.new 
   end
 
   describe 'validations' do
@@ -40,6 +49,17 @@ describe 'ActsAsTextcaptcha' do
       @note.generate_spam_question
       @note.validate_textcaptcha.should be_false
       @note.should_not be_valid
+    end  
+    
+    it "should validate non ActiveRecord object" do
+      @contact.generate_spam_question
+      @contact.spam_answer = 'wrong'
+      @contact.validate_textcaptcha.should be_false
+      @contact.should_not be_valid
+      
+      @contact.spam_answer = 'two'
+      @contact.validate_textcaptcha.should be_true
+      @contact.should be_valid
     end
 
     it 'should validate spam answer with possible answers' do

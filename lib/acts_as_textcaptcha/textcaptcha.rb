@@ -45,8 +45,9 @@ module ActsAsTextcaptcha
       # if returning false model.validate will always be false with errors on base
       def allowed?; true end
 
-      def validate_textcaptcha
-        if new_record?
+      def validate_textcaptcha                       
+        # if not new_record? we dont spam check on existing records (ie. no spam check on updates/edits)
+        if !respond_to?('new_record?') || new_record?     
           if allowed?
             if possible_answers && perform_spam_check? && !validate_spam_answer
               errors.add(:spam_answer, 'is incorrect, try another question instead')
