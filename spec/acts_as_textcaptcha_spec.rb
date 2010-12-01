@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'rspec/core'
+require File.dirname(__FILE__) + '/spec_helper.rb'
 
 class Widget < ActiveRecord::Base
   # uses textcaptcha.yml file for configuration
@@ -30,7 +31,7 @@ class Contact
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActsAsTextcaptcha::Textcaptcha 
-  acts_as_textcaptcha('questions' => [{'question' => '1+1', 'answers' => '2,two'}]) 
+  acts_as_textcaptcha(:questions => [{:question => '1+1', :answers => '2,two'}]) 
 end
 
 
@@ -138,13 +139,15 @@ describe 'ActsAsTextcaptcha' do
 
   describe 'with inline options hash' do
 
-    it 'should be configurable from inline options' do
-      @comment.textcaptcha_config.should eql({'api_key' => '8u5ixtdnq9csc84cok0owswgo'})
-      @review.textcaptcha_config.should  eql({'bcrypt_cost'=>'3', 'questions'=>[{'question'=>'1+1', 'answers'=>'2,two'},
-                                                                                {'question'=>'The green hat is what color?', 'answers'=>'green'},
-                                                                                {'question'=>'Which is bigger: 67, 14 or 6', 'answers'=>'67,sixtyseven,sixty seven,sixty-seven'}],
-                                                                  'bcrypt_salt'=>'$2a$10$j0bmycH.SVfD1b5mpEGPpe', 'api_key'=>'8u5ixtdnq9csc84cok0owswgo'})
-      @note.textcaptcha_config.should    eql({'questions'=>[{'question'=>'1+1', 'answers'=>'2,two'}]})
+    it 'should be configurable from inline options with keys as symbols' do
+      @comment.textcaptcha_config.should eql({:api_key => '8u5ixtdnq9csc84cok0owswgo'})
+      @review.textcaptcha_config.should  eql({:bcrypt_cost =>'3', :questions   => [{'question' => '1+1', 'answers' => '2,two'},
+                                                                                   {'question' => 'The green hat is what color?', 'answers' => 'green'},
+                                                                                   {'question' => 'Which is bigger: 67, 14 or 6', 'answers' => '67,sixtyseven,sixty seven,sixty-seven'}],
+                                                                  :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe', 
+                                                                  :api_key     => '8u5ixtdnq9csc84cok0owswgo'})
+      @note.textcaptcha_config.should    eql({:questions => [{:question => '1+1', :answers => '2,two'}]})
+      @contact.textcaptcha_config.should eql({:questions => [{:question => '1+1', :answers => '2,two'}]})
     end
 
     it 'should generate spam question from textcaptcha service' do
@@ -190,10 +193,10 @@ describe 'ActsAsTextcaptcha' do
     end
 
     it 'should be configurable from config/textcaptcha.yml file' do
-      @widget.textcaptcha_config['api_key'].should eql('8u5ixtdnq9csc84cok0owswgo')
-      @widget.textcaptcha_config['bcrypt_salt'].should eql('$2a$10$j0bmycH.SVfD1b5mpEGPpe')
-      @widget.textcaptcha_config['bcrypt_cost'].should eql(10)
-      @widget.textcaptcha_config['questions'].length.should eql(10)
+      @widget.textcaptcha_config[:api_key].should eql('8u5ixtdnq9csc84cok0owswgo')
+      @widget.textcaptcha_config[:bcrypt_salt].should eql('$2a$10$j0bmycH.SVfD1b5mpEGPpe')
+      @widget.textcaptcha_config[:bcrypt_cost].should eql(10)
+      @widget.textcaptcha_config[:questions].length.should eql(10)
     end
 
     it 'should generate spam question' do

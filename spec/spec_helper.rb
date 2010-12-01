@@ -2,9 +2,7 @@ ENV["RAILS_ENV"] ||= 'test'
 
 require 'rubygems'
 require 'active_record'
-require 'rails' 
-require 'spec'
-require 'spec/autorun'   
+require 'rails'
 
 require File.dirname(__FILE__) + '/../lib/acts_as_textcaptcha'
 

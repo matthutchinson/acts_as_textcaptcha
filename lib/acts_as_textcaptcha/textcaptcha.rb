@@ -30,10 +30,10 @@ module ActsAsTextcaptcha
       validate       :validate_textcaptcha
 
       if options.is_a?(Hash)
-        self.textcaptcha_config = options
+        self.textcaptcha_config = options.symbolize_keys!
       else
         begin
-          self.textcaptcha_config = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env]
+          self.textcaptcha_config = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env].symbolize_keys!
         rescue Errno::ENOENT
           raise('./config/textcaptcha.yml not found')
         end
@@ -77,14 +77,14 @@ module ActsAsTextcaptcha
       end
 
       def encrypt_answer(answer)
-        return answer unless(textcaptcha_config['bcrypt_salt'])
-        BCrypt::Engine.hash_secret(answer, textcaptcha_config['bcrypt_salt'], (textcaptcha_config['bcrypt_cost'].to_i || 10))
+        return answer unless(textcaptcha_config[:bcrypt_salt])
+        BCrypt::Engine.hash_secret(answer, textcaptcha_config[:bcrypt_salt], (textcaptcha_config[:bcrypt_cost].to_i || 10))
       end
 
       def generate_spam_question(use_textcaptcha = true)
-        if use_textcaptcha && textcaptcha_config && textcaptcha_config['api_key']
+        if use_textcaptcha && textcaptcha_config && textcaptcha_config[:api_key]
           begin
-            resp = Net::HTTP.get(URI.parse('http://textcaptcha.com/api/'+textcaptcha_config['api_key']))
+            resp = Net::HTTP.get(URI.parse('http://textcaptcha.com/api/'+textcaptcha_config[:api_key]))
             return [] if resp.empty?
 
             if defined?(ActiveSupport::XmlMini)
@@ -103,16 +103,16 @@ module ActsAsTextcaptcha
             return possible_answers if spam_question && !possible_answers.empty?
           rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
                  Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError => e
-            log_textcaptcha("failed to load or parse textcaptcha with key '#{textcaptcha_config['api_key']}'; #{e}")
+            log_textcaptcha("failed to load or parse textcaptcha with key '#{textcaptcha_config[:api_key]}'; #{e}")
           end
         end
 
         # fall back to textcaptcha_config questions
-        if textcaptcha_config && textcaptcha_config['questions']
-          log_textcaptcha('falling back to random logic question from config') if textcaptcha_config['api_key']
-          random_question       = textcaptcha_config['questions'][rand(textcaptcha_config['questions'].size)]
-          self.spam_question    = random_question['question']
-          self.possible_answers = encrypt_answers(random_question['answers'].split(',').map!{|ans| Digest::MD5.hexdigest(ans)})
+        if textcaptcha_config && textcaptcha_config[:questions]
+          log_textcaptcha('falling back to random logic question from config') if textcaptcha_config[:api_key]
+          random_question       = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
+          self.spam_question    = random_question[:question]
+          self.possible_answers = encrypt_answers(random_question[:answers].split(',').map!{|ans| Digest::MD5.hexdigest(ans)})
         end
         possible_answers
       end

@@ -1,24 +1,24 @@
 require 'rake'
-require 'rake/rdoctask'
-require 'spec/rake/spectask'
-require 'spec'
+require 'rake/rdoctask' 
+require 'rspec/core/rake_task'
 
 desc 'Default: run spec tests.'
-task :default => :spec
-task :test    => :spec
+task :default => :rspec
+task :test    => :rspec
 
 desc "Run all specs"
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = FileList['spec/*_spec.rb']
-  t.spec_opts = ['--options', 'spec/spec.opts']
+RSpec::Core::RakeTask.new(:rspec) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rspec_opts = ["-c", "-f progress"]
 end
 
 desc "Run all specs with RCov"
-Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_files = FileList['spec/*_spec.rb']
-  t.rcov = true
-  t.rcov_opts = ['--exclude', 'spec']
-end
+RSpec::Core::RakeTask.new(:rcov) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rcov = true          
+  t.rspec_opts = ["-c", "-f progress"]
+  t.rcov_opts = %w{--exclude spec\/}
+end   
 
 desc 'Generate documentation for the acts_as_textcaptcha plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|

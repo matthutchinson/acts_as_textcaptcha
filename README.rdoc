@@ -24,7 +24,7 @@ What do you need?
 * {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE and Ruby 1.9.2)                                                                                                                      
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt the spam answers in your session)
 * {Text CAPTCHA api key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions, see below for details)             
-* {Rspec}[http://rspec.info/] (_optional_ if you want to run the tests)
+* {Rspec2}[http://rspec.info/] (_optional_ if you want to run the tests, requires >= rspec2)
  
 == Installing            
 
@@ -136,7 +136,7 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 == Rake Tasks
 
-* rake spec (run the tests)
+* rake rspec (run the rspec2 tests)
 * rake rcov (run tests showing coverage)
 * rake rdoc (generate docs)
 
