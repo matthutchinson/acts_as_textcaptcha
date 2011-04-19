@@ -166,5 +166,6 @@ This code is currently used in a number of production websites and apps. It was 
 * {matthewhutchinson.net}[http://matthewhutchinson.net]
 * {pmFAQtory.com}[http://pmfaqtory.com]
 * {The FAQtory}[http://faqtory.heroku.com]
+* {DPT Watch, San Francisco}[http://www.dptwatch.com]
 
 (if you're happily using acts_as_textcaptcha in production, let me know and I'll add you to this list)
