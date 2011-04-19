@@ -1,5 +1,4 @@
-require 'rspec/core'
-require File.dirname(__FILE__) + '/spec_helper.rb'
+require 'spec_helper'
 
 class Widget < ActiveRecord::Base
   # uses textcaptcha.yml file for configuration

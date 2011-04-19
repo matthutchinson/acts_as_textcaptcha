@@ -1,5 +1,8 @@
-acts_as_textcaptcha.sqlite3.db
-*.gem
-*.db      
+*.*.db      
+*.db
 doc
+*.gem
+Gemfile.lock
+pkg/*
 coverage
+.rvmrc
