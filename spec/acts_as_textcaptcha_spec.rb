@@ -23,14 +23,14 @@ end
 class Note < ActiveRecord::Base
   # inline options with user defined questions only (no textcaptcha service)
   acts_as_textcaptcha('questions' => [{'question' => '1+1', 'answers' => '2,two'}])
-end  
+end
 
 class Contact
-  # non active record object         
+  # non active record object
   include ActiveModel::Validations
   include ActiveModel::Conversion
-  extend ActsAsTextcaptcha::Textcaptcha 
-  acts_as_textcaptcha(:questions => [{:question => '1+1', :answers => '2,two'}]) 
+  extend ActsAsTextcaptcha::Textcaptcha
+  acts_as_textcaptcha(:questions => [{:question => '1+1', :answers => '2,two'}])
 end
 
 
@@ -39,8 +39,8 @@ describe 'ActsAsTextcaptcha' do
   before(:each) do
     @comment = Comment.new
     @review  = Review.new
-    @note    = Note.new   
-    @contact = Contact.new 
+    @note    = Note.new
+    @contact = Contact.new
   end
 
   describe 'validations' do
@@ -49,14 +49,14 @@ describe 'ActsAsTextcaptcha' do
       @note.generate_spam_question
       @note.validate_textcaptcha.should be_false
       @note.should_not be_valid
-    end  
-    
+    end
+
     it "should validate non ActiveRecord object" do
       @contact.generate_spam_question
       @contact.spam_answer = 'wrong'
       @contact.validate_textcaptcha.should be_false
       @contact.should_not be_valid
-      
+
       @contact.spam_answer = 'two'
       @contact.validate_textcaptcha.should be_true
       @contact.should be_valid
@@ -73,6 +73,7 @@ describe 'ActsAsTextcaptcha' do
 
       @note.spam_answer = 'wrong'
       @note.validate_textcaptcha.should be_false
+      @note.errors[:spam_answer].should eql(['is incorrect, try another question instead'])
       @note.should_not be_valid
     end
 
@@ -131,7 +132,7 @@ describe 'ActsAsTextcaptcha' do
       @comment.stub!(:allowed?).and_return(false)
 
       @comment.validate_textcaptcha.should be_false
-      @comment.errors[:base].should eql(['Sorry, comments are currently disabled'])
+      @comment.errors[:base].should eql(['Sorry, adding a Comment is currently disabled'])
       @comment.should_not be_valid
     end
   end
@@ -143,7 +144,7 @@ describe 'ActsAsTextcaptcha' do
       @review.textcaptcha_config.should  eql({:bcrypt_cost =>'3', :questions   => [{'question' => '1+1', 'answers' => '2,two'},
                                                                                    {'question' => 'The green hat is what color?', 'answers' => 'green'},
                                                                                    {'question' => 'Which is bigger: 67, 14 or 6', 'answers' => '67,sixtyseven,sixty seven,sixty-seven'}],
-                                                                  :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe', 
+                                                                  :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
                                                                   :api_key     => '8u5ixtdnq9csc84cok0owswgo'})
       @note.textcaptcha_config.should    eql({:questions => [{:question => '1+1', :answers => '2,two'}]})
       @contact.textcaptcha_config.should eql({:questions => [{:question => '1+1', :answers => '2,two'}]})

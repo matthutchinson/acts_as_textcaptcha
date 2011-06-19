@@ -57,11 +57,11 @@ module ActsAsTextcaptcha
         if !respond_to?('new_record?') || new_record?
           if allowed?
             if possible_answers && perform_spam_check? && !validate_spam_answer
-              errors.add(:spam_answer, 'is incorrect, try another question instead')
+              errors.add(:spam_answer, :incorrect_answer, :message => "is incorrect, try another question instead")
               return false
             end
           else
-            errors.add(:base, "Sorry, #{self.class.name.pluralize.downcase} are currently disabled")
+            errors.add(:base, :disabled, :message => "Sorry, adding a %{model} is currently disabled")
             return false
           end
         end
