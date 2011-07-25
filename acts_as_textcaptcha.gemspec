@@ -20,11 +20,12 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  
+
+  s.add_dependency('bcrypt-ruby', '~> 2.1.2')
+
   s.add_dependency('rails')
   s.add_dependency('activerecord')
-  s.add_dependency('bcrypt-ruby', '~> 2.1.2')
-  
+
   s.add_development_dependency('rspec', '~> 2.5.0')
   s.add_development_dependency('rcov', '~> 0.9.9')
   s.add_development_dependency('rdoc', '~> 3.5.3')

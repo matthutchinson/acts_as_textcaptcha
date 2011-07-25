@@ -16,9 +16,11 @@ end
 
 module ActsAsTextcaptcha
 
-  class Railtie < ::Rails::Railtie
-    rake_tasks do
-      load "tasks/textcaptcha.rake"
+  if Rails.version =~ /^3\./
+    class Railtie < ::Rails::Railtie
+      rake_tasks do
+        Dir["tasks/**/*.rake"].each { |ext| load ext } if defined?(Rake)
+      end
     end
   end
 
