@@ -5,9 +5,6 @@ require 'rdoc/task'
 require 'rspec/core/rake_task'
 require 'rcov/rcovtask'
 
-# load rake tasks
-Dir["#{Gem.searcher.find('acts_as_textcaptcha').full_gem_path}/lib/tasks/**/*.rake"].each { |ext| load ext }
-
 # bundler tasks
 Bundler::GemHelper.install_tasks
 

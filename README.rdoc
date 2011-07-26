@@ -8,59 +8,46 @@ The gem can be configured with your very own logic questions (to fall back on if
 
 Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
   
-== Rails 3
-
-This gem is Rails 3 compatible.
-
 == Demo
 
 Here's a {fully working demo on heroku}[http://textcaptcha.heroku.com]!
 
-== Requirements
+== Installing
 
-What do you need?
+=== Rails 3
 
-* {Rails}[http://github.com/rails/rails] >= 2.3.x  (including Rails 3)
-* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE and Ruby 1.9.2)                                                                                                                      
-* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt the spam answers in your session)
-* {Text CAPTCHA api key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions, see below for details)             
-* {Rspec2}[http://rspec.info/] (_optional_ if you want to run the tests, requires >= rspec2)
- 
-== Installing            
+Just add the following to your Gemfile, then run `bundle install`;
 
-Install the gem
-
-  gem install acts_as_textcaptcha
+  gem 'acts_as_textcaptcha'
   
+=== Rails 2.3.*
+
+Add the following to your environment.rb file, then install with `gem install acts_as_textcaptcha`;
+
+  config.gem 'acts_as_textcaptcha'
+
+=== As a plugin
+
 Or install as a plugin with
-  
+
   rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
   OR
   script/plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
-  
+
 If you do decide to install this as a Rails plugin, you'll have to manually include the bcrypt-ruby gem in your Gemfile or environment config. Like so;
-  
+
   gem 'bcrypt-ruby', :require => 'bcrypt'
   OR
   config.gem 'bcrypt-ruby', :lib => 'bcrypt'
-  
-== Using           
-  
-First add the gem to your Gemfile
 
-  gem "acts_as_textcaptcha"
-           
-OR add to your environment.rb config;
+== Setting up
 
-  config.gem 'acts_as_textcaptcha'
-  
-                                                       
-Next configure your models to be spam protected; (this is the most basic way to configure the gem, with an api key only)
+Configure which models are to be spam protected; (this is the most basic way to configure the gem, with an api key only)
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha({'api_key' => 'your_textcaptcha_api_key'})
   end          
-               
+
 Next in your controller *new* and *create* actions you'll want to _spamify_ your model and merge in the answers. Like so;
 
   def new
@@ -77,7 +64,7 @@ Next in your controller *new* and *create* actions you'll want to _spamify_ your
       render :action => 'new'
     end
   end       
-      
+
 Finally, in your form/view erb do something like the following;
 
   <%- if @comment.new_record? -%>
@@ -88,10 +75,10 @@ Finally, in your form/view erb do something like the following;
       <%= f.text_field :spam_answer, :value => '' %>
     <%- end -%>
   <%- end -%>
-    
+
 == More Configurations    
 
-You can also configure spam protection in the following ways.
+You can also configure acts_as_textcaptcha in the following ways.
 
 === Hash
 
@@ -110,11 +97,20 @@ You can also configure spam protection in the following ways.
 
 === YAML config
 
-All the above options can be expressed in a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  
+All the above options can be expressed in a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  The gem comes with a handy rake task to copy over a textcaptcha.yml template to your Rails config directory.
 
-=== _Without_ the Text CAPTCHA web service    
+rake textcaptcha:generate_config
+
+*NOTE:* If you are on Rails 2.3.*, you'll have to add the following to your Rakefile to make this task available;
+
+`# load textcaptcha rake tasks
+Dir["#{Gem.searcher.find('acts_as_textcaptcha').full_gem_path}/lib/tasks/**/*.rake"].each { |ext| load ext } if Gem.searcher.find('acts_as_textcaptcha')`
+
+
+=== Using _Without_ the Text CAPTCHA web service    
 
 It *also* is possible to configure to use only your own user defined logic questions.  To do so, just ommit the api_key and set at least 1 logic question in your options.
+
 
 == What does the code do?  
                             
@@ -134,10 +130,42 @@ If the web service fails or no-api key is specified AND no alternate questions a
 
 For more details on the code please check the {documentation}[http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha].
 
-== Rake Tasks
+== Translations
+
+Recent versions of the gem use standard Rails, I18n translation for the 2 possible error messages generated by acts_as_textcaptcha, with a fall-back to a default English error message.  Unfortunately in some versions of Rails 2.3.* the translation fall-back fails.  For this case (and when translating) the translations should be provided in your locale file with the following hierarchy (assuming your model is Comment);
+
+  en:
+    activerecord:
+      errors:
+        models:
+          comment:
+            disabled: "Sorry, adding a %{model} is currently disabled"
+            attributes:
+              spam_answer:
+                incorrect_answer: "is incorrect, try another question instead"
+    activemodel:
+      attributes:
+        comment:
+          spam_answer: "Spam answer"
+
+It should be noted that currently the textcaptcha API service only offers logic questions in English.
+
+== Testing and docs
+
+In development you can run the specs and rdoc tasks like so;
 
 * rake spec (run the rspec2 tests)
 * rake rdoc (generate docs)
+
+== Requirements
+
+What do you need?
+
+* {Rails}[http://github.com/rails/rails] >= 2.3.2  (including Rails 3)
+* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE and Ruby 1.9.2)                                                                                                                      
+* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt the spam answers in your session)
+* {Text CAPTCHA api key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions, see below for details)             
+* {Rspec2}[http://rspec.info/] (_optional_ if you want to run the tests, requires >= rspec2)
 
 == Links
                                                           
@@ -157,7 +185,7 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 == Todo
 
-* Test in other Ruby versions
+* Fix issue with multiple forms open in the same session
 
 == Usage
 

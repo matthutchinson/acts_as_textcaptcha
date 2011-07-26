@@ -19,7 +19,7 @@ module ActsAsTextcaptcha
   if Rails.version =~ /^3\./
     class Railtie < ::Rails::Railtie
       rake_tasks do
-        Dir["tasks/**/*.rake"].each { |ext| load ext } if defined?(Rake)
+        load "tasks/textcaptcha.rake"
       end
     end
   end
