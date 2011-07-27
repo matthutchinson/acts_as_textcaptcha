@@ -1,6 +1,6 @@
 namespace :textcaptcha do
-  desc "Adds a textcaptcha.yml template config file to ./config "
-  task :generate_config do
+  desc "Creates a template config file in config/textcaptcha.yml"
+  task :config do
 
     src  = File.join(File.dirname(__FILE__), '../..', 'config', 'textcaptcha.yml')
     dest = File.join(Rails.root, 'config', 'textcaptcha.yml')

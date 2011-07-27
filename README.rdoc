@@ -99,7 +99,7 @@ You can also configure acts_as_textcaptcha in the following ways.
 
 All the above options can be expressed in a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] file. Drop this into your RAILS_ROOT/config folder.  The gem comes with a handy rake task to copy over a textcaptcha.yml template to your Rails config directory.
 
-rake textcaptcha:generate_config
+rake textcaptcha:config
 
 *NOTE:* If you are on Rails 2.3.*, you'll have to add the following to your Rakefile to make this task available;
 
