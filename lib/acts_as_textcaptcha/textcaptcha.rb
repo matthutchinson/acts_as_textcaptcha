@@ -3,7 +3,7 @@ require 'net/http'
 require 'digest/md5'
 require 'logger'
 
-# compatiblity with < Rails 3.0.0
+# compatiblity when XmlMini is not available
 require 'xml' unless defined?(ActiveSupport::XmlMini)
 
 # if using as a plugin in /vendor/plugins
@@ -15,7 +15,8 @@ end
 
 module ActsAsTextcaptcha
 
-  if Rails.version =~ /^3\./
+  # use Railtie for Rails 3+
+  unless Rails::VERSION::MAJOR < 3
     class Railtie < ::Rails::Railtie
       rake_tasks do
         load "tasks/textcaptcha.rake"
@@ -52,7 +53,6 @@ module ActsAsTextcaptcha
 
       # override this method to toggle spam checking, default is on (true)
       def perform_textcaptcha?; true end
-
 
       private
       def generate_textcaptcha
