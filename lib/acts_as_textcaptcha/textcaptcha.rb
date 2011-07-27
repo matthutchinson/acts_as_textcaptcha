@@ -15,7 +15,7 @@ end
 
 module ActsAsTextcaptcha
 
-  # use Railtie for Rails 3+
+  # dont use Railtie if Rails < 3 
   unless Rails::VERSION::MAJOR < 3
     class Railtie < ::Rails::Railtie
       rake_tasks do
