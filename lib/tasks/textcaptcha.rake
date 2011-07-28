@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 namespace :textcaptcha do
   desc "Creates a template config file in config/textcaptcha.yml"
   task :config do
@@ -10,8 +12,8 @@ namespace :textcaptcha do
       config_file = ''
       f = File.open(src, 'r')
       f.each_line { |line| config_file += line }
-      config_file.gsub!(/api\_key\:(.+)$/, 'api_key: # get one at http://textcaptcha.com' )
-      config_file.gsub!(/bcrypt\_salt\:(.+)$/, "bcrypt_salt: #{BCrypt::Engine.generate_salt}" ) if defined?(BCrypt)
+      config_file.gsub!(/api\_key\:(.+)(.*) #/, 'api_key: PASTE_YOUR_TEXTCAPCHA_API_KEY_HERE #' )
+      config_file.gsub!(/bcrypt\_salt\:(.+)(.*) #/, "bcrypt_salt: #{BCrypt::Engine.generate_salt} #" )
 
       f = File.new(dest, 'w')
       f.write(config_file)

@@ -1,12 +1,9 @@
 development: &non_production_settings
-  api_key: 8u5ixtdnq9csc84cok0owswgo
-  # bcrypt can be used to encrypt valid possible answers in your session; http://bcrypt-ruby.rubyforge.org/
-  # (recommended if you are using cookie session storage)
-  # NOTE: bcrypt_salt must be a valid bcrypt salt; for security PLEASE CHANGE THIS, open irb and enter; require 'bcrypt'; BCrypt::Engine.generate_salt
-  bcrypt_salt: $2a$10$j0bmycH.SVfD1b5mpEGPpe
-  # an optional logarithmic var which determines how computational expensive the hash is to calculate (a cost of 4 is twice as much work as a cost of 3)
-  bcrypt_cost: 10 # default is 10, must be > 4 (large number means slower encryption)
-  # if you'd rather NOT use bcrypt, just remove these two settings, bcrypt_salt and bcrypt_cost, valid possible answers will be MD5 digested in your session
+  api_key: 8u5ixtdnq9csc84cok0owswgo         # grab one from http://textcaptcha.com/api
+  bcrypt_salt: $2a$10$j0bmycH.SVfD1b5mpEGPpe # must be a valid bcrypt salt, we've generated this one for you randomly
+                                             # generate another with; require 'bcrypt'; BCrypt::Engine.generate_salt
+  bcrypt_cost: 10 # optional (default is 10) must be > 4 (a larger number means slower encryption)
+                  # see http://bcrypt-ruby.rubyforge.org for more information on bcrypt
   questions:
       - question: 'Is ice hot or cold?'
         answers: 'cold'
