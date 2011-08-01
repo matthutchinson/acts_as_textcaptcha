@@ -24,16 +24,16 @@ module ActsAsTextcaptcha
     end
   end
 
+
   module Textcaptcha #:nodoc:
 
     def acts_as_textcaptcha(options = nil)
 
       cattr_accessor :textcaptcha_config
       attr_accessor  :spam_question, :spam_answers, :spam_answer
-      attr_protected :spam_question, :spam_answers if accessible_attributes.nil?
+      attr_protected :spam_question if accessible_attributes.nil?
       
-      after_initialize :generate_textcaptcha
-      validate         :validate_textcaptcha
+      validate :validate_textcaptcha
 
       if options.is_a?(Hash)
         self.textcaptcha_config = options.symbolize_keys!
@@ -50,14 +50,12 @@ module ActsAsTextcaptcha
 
 
     module InstanceMethods
-
+    
       # override this method to toggle spam checking, default is on (true)
       def perform_textcaptcha?; true end
-
-      private
-      def generate_textcaptcha
-        return unless perform_textcaptcha?
-        return if validate_spam_answer
+  
+      def textcaptcha
+        return if !perform_textcaptcha? || validate_spam_answer
 
         # always clear answer before generating a new question
         self.spam_answer = nil
@@ -100,7 +98,8 @@ module ActsAsTextcaptcha
           end
         end
       end
-
+      
+      private
       def validate_spam_answer
         (spam_answer && spam_answers) ? spam_answers.split('-').include?(encrypt_answer(md5_answer(spam_answer))) : false
       end
@@ -110,7 +109,7 @@ module ActsAsTextcaptcha
         if !respond_to?('new_record?') || new_record?
           if perform_textcaptcha? && !validate_spam_answer
             errors.add(:spam_answer, :incorrect_answer, :message => "is incorrect, try another question instead")
-            generate_textcaptcha
+            textcaptcha
             return false
           end
         end

@@ -13,7 +13,11 @@ module ActsAsTextcaptcha
            captcha_html += capture(&block)
          end
       end
-      captcha_html.respond_to?(:html_safe) ? captcha_html.html_safe : captcha_html
+      if Rails::VERSION::MAJOR < 3
+        concat captcha_html, &block.binding
+      else
+        captcha_html.html_safe
+      end
     end
   end
 end
