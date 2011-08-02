@@ -2,15 +2,15 @@ gem 'rdoc'
 
 require 'bundler'
 require 'rdoc/task'
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 require 'rcov/rcovtask'
 
 # bundler tasks
 Bundler::GemHelper.install_tasks
 
-# rspec tasks
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.rspec_opts = "--color --format=doc"
+# run all tests
+Rake::TestTask.new do |t|
+  t.pattern = "test/*_test.rb"
 end
 
 # rdoc tasks

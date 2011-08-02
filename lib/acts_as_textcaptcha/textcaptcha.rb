@@ -31,7 +31,7 @@ module ActsAsTextcaptcha
 
       cattr_accessor :textcaptcha_config
       attr_accessor  :spam_question, :spam_answers, :spam_answer
-      attr_protected :spam_question if accessible_attributes.nil?
+      attr_protected :spam_question if respond_to?(:accessible_attributes) && accessible_attributes.nil?
       
       validate :validate_textcaptcha
 
