@@ -82,14 +82,16 @@ describe 'Textcaptcha' do
     end
 
     it 'should generate spam question from the service' do
-      @comment = Comment.new
+      @review = Review.new
 
-      @comment.textcaptcha
-      @comment.spam_question.wont_be_nil
-      @comment.spam_answers.wont_be_nil
+      @review.textcaptcha
+      @review.spam_question.wont_be_nil
+      @review.spam_question.wont_equal('The green hat is what color?')
 
-      @comment.valid?.must_equal false
-      @comment.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
+      @review.spam_answers.wont_be_nil
+
+      @review.valid?.must_equal false
+      @review.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
     end
 
     describe 'service is unavailable' do
