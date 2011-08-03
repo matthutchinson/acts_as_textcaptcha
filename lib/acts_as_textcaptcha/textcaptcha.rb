@@ -15,7 +15,7 @@ end
 
 module ActsAsTextcaptcha
 
-  # dont use Railtie if Rails < 3 
+  # dont use Railtie if Rails < 3
   unless Rails::VERSION::MAJOR < 3
     class Railtie < ::Rails::Railtie
       rake_tasks do
@@ -32,7 +32,7 @@ module ActsAsTextcaptcha
       cattr_accessor :textcaptcha_config
       attr_accessor  :spam_question, :spam_answers, :spam_answer
       attr_protected :spam_question if respond_to?(:accessible_attributes) && accessible_attributes.nil?
-      
+
       validate :validate_textcaptcha
 
       if options.is_a?(Hash)
@@ -50,10 +50,10 @@ module ActsAsTextcaptcha
 
 
     module InstanceMethods
-    
+
       # override this method to toggle spam checking, default is on (true)
       def perform_textcaptcha?; true end
-  
+
       def textcaptcha
         return if !perform_textcaptcha? || validate_spam_answer
 
@@ -66,7 +66,7 @@ module ActsAsTextcaptcha
           end
           if textcaptcha_config[:api_key]
             begin
-              resp = Net::HTTP.get(URI.parse('http://textcaptcha.com/api/'+textcaptcha_config[:api_key]))
+              resp = Net::HTTP.get(URI.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
               return if resp.empty?
 
               if defined?(ActiveSupport::XmlMini)
@@ -84,7 +84,7 @@ module ActsAsTextcaptcha
               end
               return
             rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
-                  Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError => e
+                   Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError => e
               log_textcaptcha("failed to load or parse textcaptcha with key '#{textcaptcha_config[:api_key]}'; #{e}")
             end
           end
@@ -98,7 +98,7 @@ module ActsAsTextcaptcha
           end
         end
       end
-      
+
       private
       def validate_spam_answer
         (spam_answer && spam_answers) ? spam_answers.split('-').include?(encrypt_answer(md5_answer(spam_answer))) : false

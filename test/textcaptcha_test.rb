@@ -7,18 +7,16 @@ end
 
 class Comment < ActiveRecord::Base
   # inline options with api_key only
-  acts_as_textcaptcha 'api_key'     => '8u5ixtdnq9csc84cok0owswgo', 
-    'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
+  acts_as_textcaptcha 'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
+                      'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
 end
 
 class Review < ActiveRecord::Base
   # inline options with all possible options
-  acts_as_textcaptcha({'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
+  acts_as_textcaptcha  'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
                        'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
                        'bcrypt_cost' => '3',
-                       'questions'   => [{'question' => '1+1', 'answers' => '2,two'},
-                                         {'question' => 'The green hat is what color?', 'answers' => 'green'},
-                                         {'question' => 'Which is bigger: 67, 14 or 6', 'answers' => '67,sixtyseven,sixty seven,sixty-seven'}]})
+                       'questions'   => [{'question' => 'The green hat is what color?', 'answers' => 'green'}]
 end
 
 class Note < ActiveRecord::Base
@@ -27,7 +25,7 @@ class Note < ActiveRecord::Base
                       'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
 
   attr_accessor :turn_off_captcha
-  
+
   def perform_textcaptcha?
     !turn_off_captcha
   end
@@ -43,19 +41,12 @@ class Contact
 end
 
 
-
 describe 'Textcaptcha' do
-
-  before do
-    @comment = Comment.new
-    @review  = Review.new
-    @note    = Note.new
-    @contact = Contact.new
-  end
 
   describe 'validations' do
 
     before(:each) do
+      @note = Note.new
       @note.textcaptcha
     end
 
@@ -99,6 +90,7 @@ describe 'Textcaptcha' do
     end
 
     it "should validate a non ActiveRecord object" do
+      @contact = Contact.new
       @contact.textcaptcha
 
       @contact.spam_question.must_equal('one+1')
@@ -114,6 +106,7 @@ describe 'Textcaptcha' do
   describe 'encryption' do
 
     it 'should encrypt spam_answers (joined by - seperator) MD5 digested and using BCrypt engine with salt' do
+      @note = Note.new
       @note.spam_answers.must_be_nil
       @note.textcaptcha
       encrypted_answers = [2,' TwO '].collect { |answer| BCrypt::Engine.hash_secret(Digest::MD5.hexdigest(answer.to_s.strip.downcase), '$2a$10$j0bmycH.SVfD1b5mpEGPpe', 1) }.join('-')
@@ -125,6 +118,7 @@ describe 'Textcaptcha' do
   describe 'textcaptcha API service' do
 
     it 'should generate spam question from textcaptcha service' do
+      @comment = Comment.new
       @comment.textcaptcha
       @comment.spam_question.wont_be_nil
       @comment.spam_answers.wont_be_nil
@@ -136,29 +130,30 @@ describe 'Textcaptcha' do
     describe 'and textcaptcha unavailable' do
 
       before(:each) do
-        #Net::HTTP.stub(:get).and_raise(SocketError)
+        @review = Review.new
       end
 
-      it 'should fall back to random user defined question when set' do
-        #@review.generate_spam_question
-        #@review.spam_question.should_not be_nil
-        #@review.possible_answers.should_not be_nil
-        #@review.possible_answers.should be_an(Array)
-
-        #@review.validate_textcaptcha.should be_false
-        #@review.should_not be_valid
+      after(:each) do
+        FakeWeb.clean_registry
       end
 
-      it 'should not generate any spam question/answer if no user defined questions set' do
+      it 'should fall back to a random user defined question when NET error and at least one fallback question is defined' do
+        FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :status => ['401', 'Not Found'])
+
+        @review.textcaptcha
+        @review.spam_question.must_equal('The green hat is what color?')
+        @review.spam_answers.wont_be_nil
+      end
+
+      #it 'should not generate any spam question/answer if no user defined questions set' do
         #@comment.generate_spam_question
         #@comment.spam_question.should be_nil
         #@comment.possible_answers.should be_nil
         #@comment.validate_textcaptcha.should be_true
         #@comment.should be_valid
-      end
+      #end
     end
 
   end
 
 end
-

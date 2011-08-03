@@ -3,8 +3,8 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib'))
 ENV['RAILS_ENV'] = 'test'
 
 require 'minitest/autorun'
-require 'minitest/spec'
-require 'redgreen'
+require 'fakeweb'
+#require 'minitest/spec'
 
 require 'active_record'
 require 'rails'

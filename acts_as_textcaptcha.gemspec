@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency('bcrypt-ruby', '~> 2.1.2')
+  s.add_dependency('bcrypt-ruby', '~> 2.1.4')
 
   s.add_development_dependency('rails')
   s.add_development_dependency('activerecord')
@@ -29,5 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rcov')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
-  s.add_development_dependency('mynyml-redgreen')
+  s.add_development_dependency('fakeweb')
 end
