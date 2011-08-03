@@ -25,12 +25,12 @@ development: &common_settings
         answers: 'blue'
       - question: 'what is 16 plus 4?'
         answers: '20,twenty'
-        
-test: 
+
+test:
   <<: *common_settings
   api_key: 6eh1co0j12mi2ogcoggkkok4o          # for gem test purposes only
   bcrypt_salt: $2a$10$qhSefD6gKtmq6M0AzXk4CO  # for gem test purposes only
   bcrypt_cost: 1
-  
+
 production:
   <<: *common_settings

@@ -27,6 +27,9 @@ module ActsAsTextcaptcha
 
   module Textcaptcha #:nodoc:
 
+    # This exception is raised if you an empty response is returned from the web service
+    class BadResponse < StandardError; end;
+
     def acts_as_textcaptcha(options = nil)
 
       cattr_accessor :textcaptcha_config
@@ -66,40 +69,49 @@ module ActsAsTextcaptcha
           end
           if textcaptcha_config[:api_key]
             begin
-              resp = Net::HTTP.get(URI.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
-              return if resp.empty?
-
-              if defined?(ActiveSupport::XmlMini)
-                parsed_xml = ActiveSupport::XmlMini.parse(resp)['captcha']
-                self.spam_question = parsed_xml['question']['__content__']
-                if parsed_xml['answer'].is_a?(Array)
-                  self.spam_answers = encrypt_answers(parsed_xml['answer'].collect {|a| a['__content__']})
-                else
-                  self.spam_answers = encrypt_answers([parsed_xml['answer']['__content__']])
-                end
+              response = Net::HTTP.get(URI.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
+              if response.empty?
+                raise Textcaptcha::BadResponse
               else
-                parsed_xml         = XML::Parser.string(resp).parse
-                self.spam_question = parsed_xml.find('/captcha/question')[0].inner_xml
-                self.spam_answers  = encrypt_answers(parsed_xml.find('/captcha/answer').map(&:inner_xml))
+                parse_textcaptcha_xml(response)
               end
-              return
             rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
-                   Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError => e
-              log_textcaptcha("failed to load or parse textcaptcha with key '#{textcaptcha_config[:api_key]}'; #{e}")
+                   Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError,
+                   REXML::ParseException, Textcaptcha::BadResponse
             end
           end
 
           # fall back to textcaptcha_config questions
           if textcaptcha_config[:questions]
-            log_textcaptcha('falling back to random logic question from config') if textcaptcha_config[:api_key]
             random_question    = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
             self.spam_question = random_question[:question]
             self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
+          else
+            self.spam_question = 'ActsAsTextcaptcha, No API key set (or captcha questions configured) and/or the textcaptcha service is currently unavailable (type ok to bypass)'
+            self.spam_answers  = 'ok'
           end
         end
       end
 
+
       private
+
+      def parse_textcaptcha_xml(xml)
+        if defined?(ActiveSupport::XmlMini)
+          parsed_xml = ActiveSupport::XmlMini.parse(xml)['captcha']
+          self.spam_question = parsed_xml['question']['__content__']
+          if parsed_xml['answer'].is_a?(Array)
+            self.spam_answers = encrypt_answers(parsed_xml['answer'].collect {|a| a['__content__']})
+          else
+            self.spam_answers = encrypt_answers([parsed_xml['answer']['__content__']])
+          end
+        else
+          parsed_xml         = XML::Parser.string(xml).parse
+          self.spam_question = parsed_xml.find('/captcha/question')[0].inner_xml
+          self.spam_answers  = encrypt_answers(parsed_xml.find('/captcha/answer').map(&:inner_xml))
+        end
+      end
+
       def validate_spam_answer
         (spam_answer && spam_answers) ? spam_answers.split('-').include?(encrypt_answer(md5_answer(spam_answer))) : false
       end
@@ -117,7 +129,7 @@ module ActsAsTextcaptcha
       end
 
       def encrypt_answers(answers)
-        answers.map {|answer| encrypt_answer(answer) }.join('-')
+        answers.map { |answer| encrypt_answer(answer) }.join('-')
       end
 
       def encrypt_answer(answer)
@@ -126,11 +138,6 @@ module ActsAsTextcaptcha
 
       def md5_answer(answer)
         Digest::MD5.hexdigest(answer.to_s.strip.downcase)
-      end
-
-      def log_textcaptcha(message)
-        logger ||= Logger.new(STDOUT)
-        logger.info "ActsAsTextcaptcha >> #{message}"
       end
     end
   end

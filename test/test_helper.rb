@@ -4,7 +4,6 @@ ENV['RAILS_ENV'] = 'test'
 
 require 'minitest/autorun'
 require 'fakeweb'
-#require 'minitest/spec'
 
 require 'active_record'
 require 'rails'

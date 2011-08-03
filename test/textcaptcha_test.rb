@@ -1,45 +1,5 @@
 require_relative 'test_helper'
-
-class Widget < ActiveRecord::Base
-  # uses textcaptcha.yml file for configuration
-  acts_as_textcaptcha
-end
-
-class Comment < ActiveRecord::Base
-  # inline options with api_key only
-  acts_as_textcaptcha 'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
-                      'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
-end
-
-class Review < ActiveRecord::Base
-  # inline options with all possible options
-  acts_as_textcaptcha  'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
-                       'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
-                       'bcrypt_cost' => '3',
-                       'questions'   => [{'question' => 'The green hat is what color?', 'answers' => 'green'}]
-end
-
-class Note < ActiveRecord::Base
-  # inline options (string keys) with user defined questions only (no textcaptcha service)
-  acts_as_textcaptcha 'questions'   => [{'question' => '1+1', 'answers' => '2,two'}],
-                      'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
-
-  attr_accessor :turn_off_captcha
-
-  def perform_textcaptcha?
-    !turn_off_captcha
-  end
-end
-
-class Contact
-  # non active record object (symbol keys)
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend  ActsAsTextcaptcha::Textcaptcha
-  acts_as_textcaptcha :questions   => [{:question => 'one+1', :answers => '2,two'}],
-                      :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
-end
-
+require_relative 'test_models'
 
 describe 'Textcaptcha' do
 
@@ -115,10 +75,15 @@ describe 'Textcaptcha' do
     end
   end
 
-  describe 'textcaptcha API service' do
+  describe 'textcaptcha API' do
 
-    it 'should generate spam question from textcaptcha service' do
+    after(:each) do
+      FakeWeb.clean_registry
+    end
+
+    it 'should generate spam question from the service' do
       @comment = Comment.new
+
       @comment.textcaptcha
       @comment.spam_question.wont_be_nil
       @comment.spam_answers.wont_be_nil
@@ -127,33 +92,64 @@ describe 'Textcaptcha' do
       @comment.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
     end
 
-    describe 'and textcaptcha unavailable' do
+    describe 'service is unavailable' do
 
-      before(:each) do
-        @review = Review.new
+      describe 'should fallback to a user defined question' do
+
+        before(:each) do
+          @review = Review.new
+        end
+
+        it 'when errors occur' do
+          [SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
+           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError].each do |error|
+            FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => error)
+            @review.textcaptcha
+            @review.spam_question.must_equal('The green hat is what color?')
+            @review.spam_answers.wont_be_nil
+          end
+        end
+
+        it 'when response is OK but body cannot be parsed as XML' do
+          FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => 'here be gibberish')
+          @review.textcaptcha
+          @review.spam_question.must_equal('The green hat is what color?')
+          @review.spam_answers.wont_be_nil
+        end
+
+        it 'when response is OK but empty' do
+          FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => '')
+          @review.textcaptcha
+          @review.spam_question.must_equal('The green hat is what color?')
+          @review.spam_answers.wont_be_nil
+        end
       end
-
-      after(:each) do
-        FakeWeb.clean_registry
-      end
-
-      it 'should fall back to a random user defined question when NET error and at least one fallback question is defined' do
-        FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :status => ['401', 'Not Found'])
-
-        @review.textcaptcha
-        @review.spam_question.must_equal('The green hat is what color?')
-        @review.spam_answers.wont_be_nil
-      end
-
-      #it 'should not generate any spam question/answer if no user defined questions set' do
-        #@comment.generate_spam_question
-        #@comment.spam_question.should be_nil
-        #@comment.possible_answers.should be_nil
-        #@comment.validate_textcaptcha.should be_true
-        #@comment.should be_valid
-      #end
     end
 
+    it 'should not generate any spam question or answer when no user defined questions set' do
+      @comment = Comment.new
+
+      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
+      @comment.textcaptcha
+      @comment.spam_question.must_equal 'ActsAsTextcaptcha, No API key set (or captcha questions configured) and/or the textcaptcha service is currently unavailable (type ok to bypass)'
+      @comment.spam_answers.must_equal 'ok'
+    end
   end
 
+  describe 'configuration' do
+
+    it 'should be configured with inline hash' do
+      Review.textcaptcha_config.must_equal({ :api_key     => '8u5ixtdnq9csc84cok0owswgo',
+                                             :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
+                                             :bcrypt_cost => '3',
+                                             :questions   => [{'question' => 'The green hat is what color?', 'answers' => 'green' }]})
+    end
+
+    it 'should be configured with textcaptcha.yml' do
+      Widget.textcaptcha_config[:api_key].must_equal          '6eh1co0j12mi2ogcoggkkok4o'
+      Widget.textcaptcha_config[:bcrypt_salt].must_equal      '$2a$10$qhSefD6gKtmq6M0AzXk4CO'
+      Widget.textcaptcha_config[:bcrypt_cost].must_equal      1
+      Widget.textcaptcha_config[:questions].length.must_equal 10
+    end
+  end
 end
