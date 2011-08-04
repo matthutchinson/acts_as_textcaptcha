@@ -76,7 +76,7 @@ module ActsAsTextcaptcha
                 parse_textcaptcha_xml(response)
               end
               return
-            rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
+            rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
                    Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError,
                    REXML::ParseException, Textcaptcha::BadResponse
             end
