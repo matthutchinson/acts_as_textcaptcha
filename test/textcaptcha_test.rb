@@ -103,7 +103,7 @@ describe 'Textcaptcha' do
         end
 
         it 'when errors occur' do
-          [SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED,
+          [SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
            Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError].each do |error|
             FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => error)
             @review.textcaptcha
