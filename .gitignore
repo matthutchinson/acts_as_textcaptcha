@@ -1,8 +1,9 @@
-*.*.db      
+*.*.db
 *.db
 doc
 *.gem
 Gemfile.lock
 pkg/*
 coverage
+coverage.data
 .rvmrc
