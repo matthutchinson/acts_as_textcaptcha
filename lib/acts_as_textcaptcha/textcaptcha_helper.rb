@@ -1,7 +1,7 @@
 module ActsAsTextcaptcha
   module TextcaptchaHelper
 
-    # builds html fields for spam question, answer and hidden encrypted answers
+    # builds html fields for spam question, answer and hidden encrypted spam answers
     def textcaptcha_fields(f, &block)
       model        = f.object
       captcha_html = ''
@@ -13,6 +13,8 @@ module ActsAsTextcaptcha
            captcha_html += capture(&block)
          end
       end
+
+      # Rails 2 compatability
       if Rails::VERSION::MAJOR < 3
         concat captcha_html, &block.binding
       else

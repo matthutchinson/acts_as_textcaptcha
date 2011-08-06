@@ -1,4 +1,2 @@
-source "http://rubygems.org"
-
-# Specify your gem's dependencies in acts_as_textcaptcha.gemspec
+source 'http://rubygems.org'
 gemspec

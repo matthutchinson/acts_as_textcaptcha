@@ -1,7 +1,6 @@
 require 'yaml'
 require 'net/http'
 require 'digest/md5'
-require 'logger'
 
 # compatiblity when XmlMini is not available
 require 'xml' unless defined?(ActiveSupport::XmlMini)
@@ -27,11 +26,10 @@ module ActsAsTextcaptcha
 
   module Textcaptcha #:nodoc:
 
-    # This exception is raised if you an empty response is returned from the web service
+    # raised if an empty response is ever returned from textcaptcha.com web service
     class BadResponse < StandardError; end;
 
     def acts_as_textcaptcha(options = nil)
-
       cattr_accessor :textcaptcha_config
       attr_accessor  :spam_question, :spam_answers, :spam_answer
       attr_protected :spam_question if respond_to?(:accessible_attributes) && accessible_attributes.nil?
@@ -43,8 +41,8 @@ module ActsAsTextcaptcha
       else
         begin
           self.textcaptcha_config = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env].symbolize_keys!
-        rescue Errno::ENOENT
-          raise 'ActsAsTextcaptcha >> could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file'
+        rescue
+          raise 'could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file'
         end
       end
 
@@ -54,24 +52,24 @@ module ActsAsTextcaptcha
 
     module InstanceMethods
 
-      # override this method to toggle spam checking, default is on (true)
-      def perform_textcaptcha?; true end
+      # override this method to toggle textcaptcha spam checking, default is on (true)
+      def perform_textcaptcha?
+        true
+      end
 
+      # generate textcaptcha question and encrypt possible spam_answers
       def textcaptcha
         return if !perform_textcaptcha? || validate_spam_answer
-
-        # always clear answer before generating a new question
         self.spam_answer = nil
 
         if textcaptcha_config
           unless BCrypt::Engine.valid_salt?(textcaptcha_config[:bcrypt_salt])
-            raise BCrypt::Errors::InvalidSalt.new "ActsAsTextcaptcha >> you must specify a valid BCrypt Salt in your acts_as_textcaptcha options, get a salt from irb/console with\nrequire 'bcrypt';BCrypt::Engine.generate_salt\n\n(Please check Gem README for more details)\n"
+            raise BCrypt::Errors::InvalidSalt.new "you must specify a valid BCrypt Salt in your acts_as_textcaptcha options, get a salt from irb/console with\nrequire 'bcrypt';BCrypt::Engine.generate_salt\n\n(Please check Gem README for more details)\n"
           end
           if textcaptcha_config[:api_key]
             begin
-              # URI.parse is deprecated in 1.9.2
-              uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI
-              response = Net::HTTP.get(uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
+              uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI # URI.parse is deprecated in 1.9.2
+              response   = Net::HTTP.get(uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
               if response.empty?
                 raise Textcaptcha::BadResponse
               else
@@ -81,6 +79,7 @@ module ActsAsTextcaptcha
             rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
                    Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError,
                    REXML::ParseException, Textcaptcha::BadResponse
+              # rescue from these errors and continue
             end
           end
 
@@ -90,7 +89,7 @@ module ActsAsTextcaptcha
             self.spam_question = random_question[:question]
             self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
           else
-            self.spam_question = 'ActsAsTextcaptcha, No API key set (or captcha questions configured) and/or the textcaptcha service is currently unavailable (type ok to bypass)'
+            self.spam_question = 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
             self.spam_answers  = 'ok'
           end
         end
@@ -104,7 +103,7 @@ module ActsAsTextcaptcha
           parsed_xml = ActiveSupport::XmlMini.parse(xml)['captcha']
           self.spam_question = parsed_xml['question']['__content__']
           if parsed_xml['answer'].is_a?(Array)
-            self.spam_answers = encrypt_answers(parsed_xml['answer'].collect {|a| a['__content__']})
+            self.spam_answers = encrypt_answers(parsed_xml['answer'].collect { |a| a['__content__'] })
           else
             self.spam_answers = encrypt_answers([parsed_xml['answer']['__content__']])
           end
@@ -120,10 +119,11 @@ module ActsAsTextcaptcha
       end
 
       def validate_textcaptcha
-        # if not new_record? we dont spam check on existing records (ie. no spam check on updates/edits)
+        # only spam check on new/unsaved records (ie. no spam check on updates/edits)
         if !respond_to?('new_record?') || new_record?
           if perform_textcaptcha? && !validate_spam_answer
             errors.add(:spam_answer, :incorrect_answer, :message => "is incorrect, try another question instead")
+            # regenerate question
             textcaptcha
             return false
           end

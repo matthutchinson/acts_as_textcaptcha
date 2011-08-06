@@ -14,14 +14,11 @@ Rake::TestTask.new do |t|
 end
 
 # code coverage
-namespace :cover_me do
-  desc "Generates and opens code coverage report."
-  task :report do
-    require 'cover_me'
-    CoverMe.config.project.root = File.expand_path('../', __FILE__)
-    CoverMe.config.file_pattern = [/.*\.rb/i]
-    Rake::Task['test'].invoke
-    CoverMe.complete!
+namespace :test do
+  desc "Run all tests and generate a code coverage report (simplecov)"
+  task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task['test'].execute
   end
 end
 

@@ -1,5 +1,4 @@
-require_relative 'test_helper'
-require_relative 'test_models'
+require File.expand_path(File.dirname(__FILE__)+'/test_helper')
 
 describe 'Textcaptcha' do
 
@@ -49,7 +48,7 @@ describe 'Textcaptcha' do
       @note.save.must_equal true
     end
 
-    it "should validate a non ActiveRecord object" do
+    it 'should validate a non ActiveRecord object' do
       @contact = Contact.new
       @contact.textcaptcha
 
@@ -65,13 +64,22 @@ describe 'Textcaptcha' do
 
   describe 'encryption' do
 
-    it 'should encrypt spam_answers (joined by - seperator) MD5 digested and using BCrypt engine with salt' do
+    before(:each) do
       @note = Note.new
+    end
+
+    it 'should encrypt spam_answers (joined by - seperator) MD5 digested and using BCrypt engine with salt' do
       @note.spam_answers.must_be_nil
       @note.textcaptcha
       encrypted_answers = [2,' TwO '].collect { |answer| BCrypt::Engine.hash_secret(Digest::MD5.hexdigest(answer.to_s.strip.downcase), '$2a$10$j0bmycH.SVfD1b5mpEGPpe', 1) }.join('-')
-      @note.spam_answers.must_equal("$2a$10$j0bmycH.SVfD1b5mpEGPpePFe1wBxOn7Brr9lMuLRxv6lg4ZYjJ22-$2a$10$j0bmycH.SVfD1b5mpEGPpe8v5mqqpDaExuS/hZu8Xkq8krYL/T8P.")
+      @note.spam_answers.must_equal('$2a$10$j0bmycH.SVfD1b5mpEGPpePFe1wBxOn7Brr9lMuLRxv6lg4ZYjJ22-$2a$10$j0bmycH.SVfD1b5mpEGPpe8v5mqqpDaExuS/hZu8Xkq8krYL/T8P.')
       @note.spam_answers.must_equal(encrypted_answers)
+    end
+
+    it 'should raise error if bcyrpt salt is invalid' do
+      @note.textcaptcha_config[:bcrypt_salt] = 'bad salt'
+      proc { @note.textcaptcha }.must_raise BCrypt::Errors::InvalidSalt
+      @note.textcaptcha_config[:bcrypt_salt] ='$2a$10$j0bmycH.SVfD1b5mpEGPpe'
     end
   end
 
@@ -92,6 +100,29 @@ describe 'Textcaptcha' do
 
       @review.valid?.must_equal false
       @review.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
+    end
+
+    it 'should parse a single answer from XML response' do
+      @review  = Review.new
+      question = 'If tomorrow is Saturday, what day is today?'
+      body     = "<captcha><question>#{question}</question><answer>f6f7fec07f372b7bd5eb196bbca0f3f4</answer></captcha>"
+      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
+
+      @review.textcaptcha
+      @review.spam_question.must_equal(question)
+      @review.spam_answers.must_equal('$2a$10$j0bmycH.SVfD1b5mpEGPpecvhlumIBvWXI4HQWk0xa74DebZDx772')
+      @review.spam_answers.split('-').length.must_equal(1)
+    end
+
+    it 'should parse multiple answers from XML response' do
+      @review  = Review.new
+      question = 'If tomorrow is Saturday, what day is today?'
+      body     = "<captcha><question>#{question}</question><answer>1</answer><answer>2</answer><answer>3</answer></captcha>"
+      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
+
+      @review.textcaptcha
+      @review.spam_question.must_equal(question)
+      @review.spam_answers.split('-').length.must_equal(3)
     end
 
     describe 'service is unavailable' do
@@ -133,7 +164,7 @@ describe 'Textcaptcha' do
 
       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
       @comment.textcaptcha
-      @comment.spam_question.must_equal 'ActsAsTextcaptcha, No API key set (or captcha questions configured) and/or the textcaptcha service is currently unavailable (type ok to bypass)'
+      @comment.spam_question.must_equal 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
       @comment.spam_answers.must_equal 'ok'
     end
   end
@@ -144,7 +175,7 @@ describe 'Textcaptcha' do
       Review.textcaptcha_config.must_equal({ :api_key     => '8u5ixtdnq9csc84cok0owswgo',
                                              :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
                                              :bcrypt_cost => '3',
-                                             :questions   => [{'question' => 'The green hat is what color?', 'answers' => 'green' }]})
+                                             :questions   => [{ 'question' => 'The green hat is what color?', 'answers' => 'green' }]})
     end
 
     it 'should be configured with textcaptcha.yml' do

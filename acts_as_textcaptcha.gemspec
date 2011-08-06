@@ -9,24 +9,23 @@ Gem::Specification.new do |s|
   s.authors     = ["Matthew Hutchinson"]
   s.email       = ["matt@hiddenloop.com"]
   s.homepage    = "http://github.com/matthutchinson/acts_as_textcaptcha"
-  s.summary     = %q{Spam protection for your models via logic questions and the excellent textcaptcha.com api}
-  s.description = %q{Spam protection for your ActiveRecord models using logic questions and the excellent textcaptcha api. See textcaptcha.com for more details and to get your api key.
-  The logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.
-  For more reasons on why logic questions are useful, see here; http://textcaptcha.com/why}
+  s.summary     = %q{Spam protection for your models via logic questions and the textcaptcha.com API}
+  s.description = %q{Simple question/answer based spam protection for your Rails models.
+  You can define your own logic questions and/or fetch questions from the textcaptcha.com API.
+  The questions involve human logic and are tough for spam bots to crack.
+  For more reasons on why logic questions are a good idea visit; http://textcaptcha.com/why}
 
   s.extra_rdoc_files = ['README.rdoc', 'LICENSE']
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
   s.add_dependency('bcrypt-ruby', '~> 2.1.4')
 
   s.add_development_dependency('rails')
-  s.add_development_dependency('activerecord')
   s.add_development_dependency('bundler')
-  s.add_development_dependency('cover_me')
+  s.add_development_dependency('simplecov')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
   s.add_development_dependency('fakeweb')
