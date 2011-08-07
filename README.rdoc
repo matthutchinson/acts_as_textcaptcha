@@ -178,6 +178,7 @@ What do you need?
 == Links
 
 * {Documentation}[http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha]
+* {Travis CI Testing}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha]
 * {Demo}[http://textcaptcha.heroku.com]
 * {Code}[http://github.com/matthutchinson/acts_as_textcaptcha]
 * {Wiki}[http://wiki.github.com/matthutchinson/acts_as_textcaptcha/]
