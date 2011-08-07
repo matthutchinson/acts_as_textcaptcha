@@ -68,8 +68,8 @@ describe 'Textcaptcha' do
     end
 
     it 'should protect skip_textcaptcha attribute from mass assignment' do
-      @contact = Contact.new(:skip_textcaptcha => true)
-      @contact.skip_textcaptcha.must_equal nil
+      @note = Note.new(:skip_textcaptcha => true)
+      @note.skip_textcaptcha.must_equal nil
     end
   end
 
