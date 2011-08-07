@@ -60,6 +60,17 @@ describe 'Textcaptcha' do
       @contact.valid?.must_equal true
       @contact.errors[:spam_answer].must_be_empty
     end
+
+    it 'should allow validation to be skipped' do
+      @note.valid?.must_equal false
+      @note.skip_textcaptcha = true
+      @note.valid?.must_equal true
+    end
+
+    it 'should protect skip_textcaptcha attribute from mass assignment' do
+      @contact = Contact.new(:skip_textcaptcha => true)
+      @contact.skip_textcaptcha.must_equal nil
+    end
   end
 
   describe 'encryption' do

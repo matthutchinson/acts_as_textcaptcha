@@ -81,6 +81,15 @@ Finally, in your form view add the spam question and answer fields using the tex
 
 *NOTE:* If you'd rather NOT use this helper and prefer to write all your own view code, see the html produced from the textcaptcha_fields method in the gem source code.
 
+=== Toggling Textcaptcha
+
+You can toggle textcaptcha on/off for your models by overriding the `perform_textcaptcha?` method. If you overridde it to return false, no questions will be fetched from
+the web service and textcaptcha validation is not performed. Additionally the `textcaptcha_fields` form helper will render nothing.  This is useful for writing your own
+logic to disable spam protection for logged in users etc.
+
+For flexibility you can also use a `skip_textcaptcha` attribute (protected from mass-assignment) to skip the textcaptcha validation step only. This is helpful when you
+need to bypass spam protection after a question has been generated and `perform_textcaptcha?` is true.
+
 == More Configurations
 
 The gem can be configured for models individually (as shown above) or with a config/textcaptcha.yml file for the whole app.  A config must have a valid bcrypt_salt, and an api_key and/or an array of questions defined.
@@ -104,14 +113,14 @@ The gem can be configured for models individually (as shown above) or with a con
 
 The gem comes with a handy rake task to copy over a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] template to your Rails config directory.  It will also generate a random BCrypt Salt when you first run it.
 
-rake textcaptcha:config
+  rake textcaptcha:config
 
 *NOTE:* If you are on Rails 2.3.*, you'll have to add the following to your Rakefile to make this task available;
 
-`# load textcaptcha rake tasks
-Dir["#{Gem.searcher.find('acts_as_textcaptcha').full_gem_path}/lib/tasks/**/*.rake"].each { |ext| load ext } if Gem.searcher.find('acts_as_textcaptcha')`
+  # load textcaptcha rake tasks
+  Dir["#{Gem.searcher.find('acts_as_textcaptcha').full_gem_path}/lib/tasks/**/*.rake"].each { |ext| load ext } if Gem.searcher.find('acts_as_textcaptcha')
 
-=== Using _without_ the Text CAPTCHA web service
+=== Confguring _without_ the Text CAPTCHA web service
 
 To use only your own logic questions simply ommit the api_key from your config and define at least 1 logic question/answer.
 
@@ -149,8 +158,6 @@ The gem contains two parts, a module for your ActiveRecord models, and a single 
 A call to @model.textcaptcha in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend (or the standard XML::Parser in older versions of Rails).  A spam_question and an encrypted array of possible answers are assigned to the model.
 
 validate_textcaptcha is called on @model.validate and checks that the @model.spam_answer matches one of the possible answers (decrypted).  This validation is _only_ carried out on new records, i.e. never on edit, only on create.  All attempted spam answers are case-insensitive and have trailing/leading white-space removed.
-
-perform_textcaptcha? is a simple utility method (that can be overridden in your model)  It allows you to define whether the spam check should be carried out at all.  For example, to turn off spam checking for logged in users.
 
 If an error or timeout occurs in loading or parsing the API, ActsAsTextcaptcha will fall back to choose a random logic question defined in your options.  If the web service fails or no API key is specified AND no alternate questions are configured, the @model will not require spam checking and will pass as valid.
 

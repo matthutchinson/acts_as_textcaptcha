@@ -31,8 +31,16 @@ module ActsAsTextcaptcha
 
     def acts_as_textcaptcha(options = nil)
       cattr_accessor :textcaptcha_config
-      attr_accessor  :spam_question, :spam_answers, :spam_answer
-      attr_protected :spam_question if respond_to?(:accessible_attributes) && accessible_attributes.nil?
+      attr_accessor  :spam_question, :spam_answers, :spam_answer, :skip_textcaptcha
+
+      if respond_to?(:accessible_attributes)
+        if accessible_attributes.nil?
+          attr_protected :spam_question
+          attr_protected :skip_textcaptcha
+        else
+          attr_accessible :spam_answer, :spam_answers
+        end
+      end
 
       validate :validate_textcaptcha
 
@@ -52,7 +60,7 @@ module ActsAsTextcaptcha
 
     module InstanceMethods
 
-      # override this method to toggle textcaptcha spam checking, default is on (true)
+      # override this method to toggle textcaptcha spam checking altogether, default is on (true)
       def perform_textcaptcha?
         true
       end
@@ -121,7 +129,7 @@ module ActsAsTextcaptcha
       def validate_textcaptcha
         # only spam check on new/unsaved records (ie. no spam check on updates/edits)
         if !respond_to?('new_record?') || new_record?
-          if perform_textcaptcha? && !validate_spam_answer
+          if !skip_textcaptcha && perform_textcaptcha? && !validate_spam_answer
             errors.add(:spam_answer, :incorrect_answer, :message => "is incorrect, try another question instead")
             # regenerate question
             textcaptcha
