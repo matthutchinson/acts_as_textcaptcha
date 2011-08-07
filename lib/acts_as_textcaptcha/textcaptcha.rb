@@ -4,6 +4,7 @@ require 'digest/md5'
 
 # compatiblity when XmlMini is not available
 require 'xml' unless defined?(ActiveSupport::XmlMini)
+require 'rexml/document'
 
 # if using as a plugin in /vendor/plugins
 begin
