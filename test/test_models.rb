@@ -1,3 +1,4 @@
+# coding: utf-8
 # models for use in tests
 
 class Widget < ActiveRecord::Base
@@ -37,6 +38,6 @@ class Contact
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend  ActsAsTextcaptcha::Textcaptcha
-  acts_as_textcaptcha :questions   => [{ :question => 'one+1', :answers => '2,two' }],
+  acts_as_textcaptcha :questions   => [{ :question => 'one+1', :answers => "2,two,апельсин" }],
                       :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
 end

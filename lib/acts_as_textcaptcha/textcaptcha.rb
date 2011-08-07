@@ -149,7 +149,7 @@ module ActsAsTextcaptcha
       end
 
       def md5_answer(answer)
-        Digest::MD5.hexdigest(answer.to_s.strip.downcase)
+        Digest::MD5.hexdigest(answer.to_s.strip.mb_chars.downcase)
       end
     end
   end
