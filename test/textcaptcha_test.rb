@@ -178,6 +178,15 @@ describe 'Textcaptcha' do
       @comment.spam_question.must_equal 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
       @comment.spam_answers.must_equal 'ok'
     end
+
+    it 'should not generate any spam question or answer when user defined questions set incorrectly' do
+      @comment = MovieReview.new
+
+      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
+      @comment.textcaptcha
+      @comment.spam_question.must_equal 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
+      @comment.spam_answers.must_equal 'ok'
+    end
   end
 
   describe 'configuration' do

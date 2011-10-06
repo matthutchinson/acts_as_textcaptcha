@@ -92,12 +92,16 @@ module ActsAsTextcaptcha
             end
           end
 
-          # fall back to textcaptcha_config questions
+          # fall back to textcaptcha_config questions if they are configured correctly
           if textcaptcha_config[:questions]
-            random_question    = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
-            self.spam_question = random_question[:question]
-            self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
-          else
+            random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
+            if random_question[:question] && random_question[:answers]
+              self.spam_question = random_question[:question]
+              self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
+            end
+          end
+
+          unless self.spam_question && self.spam_answers
             self.spam_question = 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
             self.spam_answers  = 'ok'
           end

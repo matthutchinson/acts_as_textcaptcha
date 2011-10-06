@@ -12,6 +12,10 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :name
   end
 
+  create_table :movie_reviews, :force => true do |t|
+    t.string :name
+  end
+
   create_table :notes, :force => true do |t|
     t.string :name
   end
