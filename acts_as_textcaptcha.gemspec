@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_dependency('bcrypt-ruby', '~> 2.1.4')
+  s.add_dependency('bcrypt-ruby')
 
   s.add_development_dependency('rails')
   s.add_development_dependency('bundler')
