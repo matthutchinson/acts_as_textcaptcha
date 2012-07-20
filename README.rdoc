@@ -1,6 +1,7 @@
 = ActAsTextcaptcha
 
-{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha] - thanks to {Travis CI}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha]
+{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
+
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own questions and answers instead of using this API (or as a fall back in the unlikely event of the web service being unavailable)
 
