@@ -1,6 +1,6 @@
 = ActAsTextcaptcha
 
-{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/badge.png" align="absmiddle" alt="Code Climate Stats" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
+{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[https://travis-ci.org/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/badge.png" align="absmiddle" alt="Code Climate Stats" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own questions and answers instead of using this API (or as a fall back in the unlikely event of the web service being unavailable)
 
@@ -144,6 +144,10 @@ Recent versions of the gem use standard Rails I18n translation for the error mes
           spam_answer: "Spam answer"
 
 *NOTE:* currently the Text CAPTCHA API web service only offers logic questions in English.
+
+== Without Rails or ActiveRecord
+
+Although this gem has been built with Rails in mind, is entirely possible to use it without ActiveRecord, or Rails.  For an example, take a look at the {Contact}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44] model used in the test suite {here}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44].
 
 == Testing and docs
 
