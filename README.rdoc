@@ -6,7 +6,7 @@ ActsAsTextcaptcha provides spam protection for your Rails models using logic que
 
 The gem makes use of {bcrypt}[http://bcrypt-ruby.rubyforge.org/] encryption when comparing a guess with the correct answer(s).  This gem is actively maintained, has good test coverage and is compatible with Rails 2.3.* and 3.  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues].
 
-Text CAPTCHA's logic questions are aimed at a child's age of 7, so can be solved easily by all but the most cognitively impaired users. As they involve human logic, such questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
+Text CAPTCHA's logic questions are aimed at a child's age of 7, so they can be solved easily by even the most cognitively impaired users. As they involve human logic, questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
 
 == Demo
 
@@ -14,7 +14,7 @@ Here's a {fully working demo on heroku}[http://textcaptcha.heroku.com]!
 
 == Installing
 
-=== Rails 3
+=== Rails
 
 Just add the following to your Gemfile, then `bundle install`;
 
@@ -26,13 +26,7 @@ Add this to your environment.rb file, then `gem install acts_as_textcaptcha`;
 
   config.gem 'acts_as_textcaptcha'
 
-=== As a plugin
-
-Or install as a plugin with;
-
-  rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
-  OR
-  script/plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
+=== Or as a plugin
 
 If you do decide to install this as a Rails plugin, you'll have to manually include the bcrypt-ruby gem in your Gemfile or environment config. Like so;
 
@@ -40,15 +34,21 @@ If you do decide to install this as a Rails plugin, you'll have to manually incl
   OR
   config.gem 'bcrypt-ruby', :lib => 'bcrypt'
 
+Then install the plugin with rails or script/rails as follows;
+
+  rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
+  OR
+  script/plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
+
 == Setting up
 
 *NOTE:* The procedure for configuring your app *changed significantly* from v2.* to v3.*  If you are having problems please carefully check the instructions below.
 
-First {grab an API key for your website}[http://textcaptcha.com/api] then open Rails console (or any irb session) and generate a new BCrypt salt by typing;
+First {grab an API key for your website}[http://textcaptcha.com/api] then open you Rails console (or any irb session) and generate a new BCrypt salt by typing;
 
   require 'bcrypt';BCrypt::Engine.generate_salt
 
-Next configure which models are to be spam protected like so;
+Next add the following code to models you'd like to spam protect;
 
   class Comment < ActiveRecord::Base
     # (this is the most basic way to configure the gem, with an API key and Salt only)
@@ -81,7 +81,7 @@ Finally, in your form view add the spam question and answer fields using the tex
     </div>
   <% end %>
 
-*NOTE:* If you'd rather NOT use this helper and prefer to write all your own view code, see the html produced from the textcaptcha_fields method in the gem source code.
+*NOTE:* If you'd rather NOT use this helper and prefer to write your own view code, see the html produced from the textcaptcha_fields method in the source code.
 
 === Toggling Textcaptcha
 
@@ -173,8 +173,8 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 What do you need?
 
-* {Rails}[http://github.com/rails/rails] >= 2.3.2  (including Rails 3)
-* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE and Ruby 1.9.2)
+* {Rails}[http://github.com/rails/rails] >= 2.3.2  (including Rails 3 and 4)
+* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, RBX, 1.9.2, 1.9.3, 2.0.0)
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt spam answers)
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
 * {MiniTest}[https://rubygems.org/gems/minitest] (_optional_ if you want to run the tests, built into Ruby 1.9)
@@ -199,14 +199,13 @@ What do you need?
 == Todo
 
 * Achieve 100% test coverage, currently at 93%
+* Remove support for Rails 2.3.* in a future gem release (clean code and tests for this)
 
 == Usage
 
-This gem is used in a number of production websites and apps. It was originally extracted from code developed for {Bugle}[http://bugleblogs.com]
+This gem is used in a number of production websites and apps. It was originally extracted from code developed for {Bugle}[http://bugleblogs.com].  If you're happily using acts_as_textcaptcha in production, let me know and I'll add you to this list!
 
 * {matthewhutchinson.net}[http://matthewhutchinson.net]
 * {pmFAQtory.com}[http://pmfaqtory.com]
 * {The FAQtory}[http://faqtory.heroku.com]
 * {DPT Watch, San Francisco}[http://www.dptwatch.com]
-
-(if you're happily using acts_as_textcaptcha in production, let me know and I'll add you to this list)
