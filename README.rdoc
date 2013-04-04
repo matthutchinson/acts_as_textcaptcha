@@ -4,7 +4,7 @@
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own questions and answers instead of using this API (or as a fall back in the unlikely event of the web service being unavailable)
 
-The gem makes use of {bcrypt}[http://bcrypt-ruby.rubyforge.org/] encryption when comparing a guess with the correct answer(s).  This gem is actively maintained, has good test coverage and is compatible with Rails 2.3.* and 3.  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues].
+The gem makes use of {bcrypt}[http://bcrypt-ruby.rubyforge.org/] encryption when comparing a guess with the correct answer(s).  This gem is actively maintained, has good test coverage and is compatible with Rails 2.3.*, Rails 3 and 4.  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues].
 
 Text CAPTCHA's logic questions are aimed at a child's age of 7, so they can be solved easily by even the most cognitively impaired users. As they involve human logic, questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
 
