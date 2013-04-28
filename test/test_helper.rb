@@ -16,8 +16,7 @@ end
 require 'minitest/autorun'
 require 'fakeweb'
 
-require 'active_record'
-require 'rails'
+require 'rails/all'
 
 require 'acts_as_textcaptcha'
 require './test/test_models'

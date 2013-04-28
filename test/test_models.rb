@@ -49,3 +49,12 @@ class Contact
   acts_as_textcaptcha :questions   => [{ :question => 'one+1', :answers => "2,two,апельсин" }],
                       :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
 end
+
+# ActiveRecord model using the strong parameters gem
+require 'strong_parameters'
+
+class StrongWidget < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+  acts_as_textcaptcha 'questions'   => [{ 'question' => '1+1', 'answers' => '2,two' }],
+                      'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe'
+end
