@@ -196,6 +196,19 @@ What do you need?
 * {Text CAPTCHA}[http://textcaptcha.com] API and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
 
+
+== Gem Signing
+
+You can use the HighSecurity policy to install this gem by adding my public certificate as a trusted source. To do so, run;
+
+`gem cert --add <(curl -Ls https://gist.github.com/matthutchinson/5697493/raw/13c2c9edf52cbf72ef399cd4e3b9044ac700abf9/gem-public_cert.pem)`
+
+After doing this, you should be able to install the gem with;
+
+    gem install acts_as_textcaptcha -P HighSecurity
+    # or with Bundler, specify the HighSecurity policy
+    bundle install --trust-policy HighSecurity
+
 == Todo
 
 * Achieve 100% test coverage, currently at 93%
