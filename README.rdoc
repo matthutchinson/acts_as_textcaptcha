@@ -206,7 +206,7 @@ You can use the HighSecurity policy to install this gem by adding my public cert
 After doing this, you should be able to install the gem with;
 
     gem install acts_as_textcaptcha -P HighSecurity
-    # or with Bundler, specify the HighSecurity policy
+    # or with Bundler, specify the HighSecurity trust policy
     bundle install --trust-policy HighSecurity
 
 == Todo
