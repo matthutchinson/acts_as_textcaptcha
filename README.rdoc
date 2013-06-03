@@ -201,7 +201,7 @@ What do you need?
 
 You can use the HighSecurity policy to install this gem by adding my public certificate as a trusted source. To do so, run;
 
-`gem cert --add <(curl -Ls https://gist.github.com/matthutchinson/5697493/raw/13c2c9edf52cbf72ef399cd4e3b9044ac700abf9/gem-public_cert.pem)`
+    gem cert --add <(curl -Ls https://gist.github.com/matthutchinson/5697493/raw/13c2c9edf52cbf72ef399cd4e3b9044ac700abf9/gem-public_cert.pem)
 
 After doing this, you should be able to install the gem with;
 
