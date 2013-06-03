@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   For more reasons on why logic questions are a good idea visit; http://textcaptcha.com/why}
 
   s.extra_rdoc_files = ['README.rdoc', 'LICENSE']
+  s.signing_key = '/Users/matt/.gem/gem-private_key.pem'
+  s.cert_chain = %w[/Users/matt/.gem/gem-public_cert.pem]
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
