@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
 
   s.extra_rdoc_files = ['README.rdoc', 'LICENSE']
 
-  s.signing_key = '/Users/matt/.gem/gem-private_key.pem'
   s.cert_chain  = ['gem-public_cert.pem']
 
   s.files         = `git ls-files`.split("\n")
