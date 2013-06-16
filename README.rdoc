@@ -46,7 +46,7 @@ Then install the plugin with rails or script/rails as follows;
 
 First {grab an API key for your website}[http://textcaptcha.com/api] then open you Rails console (or any irb session) and generate a new BCrypt salt by typing;
 
-  require 'bcrypt';BCrypt::Engine.generate_salt
+  require 'bcrypt'; BCrypt::Engine.generate_salt
 
 Next add the following code to models you'd like to spam protect;
 
