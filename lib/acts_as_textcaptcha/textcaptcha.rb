@@ -35,10 +35,10 @@ module ActsAsTextcaptcha
       attr_accessor  :spam_question, :spam_answers, :spam_answer, :skip_textcaptcha
 
       if respond_to?(:accessible_attributes)
-        if accessible_attributes.nil?
+        if accessible_attributes.nil? && respond_to?(:attr_protected)
           attr_protected :spam_question
           attr_protected :skip_textcaptcha
-        else
+        elsif respond_to?(:attr_accessible)
           attr_accessible :spam_answer, :spam_answers
         end
       end

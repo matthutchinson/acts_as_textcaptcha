@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
 
   s.extra_rdoc_files = ['README.rdoc', 'LICENSE']
 
+  s.cert_chain  = ['gem-public_cert.pem']
+
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
   s.require_paths = ["lib"]
@@ -30,4 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
   s.add_development_dependency('fakeweb')
+  s.add_development_dependency('strong_parameters')
 end
