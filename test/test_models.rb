@@ -14,10 +14,10 @@ end
 
 class Review < ActiveRecord::Base
   # inline options with all possible options
-  acts_as_textcaptcha 'api_key'     => '8u5ixtdnq9csc84cok0owswgo',
-                      'bcrypt_salt' => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
-                      'bcrypt_cost' => '3',
-                      'questions'   => [{ 'question' => 'The green hat is what color?', 'answers' => 'green' }]
+  acts_as_textcaptcha :api_key     => '8u5ixtdnq9csc84cok0owswgo',
+                      :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
+                      :bcrypt_cost => '3',
+                      :questions   => [{ 'question' => 'The green hat is what color?', 'answers' => 'green' }]
 end
 
 class MovieReview < ActiveRecord::Base
