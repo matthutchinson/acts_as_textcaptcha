@@ -26,7 +26,7 @@ Add this to your environment.rb file, then `gem install acts_as_textcaptcha`;
 
   config.gem 'acts_as_textcaptcha'
 
-=== Or as a plugin
+=== Or as a plugin (pre Rails 4)
 
 If you do decide to install this as a Rails plugin, you'll have to manually include the bcrypt-ruby gem in your Gemfile or environment config. Like so;
 
