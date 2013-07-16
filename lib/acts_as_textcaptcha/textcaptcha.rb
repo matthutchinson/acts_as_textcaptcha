@@ -78,7 +78,11 @@ module ActsAsTextcaptcha
           if textcaptcha_config[:api_key]
             begin
               uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI # URI.parse is deprecated in 1.9.2
-              response   = Net::HTTP.get(uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}"))
+              url = uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}")
+              http = Net::HTTP.new(url.host, url.port)
+              http.open_timeout = textcaptcha_config[:open_timeout] if textcaptcha_config[:open_timeout]
+              http.read_timeout = textcaptcha_config[:read_timeout] if textcaptcha_config[:read_timeout]
+              response = Net::HTTP.get(url.path)
               if response.empty?
                 raise Textcaptcha::BadResponse
               else
