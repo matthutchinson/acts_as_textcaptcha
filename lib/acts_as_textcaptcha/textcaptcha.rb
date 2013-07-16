@@ -82,11 +82,11 @@ module ActsAsTextcaptcha
               http = Net::HTTP.new(url.host, url.port)
               http.open_timeout = textcaptcha_config[:open_timeout] if textcaptcha_config[:open_timeout]
               http.read_timeout = textcaptcha_config[:read_timeout] if textcaptcha_config[:read_timeout]
-              response = Net::HTTP.get(url.path)
-              if response.empty?
+              response = http.get(url.path)
+              if response.body.empty?
                 raise Textcaptcha::BadResponse
               else
-                parse_textcaptcha_xml(response)
+                parse_textcaptcha_xml(response.body)
               end
               return
             rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
