@@ -67,7 +67,7 @@ module ActsAsTextcaptcha
       end
 
       # generate textcaptcha question and encrypt possible spam_answers
-      def textcaptcha
+      def textcaptcha(use_api = true)
         return if !perform_textcaptcha? || validate_spam_answer
         self.spam_answer = nil
 
@@ -75,7 +75,7 @@ module ActsAsTextcaptcha
           unless BCrypt::Engine.valid_salt?(textcaptcha_config[:bcrypt_salt])
             raise BCrypt::Errors::InvalidSalt.new "you must specify a valid BCrypt Salt in your acts_as_textcaptcha options, get a salt from irb/console with\nrequire 'bcrypt';BCrypt::Engine.generate_salt\n\n(Please check Gem README for more details)\n"
           end
-          if textcaptcha_config[:api_key]
+          if textcaptcha_config[:api_key] && use_api
             begin
               uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI # URI.parse is deprecated in 1.9.2
               url = uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}")
