@@ -4,6 +4,9 @@ development: &common_settings
                                                # generate another with; require 'bcrypt'; BCrypt::Engine.generate_salt
   bcrypt_cost: 10 # optional (default is 10) must be > 4 (a larger number means slower, but better encryption)
                   # see http://bcrypt-ruby.rubyforge.org for more information on bcrypt
+  http_open_timeout: 10 # Number of seconds to wait for the connection to open
+  http_read_timeout: 10 # Number of seconds to wait for one block to be read
+
   questions:
       - question: 'Is ice hot or cold?'
         answers: 'cold'
