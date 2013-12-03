@@ -174,7 +174,7 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 What do you need?
 
 * {Rails}[http://github.com/rails/rails] >= 2.3.2  (including Rails 3 and 4)
-* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, RBX, 1.9.2, 1.9.3, 2.0.0)
+* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, 1.9.2, 1.9.3, 2.0.0)
 * {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt spam answers)
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
 * {MiniTest}[https://rubygems.org/gems/minitest] (_optional_ if you want to run the tests, built into Ruby 1.9)
