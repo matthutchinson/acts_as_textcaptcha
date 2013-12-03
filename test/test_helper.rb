@@ -13,6 +13,9 @@ if ENV['COVERAGE']
   end
 end
 
+require 'coveralls'
+Coveralls.wear!
+
 require 'minitest/autorun'
 require 'fakeweb'
 

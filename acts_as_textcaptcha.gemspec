@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency('bcrypt-ruby', '~> 3.0.1')
 
+  # lock mime-types to pre 2.0 since we want to support 1.8.7 in tests
+  s.add_development_dependency('mime-types', '~> 1.25.1')
   s.add_development_dependency('rails')
   s.add_development_dependency('bundler')
   s.add_development_dependency('minitest')
