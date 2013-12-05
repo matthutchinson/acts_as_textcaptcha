@@ -31,7 +31,7 @@ module ActsAsTextcaptcha
     class BadResponse < StandardError; end;
 
     def acts_as_textcaptcha(options = nil)
-      cattr_accessor :textcaptcha_config
+      cattr_accessor :textcaptcha_config,:questions
       attr_accessor  :spam_question, :spam_answers, :spam_answer, :skip_textcaptcha
 
       if respond_to?(:accessible_attributes)
@@ -49,7 +49,9 @@ module ActsAsTextcaptcha
         self.textcaptcha_config = options.symbolize_keys!
       else
         begin
-          self.textcaptcha_config = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env].symbolize_keys!
+          settings = YAML.load(File.read("#{Rails.root ? Rails.root.to_s : '.'}/config/textcaptcha.yml"))[Rails.env].symbolize_keys!
+          self.questions = settings.delete(:questions)
+          self.textcaptcha_config = settings
         rescue
           raise 'could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file'
         end
@@ -67,7 +69,7 @@ module ActsAsTextcaptcha
       end
 
       # generate textcaptcha question and encrypt possible spam_answers
-      def textcaptcha(use_api = true)
+      def textcaptcha(use_api = true,user_locale = "en")
         return if !perform_textcaptcha? || validate_spam_answer
         self.spam_answer = nil
 
@@ -97,8 +99,8 @@ module ActsAsTextcaptcha
           end
 
           # fall back to textcaptcha_config questions if they are configured correctly
-          if textcaptcha_config[:questions]
-            random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
+          if questions
+            random_question = questions[user_locale][rand(questions[user_locale].size)].symbolize_keys!
             if random_question[:question] && random_question[:answers]
               self.spam_question = random_question[:question]
               self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
