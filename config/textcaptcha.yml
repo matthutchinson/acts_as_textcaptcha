@@ -8,6 +8,7 @@ development: &common_settings
   # http_open_timeout: 10 # Number of seconds to wait for the connection to open 
 
   questions:
+    en:
       - question: 'Is ice hot or cold?'
         answers: 'cold'
       - question: 'what color is an orange?'
@@ -28,6 +29,11 @@ development: &common_settings
         answers: 'blue'
       - question: 'what is 16 plus 4?'
         answers: '20,twenty'
+    es:
+      - question: 'Es frio o caliente?'
+        answers: 'Frio'
+      - question: 'De qué color es una naranja?'
+        answers: 'Naranja'
 
 test:
   <<: *common_settings
