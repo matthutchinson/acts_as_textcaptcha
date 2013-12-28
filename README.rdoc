@@ -4,7 +4,7 @@
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own questions and answers instead of using this API (or as a fall back in the unlikely event of the web service being unavailable)
 
-The gem makes use of {bcrypt}[http://bcrypt-ruby.rubyforge.org/] encryption when comparing a guess with the correct answer(s).  This gem is actively maintained, has good test coverage and is compatible with Rails 2.3.*, Rails 3 and 4.  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues].
+This gem is actively maintained, has good test coverage and is compatible with Rails 2.3.*, Rails 3 and 4.  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues].
 
 Text CAPTCHA's logic questions are aimed at a child's age of 7, so they can be solved easily by even the most cognitively impaired users. As they involve human logic, questions cannot be solved by a robot.  There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
 
@@ -28,13 +28,7 @@ Add this to your environment.rb file, then `gem install acts_as_textcaptcha`;
 
 === Or as a plugin (pre Rails 4)
 
-If you do decide to install this as a Rails plugin, you'll have to manually include the bcrypt-ruby gem in your Gemfile or environment config. Like so;
-
-  gem 'bcrypt-ruby', :require => 'bcrypt'
-  OR
-  config.gem 'bcrypt-ruby', :lib => 'bcrypt'
-
-Then install the plugin with rails or script/rails as follows;
+Install with rails or script/rails as follows;
 
   rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
   OR
@@ -44,16 +38,11 @@ Then install the plugin with rails or script/rails as follows;
 
 *NOTE:* The procedure for configuring your app *changed significantly* from v2.* to v3.*  If you are having problems please carefully check the instructions below.
 
-First {grab an API key for your website}[http://textcaptcha.com/api] then open you Rails console (or any irb session) and generate a new BCrypt salt by typing;
-
-  require 'bcrypt'; BCrypt::Engine.generate_salt
-
-Next add the following code to models you'd like to spam protect;
+First {grab an API key for your website}[http://textcaptcha.com/api]. Next add the following code to models you'd like to spam protect;
 
   class Comment < ActiveRecord::Base
-    # (this is the most basic way to configure the gem, with an API key and Salt only)
-    acts_as_textcaptcha :api_key     => 'PASTE_YOUR_TEXTCAPTCHA_API_KEY_HERE',
-                        :bcrypt_salt => 'PASTE_YOUR_BCRYPT_SALT_HERE'
+    # (this is the simplest way to configure the gem, with an API key only)
+    acts_as_textcaptcha :api_key => 'PASTE_YOUR_TEXTCAPTCHA_API_KEY_HERE'
   end
 
 Next in your controller's *new* action you'll want to generate the logic question for your model, like so;
@@ -94,26 +83,22 @@ need to bypass spam protection after a question has been generated and `perform_
 
 == More Configurations
 
-The gem can be configured for models individually (as shown above) or with a config/textcaptcha.yml file for the whole app.  A config must have a valid bcrypt_salt, and an api_key and/or an array of questions defined.
+The gem can be configured for models individually (as shown above) or with a config/textcaptcha.yml file for the whole app. The config file must have an api_key defined and optional array of questions.
 
 === Hash
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha :api_key     => 'YOUR_TEXTCAPTCHA_API_KEY',
-                        :bcrypt_salt => 'YOUR_BCRYPT_SALT',
-                        :bcrypt_cost => '3',
                         :questions   => [{ 'question' => '1+1', 'answers' => '2,two' },
                                          { 'question' => 'The green hat is what color?', 'answers' => 'green' }]
   end
 
 * *api_key* (get from http://textcaptcha.com/api)
-* *bcrypt_salt* - used to encrypt the valid possible answers
-* *bcrypt_cost* - an optional logarithmic number which determines how computationally expensive the bcrypt hash will be (a cost of 4 is twice as much work as a cost of 3 - the default is 10)
 * *questions* - an array of question and answer hashes (see above) A random question from this array will be asked if the web service fails OR if no API key has been set.  Multiple answers to the same question are comma separated (e.g. 2,two) so don't use commas in your answers!
 
 === YAML config
 
-The gem comes with a handy rake task to copy over a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] template to your Rails config directory.  It will also generate a random BCrypt Salt when you first run it.
+The gem comes with a handy rake task to copy over a {textcaptcha.yml}[http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml] template to your Rails config directory.
 
   rake textcaptcha:config
 
@@ -175,7 +160,6 @@ What do you need?
 
 * {Rails}[http://github.com/rails/rails] >= 2.3.2  (including Rails 3 and 4)
 * {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, 1.9.2, 1.9.3, 2.0.0)
-* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] gem (to securely encrypt spam answers)
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
 * {MiniTest}[https://rubygems.org/gems/minitest] (_optional_ if you want to run the tests, built into Ruby 1.9)
 * {SimpleCov}[https://rubygems.org/gems/simplecov] (_optional_ if you want to run the tests with code coverage reporting)
@@ -194,8 +178,6 @@ What do you need?
 
 * {ActsAsTextcaptcha}[http://github.com/matthutchinson/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] API and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
-* {bcrypt-ruby}[http://bcrypt-ruby.rubyforge.org/] Gem by {Coda Hale}[http://codahale.com]
-
 
 == Gem Signing
 

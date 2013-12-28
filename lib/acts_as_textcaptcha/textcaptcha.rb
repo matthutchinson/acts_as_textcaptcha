@@ -6,13 +6,6 @@ require 'digest/md5'
 require 'xml' unless defined?(ActiveSupport::XmlMini)
 require 'rexml/document'
 
-# if using as a plugin in /vendor/plugins
-begin
-  require 'bcrypt'
-rescue LoadError => e
-  raise "ActsAsTextcaptcha >> please gem install bcrypt-ruby and add `gem \"bcrypt-ruby\"` to your Gemfile (or environment config) #{e}"
-end
-
 module ActsAsTextcaptcha
 
   # dont use Railtie if Rails < 3
@@ -72,9 +65,6 @@ module ActsAsTextcaptcha
         self.spam_answer = nil
 
         if textcaptcha_config
-          unless BCrypt::Engine.valid_salt?(textcaptcha_config[:bcrypt_salt])
-            raise BCrypt::Errors::InvalidSalt.new "you must specify a valid BCrypt Salt in your acts_as_textcaptcha options, get a salt from irb/console with\nrequire 'bcrypt';BCrypt::Engine.generate_salt\n\n(Please check Gem README for more details)\n"
-          end
           if textcaptcha_config[:api_key]
             begin
               uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI # URI.parse is deprecated in 1.9.2
@@ -101,7 +91,7 @@ module ActsAsTextcaptcha
             random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
             if random_question[:question] && random_question[:answers]
               self.spam_question = random_question[:question]
-              self.spam_answers  = encrypt_answers(random_question[:answers].split(',').map!{ |answer| md5_answer(answer) })
+              self.spam_answers  = random_question[:answers].split(',').map!{ |answer| md5_answer(answer) }
             end
           end
 
@@ -120,19 +110,19 @@ module ActsAsTextcaptcha
           parsed_xml = ActiveSupport::XmlMini.parse(xml)['captcha']
           self.spam_question = parsed_xml['question']['__content__']
           if parsed_xml['answer'].is_a?(Array)
-            self.spam_answers = encrypt_answers(parsed_xml['answer'].collect { |a| a['__content__'] })
+            self.spam_answers = parsed_xml['answer'].collect { |a| a['__content__'] }
           else
-            self.spam_answers = encrypt_answers([parsed_xml['answer']['__content__']])
+            self.spam_answers = [parsed_xml['answer']['__content__']]
           end
         else
           parsed_xml         = XML::Parser.string(xml).parse
           self.spam_question = parsed_xml.find('/captcha/question')[0].inner_xml
-          self.spam_answers  = encrypt_answers(parsed_xml.find('/captcha/answer').map(&:inner_xml))
+          self.spam_answers  = parsed_xml.find('/captcha/answer').map(&:inner_xml)
         end
       end
 
       def validate_spam_answer
-        (spam_answer && spam_answers) ? spam_answers.split('-').include?(encrypt_answer(md5_answer(spam_answer))) : false
+        (spam_answer && spam_answers) ? spam_answers.include?(md5_answer(spam_answer)) : false
       end
 
       def validate_textcaptcha
@@ -146,14 +136,6 @@ module ActsAsTextcaptcha
           end
         end
         true
-      end
-
-      def encrypt_answers(answers)
-        answers.map { |answer| encrypt_answer(answer) }.join('-')
-      end
-
-      def encrypt_answer(answer)
-        BCrypt::Engine.hash_secret(answer, textcaptcha_config[:bcrypt_salt], (textcaptcha_config[:bcrypt_cost].to_i || 10))
       end
 
       def md5_answer(answer)

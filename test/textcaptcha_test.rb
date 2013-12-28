@@ -92,27 +92,6 @@ describe 'Textcaptcha' do
     end
   end
 
-  describe 'encryption' do
-
-    before(:each) do
-      @note = Note.new
-    end
-
-    it 'should encrypt spam_answers (joined by - seperator) MD5 digested and using BCrypt engine with salt' do
-      @note.spam_answers.must_be_nil
-      @note.textcaptcha
-      encrypted_answers = [2,' TwO '].collect { |answer| BCrypt::Engine.hash_secret(Digest::MD5.hexdigest(answer.to_s.strip.downcase), '$2a$10$j0bmycH.SVfD1b5mpEGPpe', 1) }.join('-')
-      @note.spam_answers.must_equal('$2a$10$j0bmycH.SVfD1b5mpEGPpePFe1wBxOn7Brr9lMuLRxv6lg4ZYjJ22-$2a$10$j0bmycH.SVfD1b5mpEGPpe8v5mqqpDaExuS/hZu8Xkq8krYL/T8P.')
-      @note.spam_answers.must_equal(encrypted_answers)
-    end
-
-    it 'should raise error if bcyrpt salt is invalid' do
-      @note.textcaptcha_config[:bcrypt_salt] = 'bad salt'
-      proc { @note.textcaptcha }.must_raise BCrypt::Errors::InvalidSalt
-      @note.textcaptcha_config[:bcrypt_salt] ='$2a$10$j0bmycH.SVfD1b5mpEGPpe'
-    end
-  end
-
   describe 'textcaptcha API' do
 
     after(:each) do
@@ -140,8 +119,8 @@ describe 'Textcaptcha' do
 
       @review.textcaptcha
       @review.spam_question.must_equal(question)
-      @review.spam_answers.must_equal('$2a$10$j0bmycH.SVfD1b5mpEGPpecvhlumIBvWXI4HQWk0xa74DebZDx772')
-      @review.spam_answers.split('-').length.must_equal(1)
+      @review.spam_answers.must_equal(['f6f7fec07f372b7bd5eb196bbca0f3f4'])
+      @review.spam_answers.length.must_equal(1)
     end
 
     it 'should parse multiple answers from XML response' do
@@ -152,7 +131,7 @@ describe 'Textcaptcha' do
 
       @review.textcaptcha
       @review.spam_question.must_equal(question)
-      @review.spam_answers.split('-').length.must_equal(3)
+      @review.spam_answers.length.must_equal(3)
     end
 
     describe 'service is unavailable' do
@@ -211,16 +190,12 @@ describe 'Textcaptcha' do
   describe 'configuration' do
 
     it 'should be configured with inline hash' do
-      Review.textcaptcha_config.must_equal({ :api_key     => '8u5ixtdnq9csc84cok0owswgo',
-                                             :bcrypt_salt => '$2a$10$j0bmycH.SVfD1b5mpEGPpe',
-                                             :bcrypt_cost => '3',
-                                             :questions   => [{ :question => 'The green hat is what color?', :answers => 'green' }]})
+      Review.textcaptcha_config.must_equal({ :api_key   => '8u5ixtdnq9csc84cok0owswgo',
+                                             :questions => [{ :question => 'The green hat is what color?', :answers => 'green' }]})
     end
 
     it 'should be configured with textcaptcha.yml' do
-      Widget.textcaptcha_config[:api_key].must_equal          '6eh1co0j12mi2ogcoggkkok4o'
-      Widget.textcaptcha_config[:bcrypt_salt].must_equal      '$2a$10$qhSefD6gKtmq6M0AzXk4CO'
-      Widget.textcaptcha_config[:bcrypt_cost].must_equal      1
+      Widget.textcaptcha_config[:api_key].must_equal '6eh1co0j12mi2ogcoggkkok4o'
       Widget.textcaptcha_config[:questions].length.must_equal 10
     end
   end

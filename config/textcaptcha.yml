@@ -1,11 +1,7 @@
 development: &common_settings
   api_key: PASTE_YOUR_TEXTCAPCHA_API_KEY_HERE  # grab one from http://textcaptcha.com/api
-  bcrypt_salt: RAKE_GENERATED_SALT_PLACEHOLDER   # must be a valid bcrypt salt, we've generated this one for you randomly
-                                               # generate another with; require 'bcrypt'; BCrypt::Engine.generate_salt
-  bcrypt_cost: 10 # optional (default is 10) must be > 4 (a larger number means slower, but better encryption)
-                  # see http://bcrypt-ruby.rubyforge.org for more information on bcrypt
   http_read_timeout: 60 # Number of seconds to wait for one block to be read from http://textcaptcha.com/api
-  # http_open_timeout: 10 # Number of seconds to wait for the connection to open 
+  # http_open_timeout: 10 # Number of seconds to wait for the connection to open
 
   questions:
       - question: 'Is ice hot or cold?'
@@ -31,9 +27,7 @@ development: &common_settings
 
 test:
   <<: *common_settings
-  api_key: 6eh1co0j12mi2ogcoggkkok4o          # for gem test purposes only
-  bcrypt_salt: $2a$10$qhSefD6gKtmq6M0AzXk4CO  # for gem test purposes only
-  bcrypt_cost: 1
+  api_key: 6eh1co0j12mi2ogcoggkkok4o
 
 production:
   <<: *common_settings
