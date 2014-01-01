@@ -1,6 +1,6 @@
 == ActAsTextcaptcha
 
-{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[https://travis-ci.org/matthutchinson/acts_as_textcaptcha] {<img src="https://coveralls.io/repos/matthutchinson/acts_as_textcaptcha/badge.png" alt="Coverage Status" align="absmiddle" />}[https://coveralls.io/r/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/badge.png" align="absmiddle" alt="Code Climate Stats" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
+{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[https://travis-ci.org/matthutchinson/acts_as_textcaptcha] {<img src="https://coveralls.io/repos/matthutchinson/acts_as_textcaptcha/badge.png" alt="Coverage Status" align="absmiddle" />}[https://coveralls.io/r/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha.png" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own text captcha questions (instead, or as a fall back in the event of any remote API issues).
 
@@ -78,15 +78,15 @@ Due to a relatively {large hole}[https://github.com/matthutchinson/acts_as_textc
 === Toggling Textcaptcha
 
 You can toggle textcaptcha on/off for your models by overriding the `perform_textcaptcha?` method. If it returns false, no questions will be fetched from
-the web service and textcaptcha validation is disabled. 
+the web service and textcaptcha validation is disabled.
 
-This is useful for writing your own custom logic for toggling spam protection on/off e.g. for logged in users. By default the `perform_textcaptcha?` method {checks if the form object is a new (unsaved) record}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha.rb#L54].  
+This is useful for writing your own custom logic for toggling spam protection on/off e.g. for logged in users. By default the `perform_textcaptcha?` method {checks if the form object is a new (unsaved) record}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha.rb#L54].
 
 So out of the box, spam protection is only enabled for creating new records (not updating).  Here is a typical example showing how to overwrite the `perform_textcaptcha?` method, while maintaining the new record check.
 
   class Comment < ActiveRecord::Base
     acts_as_textcaptcha :api_key => 'YOUR_TEXTCAPTCHA_API_KEY'
-    
+
     def perform_textcaptcha?
       super && user.admin?
     end
