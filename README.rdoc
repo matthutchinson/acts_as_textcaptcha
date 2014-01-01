@@ -152,7 +152,7 @@ The gem uses the standard Rails I18n translation approach for error messages, wi
 
 Although this gem has been built with Rails in mind, is entirely possible to use it without ActiveRecord, or Rails.  As an example, take a look at the {Contact}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44] model used in the test suite {here}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44].
 
-Please note that the built-in {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb] class directly wraps the `Rails.cache`.  An alternative  TextcaptchaCache implementation will be nessecary if Rails.cache is not available.
+Please note that the built-in {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb] class directly wraps the {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html].  An alternative  TextcaptchaCache implementation will be nessecary if Rails.cache is not available.
 
 == Testing and docs
 
@@ -166,7 +166,7 @@ In development you can run the tests and rdoc tasks like so;
 
 The gem contains two parts, a module for your ActiveRecord models, and a single view helper method.  The ActiveRecord module makes use of two futher classes, {TextcaptchaApi}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_api.rb] and {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb].
 
-A call to @model.textcaptcha in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend.  A textcaptcha_question and a random cache key is assigned to the record.  An array of possible answers is stored in the TextcaptchaCache with this random key.  The cached answers have (by default) a 10 minute TTL in your cache. If your forms take more than 10 minutes to be completed you can adjust this value setting the `cache_expiry_minutes` option.  Internally TextcaptchaCache wraps Rails.cache and all cache keys are namespaced.
+A call to @model.textcaptcha in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend.  A textcaptcha_question and a random cache key is assigned to the record.  An array of possible answers is stored in the TextcaptchaCache with this random key.  The cached answers have (by default) a 10 minute TTL in your cache. If your forms take more than 10 minutes to be completed you can adjust this value setting the `cache_expiry_minutes` option.  Internally TextcaptchaCache wraps {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] and all cache keys are namespaced.
 
 On saving, validate_textcaptcha is called on @model.validate checking that the @model.textcaptcha_answer matches one of the possible answers (retrieved from the cache).  By default, this validation is _only_ carried out on new records, i.e. never on edit, only on create.  All attempted answers are case-insensitive and have trailing/leading white-space removed.
 
@@ -181,12 +181,13 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 What do you need?
 
 * {Rails}[http://github.com/rails/rails] >= 2.3.8  (including Rails 3 and 4)
+* {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] - some basic cache configuration is nessecary
 * {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, 1.9.2, 1.9.3, 2.0.0, 2.1.0)
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
 * {MiniTest}[https://rubygems.org/gems/minitest] (_optional_ if you want to run the tests, built into Ruby 1.9)
 * {SimpleCov}[https://rubygems.org/gems/simplecov] (_optional_ if you want to run the tests with code coverage reporting)
 
-*Note*: The built-in {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb] class directly wraps the `Rails.cache` object, so some basic cache configuration is nessecary for your Rails app.
+*Note*: The built-in {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb] class directly wraps the {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] object.
 
 == Links
 
