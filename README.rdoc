@@ -1,6 +1,6 @@
 == ActAsTextcaptcha
 
-{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[https://travis-ci.org/matthutchinson/acts_as_textcaptcha] {<img src="https://coveralls.io/repos/matthutchinson/acts_as_textcaptcha/badge.png" alt="Coverage Status" align="absmiddle" />}[https://coveralls.io/r/matthutchinson/acts_as_textcaptcha] {<img src="https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha.png" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
+{<img src="https://secure.travis-ci.org/matthutchinson/acts_as_textcaptcha.png" alt="Travis Build Status" align="absmiddle"/>}[https://travis-ci.org/matthutchinson/acts_as_textcaptcha] {<img src="https://coveralls.io/repos/matthutchinson/acts_as_textcaptcha/badge.png" alt="Coverage Status" align="absmiddle" />}[https://coveralls.io/r/matthutchinson/acts_as_textcaptcha] {<img align="absmiddle" src="https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha.png" />}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own text captcha questions (instead, or as a fall back in the event of any remote API issues).
 
