@@ -8,6 +8,10 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :name
   end
 
+  create_table :fast_comments, :force => true do |t|
+    t.string :name
+  end
+
   create_table :reviews, :force => true do |t|
     t.string :name
   end

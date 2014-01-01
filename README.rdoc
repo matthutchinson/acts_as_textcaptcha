@@ -52,12 +52,12 @@ Next in your controller's *new* action you'll want to generate the logic questio
     @comment.textcaptcha
   end
 
-Finally, in your form view add the spam question and answer fields using the textcaptcha_fields helper.  You are free to arrange the HTML within this helper as you like;
+Finally, in your form view add the textcaptcha question and answer fields using the textcaptcha_fields helper.  You are free to arrange the HTML within this helper as you like;
 
   <%= textcaptcha_fields(f) do %>
     <div class="field">
-      <%= f.label :spam_answer, @comment.spam_question %><br/>
-      <%= f.text_field :spam_answer, :value => '' %>
+      <%= f.label :textcaptcha_answer, @comment.textcaptcha_question %><br/>
+      <%= f.text_field :textcaptcha_answer, :value => '' %>
     </div>
   <% end %>
 
@@ -65,8 +65,8 @@ Finally, in your form view add the spam question and answer fields using the tex
 
   <% textcaptcha_fields(f) do %>
     <div class="field">
-      <%= f.label :spam_answer, @comment.spam_question %><br/>
-      <%= f.text_field :spam_answer, :value => '' %>
+      <%= f.label :textcaptcha_answer, @comment.textcaptcha_question %><br/>
+      <%= f.text_field :textcaptcha_answer, :value => '' %>
     </div>
   <% end %>
 
@@ -76,10 +76,7 @@ Finally, in your form view add the spam question and answer fields using the tex
 
 You can toggle textcaptcha on/off for your models by overriding the `perform_textcaptcha?` method. If you overridde it to return false, no questions will be fetched from
 the web service and textcaptcha validation is not performed. Additionally the `textcaptcha_fields` form helper will render nothing.  This is useful for writing your own
-logic to disable spam protection for logged in users etc.
-
-For flexibility you can also use a `skip_textcaptcha` attribute (protected from mass-assignment) to skip the textcaptcha validation step only. This is helpful when you
-need to bypass spam protection after a question has been generated and `perform_textcaptcha?` is true.
+logic to disable protection for logged in users etc.
 
 == More Configurations
 
@@ -121,12 +118,13 @@ Recent versions of the gem use standard Rails I18n translation for the error mes
         models:
           comment:
             attributes:
-              spam_answer:
-                incorrect_answer: "is incorrect, try another question instead"
+              textcaptcha_answer:
+                incorrect: "is incorrect, try another question instead"
+                expired: "was not submitted quickly enough, try another question instead"
     activemodel:
       attributes:
         comment:
-          spam_answer: "Spam answer"
+          textcaptcha_answer: "Textcaptcha answer"
 
 *NOTE:* currently the Text CAPTCHA API web service only offers logic questions in English.
 
@@ -146,11 +144,11 @@ In development you can run the tests and rdoc tasks like so;
 
 The gem contains two parts, a module for your ActiveRecord models, and a single view helper method.
 
-A call to @model.textcaptcha in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend (or the standard XML::Parser in older versions of Rails).  A spam_question and an encrypted array of possible answers are assigned to the model.
+A call to @model.textcaptcha in your controller will query the Text CAPTCHA web service.  A GET request is made with Net::HTTP and parsed using the default Rails ActiveSupport::XMLMini backend.  A textcaptcha_question and an encrypted array of possible answers are assigned to the model.
 
-validate_textcaptcha is called on @model.validate and checks that the @model.spam_answer matches one of the possible answers (decrypted).  This validation is _only_ carried out on new records, i.e. never on edit, only on create.  All attempted spam answers are case-insensitive and have trailing/leading white-space removed.
+validate_textcaptcha is called on @model.validate and checks that the @model.textcaptcha_answer matches one of the possible answers (decrypted).  This validation is _only_ carried out on new records, i.e. never on edit, only on create.  All attempted answers are case-insensitive and have trailing/leading white-space removed.
 
-If an error or timeout occurs in loading or parsing the API, ActsAsTextcaptcha will fall back to choose a random logic question defined in your options.  If the web service fails or no API key is specified AND no alternate questions are configured, the @model will not require spam checking and will pass as valid.
+If an error or timeout occurs in loading or parsing the API, ActsAsTextcaptcha will fall back to choose a random logic question defined in your options.  If the web service fails or no API key is specified AND no alternate questions are configured, the @model will not require textcaptcha checking and will pass as valid.
 
 For more details on the code please check the {documentation}[http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha].  Tests are written with  {MiniTest}[https://rubygems.org/gems/minitest] and code coverage is provided by {SimpleCov}[https://github.com/colszowka/simplecov]
 

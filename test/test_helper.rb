@@ -1,29 +1,44 @@
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib'))
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib/acts_as_textcaptcha'))
 
 ENV['RAILS_ENV'] = 'test'
 
+# confgure test coverage reporting
 if ENV['COVERAGE']
-  require "simplecov"
+  require 'simplecov'
   SimpleCov.start do
     add_filter '/test/'
+    add_filter '/vendor/'
   end
   SimpleCov.at_exit do
     SimpleCov.result.format!
     `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
   end
+elsif ENV['TRAVIS']
+  require 'coveralls'
+  Coveralls.wear!
 end
-
-require 'coveralls'
-Coveralls.wear!
 
 require 'minitest/autorun'
 require 'fakeweb'
 
 require 'rails/all'
 
+# silence warnings about I18n locales
+I18n.config.enforce_available_locales = true
+
 require 'acts_as_textcaptcha'
+require 'textcaptcha_cache'
+require 'textcaptcha_api'
 require './test/test_models'
 
 # load and initialize test db schema
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'acts_as_textcaptcha.sqlite3.db')
 load(File.dirname(__FILE__) + "/schema.rb")
+
+# initialize a Rails.cache (use a basic memory store in tests)
+RAILS_CACHE = ActiveSupport::Cache::MemoryStore.new
+
+# additional helper methods for use in tests
+def find_in_cache(key)
+  RAILS_CACHE.read("#{ActsAsTextcaptcha::TextcaptchaCache::CACHE_KEY_PREFIX}#{key}")
+end

@@ -11,6 +11,12 @@ class Comment < ActiveRecord::Base
   acts_as_textcaptcha :api_key => '8u5ixtdnq9csc84cok0owswgo'
 end
 
+class FastComment < ActiveRecord::Base
+  # inline options with super fast (0.006 seconds) cache expiry time
+  acts_as_textcaptcha :cache_expiry_minutes => '0.0001',
+                      :questions => [{ :question => '1+1', :answers => '2,two' }]
+end
+
 class Review < ActiveRecord::Base
   # inline options with all possible options
   acts_as_textcaptcha :api_key   => '8u5ixtdnq9csc84cok0owswgo',
@@ -31,7 +37,7 @@ class Note < ActiveRecord::Base
   attr_accessor :turn_off_captcha
 
   def perform_textcaptcha?
-    !turn_off_captcha
+    super && !turn_off_captcha
   end
 end
 

@@ -1,10 +1,8 @@
 require 'yaml'
 require 'net/http'
 require 'digest/md5'
-
-# compatiblity when XmlMini is not available
-require 'xml' unless defined?(ActiveSupport::XmlMini)
-require 'rexml/document'
+require 'acts_as_textcaptcha/textcaptcha_cache'
+require 'acts_as_textcaptcha/textcaptcha_api'
 
 module ActsAsTextcaptcha
 
@@ -20,23 +18,19 @@ module ActsAsTextcaptcha
 
   module Textcaptcha #:nodoc:
 
-    # raised if an empty response is ever returned from textcaptcha.com web service
-    class BadResponse < StandardError; end;
-
     def acts_as_textcaptcha(options = nil)
       cattr_accessor :textcaptcha_config
-      attr_accessor  :spam_question, :spam_answers, :spam_answer, :skip_textcaptcha
+      attr_accessor  :textcaptcha_question, :textcaptcha_answer, :textcaptcha_key
 
       if respond_to?(:accessible_attributes)
         if accessible_attributes.nil? && respond_to?(:attr_protected)
-          attr_protected :spam_question
-          attr_protected :skip_textcaptcha
+          attr_protected :textcaptcha_question
         elsif respond_to?(:attr_accessible)
-          attr_accessible :spam_answer, :spam_answers
+          attr_accessible :textcaptcha_answer, :textcaptcha_key
         end
       end
 
-      validate :validate_textcaptcha
+      validate :validate_textcaptcha, :if => :perform_textcaptcha?
 
       if options.is_a?(Hash)
         self.textcaptcha_config = options.symbolize_keys!
@@ -54,50 +48,30 @@ module ActsAsTextcaptcha
 
     module InstanceMethods
 
-      # override this method to toggle textcaptcha spam checking altogether, default is on (true)
+      # override this method to toggle textcaptcha checking
+      # by default this will only allow new records to be
+      # protected with textcaptchas
       def perform_textcaptcha?
-        true
+        !respond_to?('new_record?') || new_record?
       end
 
-      # generate textcaptcha question and encrypt possible spam_answers
+      # generate and assign textcaptcha
       def textcaptcha
-        return if !perform_textcaptcha? || validate_spam_answer
-        self.spam_answer = nil
+        if perform_textcaptcha? && textcaptcha_config
+          question = answers = nil
 
-        if textcaptcha_config
+          # get textcaptcha from api
           if textcaptcha_config[:api_key]
-            begin
-              uri_parser = URI.const_defined?(:Parser) ? URI::Parser.new : URI # URI.parse is deprecated in 1.9.2
-              url = uri_parser.parse("http://textcaptcha.com/api/#{textcaptcha_config[:api_key]}")
-              http = Net::HTTP.new(url.host, url.port)
-              http.open_timeout = textcaptcha_config[:http_open_timeout] if textcaptcha_config[:http_open_timeout]
-              http.read_timeout = textcaptcha_config[:http_read_timeout] if textcaptcha_config[:http_read_timeout]
-              response = http.get(url.path)
-              if response.body.empty?
-                raise Textcaptcha::BadResponse
-              else
-                parse_textcaptcha_xml(response.body)
-              end
-              return
-            rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
-                   Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError,
-                   REXML::ParseException, Textcaptcha::BadResponse
-              # rescue from these errors and continue
-            end
+            question, answers = TextcaptchaApi.fetch(textcaptcha_config[:api_key], textcaptcha_config)
           end
 
-          # fall back to textcaptcha_config questions if they are configured correctly
-          if textcaptcha_config[:questions]
-            random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
-            if random_question[:question] && random_question[:answers]
-              self.spam_question = random_question[:question]
-              self.spam_answers  = random_question[:answers].split(',').map!{ |answer| md5_answer(answer) }
-            end
+          # fall back to config based textcaptcha
+          unless question && answers
+            question, answers = textcaptcha_config_questions
           end
 
-          unless self.spam_question && self.spam_answers
-            self.spam_question = 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
-            self.spam_answers  = 'ok'
+          if question && answers
+            assign_textcaptcha(question, answers)
           end
         end
       end
@@ -105,41 +79,72 @@ module ActsAsTextcaptcha
 
       private
 
-      def parse_textcaptcha_xml(xml)
-        if defined?(ActiveSupport::XmlMini)
-          parsed_xml = ActiveSupport::XmlMini.parse(xml)['captcha']
-          self.spam_question = parsed_xml['question']['__content__']
-          if parsed_xml['answer'].is_a?(Array)
-            self.spam_answers = parsed_xml['answer'].collect { |a| a['__content__'] }
-          else
-            self.spam_answers = [parsed_xml['answer']['__content__']]
-          end
-        else
-          parsed_xml         = XML::Parser.string(xml).parse
-          self.spam_question = parsed_xml.find('/captcha/question')[0].inner_xml
-          self.spam_answers  = parsed_xml.find('/captcha/answer').map(&:inner_xml)
+      def textcaptcha_config_questions
+        if textcaptcha_config[:questions]
+          random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
+          [random_question[:question], (random_question[:answers] || '').split(',').map!{ |answer| safe_md5(answer) }]
         end
       end
 
-      def validate_spam_answer
-        (spam_answer && spam_answers) ? spam_answers.include?(md5_answer(spam_answer)) : false
-      end
 
+      # check textcaptcha, if incorrect, regenerate a new textcaptcha
       def validate_textcaptcha
-        # only spam check on new/unsaved records (ie. no spam check on updates/edits)
-        if !respond_to?('new_record?') || new_record?
-          if !skip_textcaptcha && perform_textcaptcha? && !validate_spam_answer
-            errors.add(:spam_answer, :incorrect_answer, :message => "is incorrect, try another question instead")
-            # regenerate question
-            textcaptcha
-            return false
+        valid_answers = textcaptcha_cache.read(textcaptcha_key) || []
+        reset_textcaptcha
+        if valid_answers.include?(safe_md5(textcaptcha_answer))
+          # answer was valid, mutate the key again
+          self.textcaptcha_key = textcaptcha_random_key
+          textcaptcha_cache.write(textcaptcha_key, valid_answers, textcaptcha_cache_options)
+          true
+        else
+          if valid_answers.empty?
+            # took too long to answer
+            errors.add(:textcaptcha_answer, :expired, :message => 'was not submitted quickly enough, try another question instead')
+          else
+            # incorrect answer
+            errors.add(:textcaptcha_answer, :incorrect, :message => 'is incorrect, try another question instead')
           end
+          textcaptcha
+          false
         end
-        true
       end
 
-      def md5_answer(answer)
+      def reset_textcaptcha
+        if textcaptcha_key
+          textcaptcha_cache.delete(textcaptcha_key)
+          self.textcaptcha_key = nil
+        end
+      end
+
+      def assign_textcaptcha(question, answers)
+        self.textcaptcha_question = question
+        self.textcaptcha_key      = textcaptcha_random_key
+        textcaptcha_cache.write(textcaptcha_key, answers, textcaptcha_cache_options)
+      end
+
+      # strip whitespace pass through mb_chars (a multibyte
+      # safe proxy for string methods) then downcase
+      def safe_md5(answer)
         Digest::MD5.hexdigest(answer.to_s.strip.mb_chars.downcase)
+      end
+
+      # a random cache key, time based and random
+      def textcaptcha_random_key
+        safe_md5(Time.now.to_i + rand(1_000_000))
+      end
+
+      def textcaptcha_cache_options
+        if textcaptcha_config[:cache_expiry_minutes]
+          { :expires_in => textcaptcha_config[:cache_expiry_minutes].to_f.minutes }
+        else
+          {}
+        end
+      end
+
+      # cache is used to persist textcaptcha questions and answers
+      # between requests
+      def textcaptcha_cache
+        @@textcaptcha_cache ||= TextcaptchaCache.new
       end
     end
   end

@@ -17,13 +17,13 @@ describe 'TextcaptchaHelper' do
     @note.textcaptcha
   end
 
-  def render_template(assigns)
+  def render_template(assigns = { :note => @note })
     template = <<-ERB
     <%= form_for(@note, :url => '/') do |f| %>
       <%= textcaptcha_fields(f) do %>
       <div class="field textcaptcha">
-        <%= f.label :spam_answer, @note.spam_question %><br/>
-        <%= f.text_field :spam_answer, :value => '' %>
+        <%= f.label :textcaptcha_answer, @note.textcaptcha_question %><br/>
+        <%= f.text_field :textcaptcha_answer, :value => '' %>
       </div>
       <% end %>
     <% end %>
@@ -32,19 +32,37 @@ describe 'TextcaptchaHelper' do
     Template.new([], assigns, @controller).render(:inline => template)
   end
 
-  it 'should render question and answer fields, with hidden spam_answers field' do
-    html = render_template({:note => @note})
+  it 'should render question and answer fields, with hidden textcaptcha_key field' do
+    html = render_template
 
-    html.must_match /\<label for\=\"note\_spam\_answer\"\>1\+1\<\/label\>/
-    html.must_match /\<input id\=\"note_spam_answers\" name\=\"note\[spam\_answers\]\" type\=\"hidden\" value\=\"(.*)\" \/\>/
+    assert_match /\<label for\=\"note_textcaptcha_answer\"\>1\+1\<\/label\>/, html
+    assert_match /\<input id\=\"note_textcaptcha_answer\" name\=\"note\[textcaptcha_answer\]\" size\=\"30\" type\=\"text\" value\=\"\" \/>/, html
+    assert_match /\<input id\=\"note_textcaptcha_key\" name\=\"note\[textcaptcha_key\]\" type\=\"hidden\" value\=\"([0-9a-f]{32})\" \/\>/, html
   end
 
-  it 'should render hidden answer and spam_answer fields when question has been answered OK (and not ask question)' do
-    @note.spam_answer = 2
-    html = render_template({:note => @note})
+  it 'should render hidden answer and textcaptcha_key when only answer is present' do
+    @note.textcaptcha_question = nil
+    @note.textcaptcha_answer   = 2
+    html = render_template
 
-    html.wont_match /\<label for\=\"note\_spam\_answer\"\>1\+1\<\/label\>/
-    html.must_match /\<input id\=\"note_spam_answers\" name\=\"note\[spam\_answers\]\" type\=\"hidden\" value\=\"(.*)\" \/\>/
-    html.must_match /\<input id\=\"note_spam_answer\" name\=\"note\[spam_answer\]\" type\=\"hidden\" value\=\"2\" \/\>/
+    refute_match /\<label for\=\"note_textcaptcha_answer\"\>1\+1\<\/label\>/, html
+    assert_match /\<input id\=\"note_textcaptcha_answer\" name\=\"note\[textcaptcha_answer\]\" type\=\"hidden\" value\=\"2\" \/>/, html
+    assert_match /\<input id\=\"note_textcaptcha_key\" name\=\"note\[textcaptcha_key\]\" type\=\"hidden\" value\=\"([0-9a-f]{32})\" \/\>/, html
+  end
+
+  it 'should not render any question or answer when perform_textcaptcha? is false' do
+    @note.turn_off_captcha = true
+    html = render_template
+
+    refute_match /note_textcaptcha_answer/, html
+    refute_match /note_textcaptcha_key/, html
+  end
+
+  it 'should not render any question or answer when textcaptcha_key is missing' do
+    @note.textcaptcha_key = nil
+    html = render_template
+
+    refute_match /note_textcaptcha_answer/, html
+    refute_match /note_textcaptcha_key/, html
   end
 end

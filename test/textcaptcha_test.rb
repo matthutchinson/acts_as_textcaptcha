@@ -10,40 +10,40 @@ describe 'Textcaptcha' do
     end
 
     it 'should validate an ActiveRecord object (with multiple correct answers)' do
-      @note.spam_question.must_equal('1+1')
+      @note.textcaptcha_question.must_equal('1+1')
       @note.valid?.must_equal false
-      @note.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
+      @note.errors[:textcaptcha_answer].first.must_equal('is incorrect, try another question instead')
 
-      @note.spam_answer = 'two'
+      @note.textcaptcha_answer = 'two'
       @note.valid?.must_equal true
-      @note.errors[:spam_answer].must_be_empty
+      @note.errors[:textcaptcha_answer].must_be_empty
 
-      @note.spam_answer = '2'
+      @note.textcaptcha_answer = '2'
       @note.valid?.must_equal true
-      @note.errors[:spam_answer].must_be_empty
+      @note.errors[:textcaptcha_answer].must_be_empty
     end
 
-    it 'should strip whitespace and downcase spam answer' do
-      @note.spam_answer = ' tWo '
+    it 'should strip whitespace and downcase answer' do
+      @note.textcaptcha_answer = ' tWo '
       @note.valid?.must_equal true
-      @note.errors[:spam_answer].must_be_empty
+      @note.errors[:textcaptcha_answer].must_be_empty
     end
 
     it 'should always be valid when record has been saved' do
-      @note.spam_answer = '2'
+      @note.textcaptcha_answer = '2'
       @note.save!
       @note.textcaptcha
 
-      @note.spam_answer = 'wrong answer'
+      @note.textcaptcha_answer = 'wrong answer'
       @note.new_record?.must_equal false
       @note.valid?.must_equal true
-      @note.errors[:spam_answer].must_be_empty
+      @note.errors[:textcaptcha_answer].must_be_empty
     end
 
     it 'should always be valid when perform_textcaptcha? is false' do
       @note.turn_off_captcha = true
       @note.valid?.must_equal true
-      @note.errors[:spam_answer].must_be_empty
+      @note.errors[:textcaptcha_answer].must_be_empty
 
       @note.save.must_equal true
     end
@@ -52,24 +52,13 @@ describe 'Textcaptcha' do
       @contact = Contact.new
       @contact.textcaptcha
 
-      @contact.spam_question.must_equal('one+1')
-      @contact.spam_answer = 'wrong'
+      @contact.textcaptcha_question.must_equal('one+1')
+      @contact.textcaptcha_answer = 'wrong'
       @contact.valid?.must_equal false
 
-      @contact.spam_answer = 'two'
+      @contact.textcaptcha_answer = 'two'
       @contact.valid?.must_equal true
-      @contact.errors[:spam_answer].must_be_empty
-    end
-
-    it 'should allow validation to be skipped' do
-      @note.valid?.must_equal false
-      @note.skip_textcaptcha = true
-      @note.valid?.must_equal true
-    end
-
-    it 'should protect skip_textcaptcha attribute from mass assignment' do
-      @note = Note.new(:skip_textcaptcha => true)
-      @note.skip_textcaptcha.must_equal nil
+      @contact.errors[:textcaptcha_answer].must_be_empty
     end
   end
 
@@ -80,15 +69,31 @@ describe 'Textcaptcha' do
     end
 
     it 'should work' do
-      @widget.spam_answers.must_be_nil
       @widget.textcaptcha
-      @widget.spam_question.must_equal('1+1')
+      @widget.textcaptcha_question.must_equal('1+1')
       @widget.valid?.must_equal false
-      @widget.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
+      @widget.errors[:textcaptcha_answer].first.must_equal('is incorrect, try another question instead')
 
-      @widget.spam_answer = 'two'
+      @widget.textcaptcha_answer = 'two'
       @widget.valid?.must_equal true
-      @widget.errors[:spam_answer].must_be_empty
+      @widget.errors[:textcaptcha_answer].must_be_empty
+    end
+  end
+
+  describe 'with fast expiry time' do
+
+    before(:each) do
+      @comment = FastComment.new
+    end
+
+    it 'should work' do
+      @comment.textcaptcha
+      @comment.textcaptcha_question.must_equal('1+1')
+      @comment.textcaptcha_answer = 'two'
+      sleep(0.01)
+
+      @comment.valid?.must_equal false
+      @comment.errors[:textcaptcha_answer].first.must_equal('was not submitted quickly enough, try another question instead')
     end
   end
 
@@ -98,17 +103,17 @@ describe 'Textcaptcha' do
       FakeWeb.clean_registry
     end
 
-    it 'should generate spam question from the service' do
+    it 'should generate a question from the service' do
       @review = Review.new
 
       @review.textcaptcha
-      @review.spam_question.wont_be_nil
-      @review.spam_question.wont_equal('The green hat is what color?')
+      @review.textcaptcha_question.wont_be_nil
+      @review.textcaptcha_question.wont_equal('The green hat is what color?')
 
-      @review.spam_answers.wont_be_nil
+      find_in_cache(@review.textcaptcha_key).wont_be_nil
 
       @review.valid?.must_equal false
-      @review.errors[:spam_answer].first.must_equal('is incorrect, try another question instead')
+      @review.errors[:textcaptcha_answer].first.must_equal('is incorrect, try another question instead')
     end
 
     it 'should parse a single answer from XML response' do
@@ -118,9 +123,8 @@ describe 'Textcaptcha' do
       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
 
       @review.textcaptcha
-      @review.spam_question.must_equal(question)
-      @review.spam_answers.must_equal(['f6f7fec07f372b7bd5eb196bbca0f3f4'])
-      @review.spam_answers.length.must_equal(1)
+      @review.textcaptcha_question.must_equal(question)
+      find_in_cache(@review.textcaptcha_key).must_equal(['f6f7fec07f372b7bd5eb196bbca0f3f4'])
     end
 
     it 'should parse multiple answers from XML response' do
@@ -130,60 +134,34 @@ describe 'Textcaptcha' do
       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
 
       @review.textcaptcha
-      @review.spam_question.must_equal(question)
-      @review.spam_answers.length.must_equal(3)
+      @review.textcaptcha_question.must_equal(question)
+      find_in_cache(@review.textcaptcha_key).length.must_equal(3)
     end
 
-    describe 'service is unavailable' do
-
-      describe 'should fallback to a user defined question' do
-
-        before(:each) do
-          @review = Review.new
-        end
-
-        it 'when errors occur' do
-          [SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, URI::InvalidURIError].each do |error|
-            FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => error)
-            @review.textcaptcha
-            @review.spam_question.must_equal('The green hat is what color?')
-            @review.spam_answers.wont_be_nil
-          end
-        end
-
-        it 'when response is OK but body cannot be parsed as XML' do
-          FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => 'here be gibberish')
-          @review.textcaptcha
-          @review.spam_question.must_equal('The green hat is what color?')
-          @review.spam_answers.wont_be_nil
-        end
-
-        it 'when response is OK but empty' do
-          FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => '')
-          @review.textcaptcha
-          @review.spam_question.must_equal('The green hat is what color?')
-          @review.spam_answers.wont_be_nil
-        end
-      end
+    it 'should fallback to a user defined question when api returns nil' do
+      @review = Review.new
+      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => '')
+      @review.textcaptcha
+      @review.textcaptcha_question.must_equal('The green hat is what color?')
+      find_in_cache(@review.textcaptcha_key).wont_be_nil
     end
 
-    it 'should not generate any spam question or answer when no user defined questions set' do
+    it 'should not generate any question or answer when no user defined questions set' do
       @comment = Comment.new
 
       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
       @comment.textcaptcha
-      @comment.spam_question.must_equal 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
-      @comment.spam_answers.must_equal 'ok'
+      @comment.textcaptcha_question.must_equal nil
+      @comment.textcaptcha_key.must_equal nil
     end
 
-    it 'should not generate any spam question or answer when user defined questions set incorrectly' do
+    it 'should not generate any question or answer when user defined questions set incorrectly' do
       @comment = MovieReview.new
 
       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
       @comment.textcaptcha
-      @comment.spam_question.must_equal 'ActsAsTextcaptcha >> no API key (or questions) set and/or the textcaptcha service is currently unavailable (answer ok to bypass)'
-      @comment.spam_answers.must_equal 'ok'
+      @comment.textcaptcha_question.must_equal nil
+      @comment.textcaptcha_key.must_equal nil
     end
   end
 
