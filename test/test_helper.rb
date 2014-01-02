@@ -27,8 +27,6 @@ require 'rails/all'
 I18n.config.enforce_available_locales = true
 
 require 'acts_as_textcaptcha'
-require 'textcaptcha_cache'
-require 'textcaptcha_api'
 require './test/test_models'
 
 # load and initialize test db schema
