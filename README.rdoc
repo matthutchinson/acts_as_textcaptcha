@@ -4,7 +4,7 @@
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic questions from the excellent {Text CAPTCHA}[http://textcaptcha.com/] web service (by {Rob Tuley}[http://openknot.com/me/] of {Openknot}[http://openknot.com/]).  It is also possible to configure your own text captcha questions (instead, or as a fall back in the event of any remote API issues).
 
-This gem is actively maintained, has good test coverage and is compatible with Rails >= 2.3.8 (including Rails 3 and 4).  If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues/new].
+This gem is actively maintained, has good test coverage and is compatible with Rails >= 3.0.0 (including Rails 4). If you have any issues {please report them here}[https://github.com/matthutchinson/acts_as_textcaptcha/issues/new].
 
 Logic questions from the web service are aimed at a child's age of 7, so they can be solved easily by even the most cognitively impaired users. As they involve human logic, questions cannot be solved by a robot. There are both advantages and disadvantages for using logic questions over image based captchas, {find out more at Text CAPTCHA}[http://textcaptcha.com/why].
 
@@ -14,31 +14,13 @@ Try a {working demo here}[http://textcaptcha.heroku.com]!
 
 == Installing
 
-=== Rails
+*NOTE:* The steps to configure your app changed with the v4.0.* release. If you are having problems please carefully check the steps or {upgrade instructions}[https://github.com/matthutchinson/acts_as_textcaptcha#upgrading-from-3010] below.
 
-Just add the following to your Gemfile, then `bundle install`;
+First add the following to your Gemfile, then `bundle install`;
 
   gem 'acts_as_textcaptcha'
 
-=== Rails 2.3.*
-
-Add this to your environment.rb file, then `gem install acts_as_textcaptcha`;
-
-  config.gem 'acts_as_textcaptcha'
-
-=== Or as a plugin (pre Rails 4)
-
-Install with rails or script/rails as follows;
-
-  rails plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
-  OR
-  script/plugin install git@github.com:matthutchinson/acts_as_textcaptcha.git
-
-== Setting up
-
-*NOTE:* The steps to configure your app changed with the v4.0.* release. If you are having problems please carefully check the steps or {upgrade instructions}[https://github.com/matthutchinson/acts_as_textcaptcha#upgrading-from-3010] below.
-
-First {grab an API key for your website}[http://textcaptcha.com/api]. Next add the following code to any models you would like to protect;
+Next {grab an API key for your website}[http://textcaptcha.com/api], then add the following code to models you would like to protect;
 
   class Comment < ActiveRecord::Base
     # (this is the simplest way to configure the gem, with an API key only)
@@ -54,7 +36,6 @@ Next in your controller's *new* action you'll want to generate and assign the lo
 
 Finally, in your form view add the textcaptcha question and answer fields using the textcaptcha_fields helper.  Feel free to arrange the HTML within this block as you like;
 
-  # for Rails 2.3.* change <%= to <% on the next line
   <%= textcaptcha_fields(f) do %>
     <div class="field">
       <%= f.label :textcaptcha_answer, @comment.textcaptcha_question %><br/>
@@ -119,18 +100,13 @@ The gem can be configured for models individually (as shown above) or with a con
 
   rake textcaptcha:config
 
-*NOTE:* For Rails 2.3.*, you'll have to add the following to your Rakefile to reveal this task;
-
-  # load textcaptcha rake tasks
-  Dir["#{Gem.searcher.find('acts_as_textcaptcha').full_gem_path}/lib/tasks/**/*.rake"].each { |ext| load ext } if Gem.searcher.find('acts_as_textcaptcha')
-
 === Confguring _without_ the TextCAPTCHA web service
 
 To use only your own logic questions, simply ommit the api_key from the configuration and define at least 1 logic question and answer (see above).
 
 == Translations
 
-The gem uses the standard Rails I18n translation approach for error messages, with a fall-back to English.  Unfortunately in some versions of Rails 2.3.* this translation fall-back fails.  For this case (and when translating) setup your own locale file with this hierarchy (assuming your model is Comment);
+The gem uses the standard Rails I18n translation approach (with a fall-back to English). Unfortunately at present, the Text CAPTCHA web service only provides logic questions in English.
 
   en:
     activerecord:
@@ -145,8 +121,6 @@ The gem uses the standard Rails I18n translation approach for error messages, wi
       attributes:
         comment:
           textcaptcha_answer: "Textcaptcha answer"
-
-*NOTE:* currently the Text CAPTCHA API web service only offers logic questions in English.
 
 == Without Rails or ActiveRecord
 
@@ -180,7 +154,7 @@ For more details on the code please check the {documentation}[http://rdoc.info/p
 
 What do you need?
 
-* {Rails}[http://github.com/rails/rails] >= 2.3.8  (including Rails 3 and 4)
+* {Rails}[http://github.com/rails/rails] >= 3.0.0  (including Rails 4)
 * {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] - some basic cache configuration is nessecary
 * {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, 1.9.2, 1.9.3, 2.0.0, 2.1.0)
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
@@ -188,6 +162,18 @@ What do you need?
 * {SimpleCov}[https://rubygems.org/gems/simplecov] (_optional_ if you want to run the tests with code coverage reporting)
 
 *Note*: The built-in {TextcaptchaCache}[https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb] class directly wraps the {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] object.
+
+== Rails 2 support
+
+Support for Rails 2 was dropped with the release of v4.1.0. If you would like to continue to use this gem with an older version of Rails (>= 2.3.8), please lock the version to `4.0.0`. Like so;
+
+    # in your Gemfile
+    gem 'acts_as_textcaptcha', '=4.0.0'
+
+    # or in environment.rb
+    config.gem 'acts_as_textcaptcha', :version => '=4.0.0'
+
+Check out the {README}[https://github.com/matthutchinson/acts_as_textcaptcha/tree/v4.0.0] for this release for more information.
 
 == Links
 
@@ -218,10 +204,6 @@ After doing this, you should be able to install the gem with;
     gem install acts_as_textcaptcha -P HighSecurity
     # or with Bundler, specify the HighSecurity trust policy
     bundle install --trust-policy HighSecurity
-
-== Todo
-
-* Remove support for Rails 2.3.* in a future gem release (clean code and tests for this)
 
 == Usage
 

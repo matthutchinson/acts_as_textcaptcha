@@ -6,16 +6,6 @@ require 'acts_as_textcaptcha/textcaptcha_api'
 
 module ActsAsTextcaptcha
 
-  # dont use Railtie if Rails < 3
-  unless Rails::VERSION::MAJOR < 3
-    class Railtie < ::Rails::Railtie
-      rake_tasks do
-        load "tasks/textcaptcha.rake"
-      end
-    end
-  end
-
-
   module Textcaptcha #:nodoc:
 
     def acts_as_textcaptcha(options = nil)
