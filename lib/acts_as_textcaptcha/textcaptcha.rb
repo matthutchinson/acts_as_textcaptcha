@@ -68,6 +68,8 @@ module ActsAsTextcaptcha
 
       # generate textcaptcha question and encrypt possible spam_answers
       def textcaptcha
+        show_deprecation_warning
+
         return if !perform_textcaptcha? || validate_spam_answer
         self.spam_answer = nil
 
@@ -110,6 +112,15 @@ module ActsAsTextcaptcha
 
 
       private
+
+      def show_deprecation_warning
+        warning_message = "
+[warning] ** ActsAsTextcaptcha - gem versions prior to v4.0.0 are VUNERABLE TO SPAM CHECK BY-PASSING, please upgrade gem to v4.0.0 (or higher) **
+[warning] ** ActsAsTextcaptcha - see here for details: https://github.com/matthutchinson/acts_as_textcaptcha/issues/15 **\n"
+        Rails.logger.warn warning_message
+      rescue
+        puts warning_message
+      end
 
       def parse_textcaptcha_xml(xml)
         if defined?(ActiveSupport::XmlMini)
