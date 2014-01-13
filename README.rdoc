@@ -193,18 +193,6 @@ Check out the {README}[https://github.com/matthutchinson/acts_as_textcaptcha/tre
 * {ActsAsTextcaptcha}[http://github.com/matthutchinson/acts_as_textcaptcha] and {little robot drawing}[http://www.flickr.com/photos/hiddenloop/4541195635/] by {Matthew Hutchinson}[http://matthewhutchinson.net]
 * {Text CAPTCHA}[http://textcaptcha.com] API and service by {Rob Tuley}[http://openknot.com/me/] at {Openknot}[http://openknot.com]
 
-== Gem Signing
-
-You can use the HighSecurity policy to install this gem by adding my public certificate as a trusted source. To do so, run;
-
-    gem cert --add <(curl -Ls https://gist.github.com/matthutchinson/5697493/raw/13c2c9edf52cbf72ef399cd4e3b9044ac700abf9/gem-public_cert.pem)
-
-After doing this, you should be able to install the gem with;
-
-    gem install acts_as_textcaptcha -P HighSecurity
-    # or with Bundler, specify the HighSecurity trust policy
-    bundle install --trust-policy HighSecurity
-
 == Usage
 
 This gem is used in a number of production websites and apps. It was originally extracted from code developed for {Bugle}[http://bugleblogs.com].  If you're happily using acts_as_textcaptcha in production, let me know and I'll add you to this list!
