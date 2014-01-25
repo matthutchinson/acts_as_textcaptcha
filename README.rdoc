@@ -77,11 +77,11 @@ So out of the box, spam protection is only enabled for creating new records (not
 
 You can configure acts_as_textcaptcha with the following options;
 
-* *api_key* - get a free key from http://textcaptcha.com/api
-* *questions* (_optional, array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no API key has been set.  Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
-* *cache_expiry_minutes* (_optional, minutes for answers to persist in the cache (default 10 minutes), see {below for details}[https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do]
-* *http_read_timeout* (_optional, Net::HTTP option, seconds to wait for one block to be read from the remote API
-* *http_open_timeout* (_optional, Net::HTTP option, seconds to wait for the connection to open to the remote API
+* *api_key* (_required_) - get a free key from http://textcaptcha.com/api
+* *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no API key has been set.  Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
+* *cache_expiry_minutes* (_optional_) - minutes for answers to persist in the cache (default 10 minutes), see {below for details}[https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do]
+* *http_read_timeout* (_optional_) - Net::HTTP option, seconds to wait for one block to be read from the remote API
+* *http_open_timeout* (_optional_) - Net::HTTP option, seconds to wait for the connection to open to the remote API
 
 For example;
 
