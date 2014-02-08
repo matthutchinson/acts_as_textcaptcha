@@ -1,3 +1,6 @@
+(pending release)
+  * Added `rake console` for helpful debugging
+
 4.1.1 (13 January 2014)
   * Dropped gem signing & cert (http://tinyurl.com/p98owwz)
 4.1.0 (2 January 2014)
