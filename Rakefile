@@ -3,6 +3,17 @@ gem 'rdoc'
 # default rake
 task :default => [:test]
 
+# helpful console
+desc "Irb console that requires this gem"
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  require 'acts_as_textcaptcha'
+  ARGV.clear
+  IRB.start
+end
+
+
 # bundler tasks
 require 'bundler'
 Bundler::GemHelper.install_tasks
