@@ -199,5 +199,5 @@ This gem is used in a number of production websites and apps. It was originally 
 
 * {matthewhutchinson.net}[http://matthewhutchinson.net]
 * {pmFAQtory.com}[http://pmfaqtory.com]
-* {The FAQtory}[http://faqtory.heroku.com]
+* {The FAQtory}[http://faqtoryapp.com]
 * {DPT Watch, San Francisco}[http://www.dptwatch.com]
