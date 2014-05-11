@@ -156,7 +156,7 @@ What do you need?
 
 * {Rails}[http://github.com/rails/rails] >= 3.0.0  (including Rails 4)
 * {Rails.cache}[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html] - some basic cache configuration is nessecary
-* {Ruby}[http://ruby-lang.org/] >= 1.8.7 (also tested with REE, 1.9.2, 1.9.3, 2.0.0, 2.1.0)
+* {Ruby}[http://ruby-lang.org/] >= 1.9.2 (also tested with 1.9.3, 2.0.0, 2.1.1) - 1.8.7 support ended at version 4.1.1
 * {Text CAPTCHA API key}[http://textcaptcha.com/register] (_optional_, since you can define your own logic questions)
 * {MiniTest}[https://rubygems.org/gems/minitest] (_optional_ if you want to run the tests, built into Ruby 1.9)
 * {SimpleCov}[https://rubygems.org/gems/simplecov] (_optional_ if you want to run the tests with code coverage reporting)
