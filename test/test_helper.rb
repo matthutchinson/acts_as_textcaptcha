@@ -23,9 +23,6 @@ require 'fakeweb'
 
 require 'rails/all'
 
-# silence warnings about I18n locales
-I18n.config.enforce_available_locales = true
-
 require 'acts_as_textcaptcha'
 require './test/test_models'
 
