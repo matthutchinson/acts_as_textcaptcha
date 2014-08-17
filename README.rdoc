@@ -10,7 +10,7 @@ Logic questions from the web service are aimed at a child's age of 7, so they ca
 
 == Demo
 
-Try a {working demo here}[http://textcaptcha.heroku.com]!
+Try a {working demo here}[http://textcaptcha.herokuapp.com]!
 
 == Installing
 
@@ -177,7 +177,7 @@ Check out the {README}[https://github.com/matthutchinson/acts_as_textcaptcha/tre
 
 == Links
 
-* {Demo}[http://textcaptcha.heroku.com]
+* {Demo}[http://textcaptcha.herokuapp.com]
 * {Travis CI}[http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha]
 * {Test Coverage}[https://coveralls.io/r/matthutchinson/acts_as_textcaptcha]
 * {Code Climate}[https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha]
