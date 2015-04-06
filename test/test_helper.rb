@@ -14,8 +14,8 @@ if ENV['COVERAGE']
     `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
   end
 elsif ENV['TRAVIS']
-  require 'coveralls'
-  Coveralls.wear!
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
 end
 
 require 'minitest/autorun'
