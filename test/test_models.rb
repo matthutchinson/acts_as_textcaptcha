@@ -48,11 +48,3 @@ class Contact
   extend  ActsAsTextcaptcha::Textcaptcha
   acts_as_textcaptcha :questions => [{ :question => 'one+1', :answers => "2,two,апельсин" }]
 end
-
-# ActiveRecord model using the strong parameters gem
-require 'strong_parameters'
-
-class StrongWidget < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-  acts_as_textcaptcha 'questions' => [{ 'question' => '1+1', 'answers' => '2,two' }]
-end

@@ -31,9 +31,9 @@ ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'act
 load(File.dirname(__FILE__) + "/schema.rb")
 
 # initialize a Rails.cache (use a basic memory store in tests)
-RAILS_CACHE = ActiveSupport::Cache::MemoryStore.new
+Rails.cache = ActiveSupport::Cache::MemoryStore.new
 
 # additional helper methods for use in tests
 def find_in_cache(key)
-  RAILS_CACHE.read("#{ActsAsTextcaptcha::TextcaptchaCache::CACHE_KEY_PREFIX}#{key}")
+  Rails.cache.read("#{ActsAsTextcaptcha::TextcaptchaCache::CACHE_KEY_PREFIX}#{key}")
 end
