@@ -48,3 +48,20 @@ class Contact
   extend  ActsAsTextcaptcha::Textcaptcha
   acts_as_textcaptcha :questions => [{ :question => 'one+1', :answers => "2,two,апельсин" }]
 end
+
+class StrongAccessibleWidget < ActiveRecord::Base
+
+  # stub out attr_accessbile interface for testing
+  def self.accessible_attributes(role = :default); end
+  def self.attr_accessible(*args); end
+
+  acts_as_textcaptcha 'questions' => [{ 'question' => '1+1', 'answers' => '2,two' }]
+end
+
+class StrongProtectedWidget < StrongAccessibleWidget
+
+  # stub out attr_protected interface for testing
+  def self.attr_protected(*args); end
+
+  acts_as_textcaptcha 'questions' => [{ 'question' => '1+1', 'answers' => '2,two' }]
+end

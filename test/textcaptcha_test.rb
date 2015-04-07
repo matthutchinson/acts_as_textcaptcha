@@ -159,4 +159,42 @@ describe 'Textcaptcha' do
       Widget.textcaptcha_config[:questions].length.must_equal 10
     end
   end
+
+  describe 'with strong parameters' do
+
+    it 'should work with accessible_attr widget ' do
+      @widget = StrongAccessibleWidget.new
+
+      @widget.textcaptcha
+      @widget.textcaptcha_question.must_equal('1+1')
+      @widget.valid?.must_equal false
+    end
+
+    it 'should work with protected_attr widget ' do
+      @widget = StrongProtectedWidget.new
+
+      @widget.textcaptcha
+      @widget.textcaptcha_question.must_equal('1+1')
+      @widget.valid?.must_equal false
+    end
+  end
+
+  describe 'when missing config' do
+
+    it 'should raise an error' do
+      YAML.stub :load, -> { raise 'some bad things happened' } do
+
+        error = assert_raises(ArgumentError) do
+          class NoConfig
+            include ActiveModel::Validations
+            include ActiveModel::Conversion
+            extend ActsAsTextcaptcha::Textcaptcha
+            acts_as_textcaptcha
+          end
+        end
+
+        error.message.must_match /could not find any textcaptcha options/
+      end
+    end
+  end
 end

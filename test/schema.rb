@@ -24,7 +24,11 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :name
   end
 
-  create_table :strong_widgets, :force => true do |t|
+  create_table :strong_protected_widgets, :force => true do |t|
+    t.string :name
+  end
+
+  create_table :strong_accessible_widgets, :force => true do |t|
     t.string :name
   end
 end
