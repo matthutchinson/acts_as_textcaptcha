@@ -21,16 +21,16 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
   s.require_paths = ["lib"]
 
-  # lock mime-types to pre 2.0 since we want to support 1.8.7/REE in tests
+  # always test against latest rails version
+  s.add_development_dependency('rails', '~> 4.2.1')
+
   s.add_development_dependency('mime-types')
-  s.add_development_dependency('rails')
   s.add_development_dependency('bundler')
   s.add_development_dependency('minitest')
   s.add_development_dependency('simplecov')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
   s.add_development_dependency('fakeweb')
-  s.add_development_dependency('strong_parameters')
   s.add_development_dependency('codeclimate-test-reporter')
   s.add_development_dependency('pry')
 end
