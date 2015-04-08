@@ -16,8 +16,6 @@ if ENV['COVERAGE']
 elsif ENV['TRAVIS']
   require 'coveralls'
   Coveralls.wear!
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
 end
 
 require 'minitest/autorun'

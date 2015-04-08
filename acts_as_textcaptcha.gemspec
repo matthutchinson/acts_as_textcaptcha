@@ -32,6 +32,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('sqlite3')
   s.add_development_dependency('fakeweb')
   s.add_development_dependency('coveralls')
-  s.add_development_dependency('codeclimate-test-reporter')
   s.add_development_dependency('pry')
 end
