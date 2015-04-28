@@ -20,7 +20,7 @@ At this point you'll be waiting for me to review it. I try to reply to new Pull
 Requests within 5 days. I may suggest some changes, improvements or
 alternatives. To increase the chance that your pull request gets accepted:
 
-* Explain what (and why) in your Pull Request description.
+* Explain what your are doing (and why) in your Pull Request description.
 * Write a good [commit
   message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 * Write tests.
