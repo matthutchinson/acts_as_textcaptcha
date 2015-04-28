@@ -22,7 +22,10 @@ alternatives. To increase the chance that your pull request gets accepted:
 
 * Explain what your are doing (and why) in your Pull Request description.
 * If you are fixing an
-  [issue](https://github.com/matthutchinson/acts_as_textcaptcha/issues), link to it.
+  [issue](https://github.com/matthutchinson/acts_as_textcaptcha/issues), link to
+  it in your description and [mention
+  it](https://help.github.com/articles/closing-issues-via-commit-messages/) in
+  the commit message.
 * Write a good [commit
   message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 * Write tests.
