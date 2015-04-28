@@ -21,6 +21,8 @@ Requests within 5 days. I may suggest some changes, improvements or
 alternatives. To increase the chance that your pull request gets accepted:
 
 * Explain what your are doing (and why) in your Pull Request description.
+* If you are fixing an
+  [issue](https://github.com/matthutchinson/acts_as_textcaptcha/issues), link to it.
 * Write a good [commit
   message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 * Write tests.
