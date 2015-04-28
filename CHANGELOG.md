@@ -1,3 +1,5 @@
+### Version History
+
 4.1.2 (11 May 2014)
   * Updated gem dependencies
   * Added `rake console` for helpful debugging
