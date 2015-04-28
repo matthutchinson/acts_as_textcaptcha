@@ -4,7 +4,7 @@ Pull Requests are welcome! To start helping out on this project:
 
 Fork then clone the repository:
 
-    git clone git clone git@github.com:your-username/acts_as_textcaptcha.git
+    git clone git@github.com:your-username/acts_as_textcaptcha.git
 
 Create your feature branch:
 
