@@ -16,11 +16,9 @@ Request](https://github.com/matthutchinson/acts_as_textcaptcha/compare/):
     git commit -am 'Added some feature'
     git push origin my-new-feature
 
-At this point you're waiting on me to review it. I try to reply to new Pull
+At this point you'll be waiting for me to review it. I try to reply to new Pull
 Requests within 5 days. I may suggest some changes, improvements or
-alternatives.
-
-To increase the chance that your pull request gets accepted:
+alternatives. To increase the chance that your pull request gets accepted:
 
 * Write a good commit message.
 * Be descriptive in your Pull Request description.
