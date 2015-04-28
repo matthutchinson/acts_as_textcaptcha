@@ -1,8 +1,10 @@
-(pending release)
+4.1.2 (11 May 2014)
+  * Updated gem dependencies
   * Added `rake console` for helpful debugging
 
 4.1.1 (13 January 2014)
   * Dropped gem signing & cert (http://tinyurl.com/p98owwz)
+
 4.1.0 (2 January 2014)
   * Dropping support for Rails 2
   * README updated
