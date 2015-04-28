@@ -1,4 +1,4 @@
-Guidelines for contributing
+### Guidelines for contributing
 
 1. Check existing Pull Requests, someone may already be doing the same thing!
 2. Fork this repository
