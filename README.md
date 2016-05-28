@@ -7,7 +7,7 @@
 [![Gem Dependencies](https://img.shields.io/gemnasium/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://gemnasium.com/matthutchinson/acts_as_textcaptcha)
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic
-questions from the excellent [Text CAPTCHA](http://textcaptcha.com/) web service
+questions from the excellent [TextCaptcha](http://textcaptcha.com/) web service
 (by [Rob Tuley](http://openknot.com/me/) of [Openknot](http://openknot.com/)).
 It is also possible to configure your own text captcha questions (instead, or as
 a fall back in the event of any remote API issues).
@@ -20,17 +20,13 @@ Logic questions from the web service are aimed at a child's age of 7, so they
 can be solved easily by even the most cognitively impaired users. As they
 involve human logic, questions cannot be solved by a robot. There are both
 advantages and disadvantages for using logic questions over image based
-captchas, find out more at [TextCAPTCHA](http://textcaptcha.com/why).
+captchas, find out more at [TextCaptcha](http://textcaptcha.com/).
 
 ## Demo
 
 Try a [working demo here](http://textcaptcha.herokuapp.com)!
 
 ## Installing
-
-*NOTE:* The steps to configure your app changed with the v4.0.0 release. If you
-are having problems please carefully check the steps below or refer to the [upgrade
-instructions](https://github.com/matthutchinson/acts_as_textcaptcha/wiki/Upgrading-from-3.0.10).
 
 First add the following to your Gemfile, then `bundle install`;
 
@@ -68,6 +64,10 @@ form view code, see the html produced from the textcaptcha_fields method in the
 [source
 code](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_helper.rb).
 
+*NOTE:* The steps to configure your app changed with v4.0.0. If you are having
+problems please carefully check the steps below or refer to the [upgrade
+instructions](https://github.com/matthutchinson/acts_as_textcaptcha/wiki/Upgrading-from-3.0.10).
+
 ### Toggling Textcaptcha
 
 You can toggle textcaptcha on/off for your models by overriding the
@@ -91,7 +91,7 @@ updating).  Here is a typical example showing how to overwrite the
       end
     end
 
-## More configuration options
+### Configuration options
 
 You can configure captchas with the following options;
 
@@ -112,7 +112,7 @@ For example;
                                                     { 'question' => 'The green hat is what color?', 'answers' => 'green' }]
     end
 
-### YAML config
+#### YAML config
 
 The gem can be configured for models individually (as shown above) or with a
 config/textcaptcha.yml file.  The config file must have an api_key defined and
@@ -124,7 +124,7 @@ template to your config directory;
 
     rake textcaptcha:config
 
-### Configuring _without_ the TextCAPTCHA web service
+#### Configuring _without_ the TextCaptcha web service
 
 To use only your own logic questions, simply ommit the api_key from the
 configuration and define at least 1 logic question and answer (see above).
@@ -132,7 +132,7 @@ configuration and define at least 1 logic question and answer (see above).
 ## Translations
 
 The gem uses the standard Rails I18n translation approach (with a fall-back to
-English). Unfortunately at present, the Text CAPTCHA web service only provides
+English). Unfortunately at present, the TextCaptcha web service only provides
 logic questions in English.
 
     en:
@@ -180,7 +180,7 @@ view helper method.  The ActiveRecord module makes use of two futher classes,
 and
 [TextcaptchaCache](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb).
 
-A call to @model.textcaptcha in your controller will query the Text CAPTCHA web
+A call to @model.textcaptcha in your controller will query the TextCaptcha web
 service.  A GET request is made with Net::HTTP and parsed using the default
 Rails ActiveSupport::XMLMini backend.  A textcaptcha_question and a random cache
 key is assigned to the record.  An array of possible answers is stored in the
@@ -221,7 +221,7 @@ What do you need?
 * [Rails](http://github.com/rails/rails) >= 3.0.0  (including Rails 4)
 * [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) - some basic cache configuration is necessary
 * [Ruby](http://ruby-lang.org/) >= 2.0.0 (tested with stable versions of 2.0, 2.1, 2.2, 2.3) - 1.8/1.9 support ended at version 4.1.1
-* [Text CAPTCHA API key](http://textcaptcha.com/register) (_optional_, since you can define your own logic questions)
+* [TextCaptcha API key](http://textcaptcha.com/register) (_optional_, since you can define your own logic questions)
 * [MiniTest](https://rubygems.org/gems/minitest) (_optional_ if you want to run the tests)
 * [SimpleCov](https://rubygems.org/gems/simplecov) (_optional_ if you want to run the tests with code coverage reporting)
 
@@ -263,7 +263,7 @@ this release for more information.
 ## Who's who?
 
 * [ActsAsTextcaptcha](http://github.com/matthutchinson/acts_as_textcaptcha) and [little robot drawing](http://www.flickr.com/photos/hiddenloop/4541195635/) by [Matthew Hutchinson](http://matthewhutchinson.net)
-* [Text CAPTCHA](http://textcaptcha.com) API and service by [Rob Tuley](http://openknot.com/me/) at [Openknot](http://openknot.com)
+* [TextCaptcha](http://textcaptcha.com) API and service by [Rob Tuley](http://openknot.com/me/) at [Openknot](http://openknot.com)
 
 ## Usage
 
