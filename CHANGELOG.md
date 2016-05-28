@@ -28,3 +28,5 @@ project adheres to [Semantic Versioning][Semver].
   * Test coverage improved
 
 (no change log available for older releases)
+
+[Semver]: http://semver.org
