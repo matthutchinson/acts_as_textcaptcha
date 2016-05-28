@@ -193,7 +193,7 @@ describe 'Textcaptcha' do
           end
         end
 
-        error.message.must_match /could not find any textcaptcha options/
+        error.message.must_match(/could not find any textcaptcha options/)
       end
     end
   end
