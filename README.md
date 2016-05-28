@@ -2,8 +2,8 @@
 
 [![Gem Version](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
 [![Travis Build Status](https://img.shields.io/travis/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
-[![Coverage Status](https://coveralls.io/repos/mroth/lolcommits/badge.svg?branch=master&service=github)](https://coveralls.io/r/matthutchinson/acts_as_textcaptcha?branch=master)
-[![Code Climate Analysis](https://img.shields.io/codeclimate/github/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha)
+[![Coverage Status](https://coveralls.io/repos/github/matthutchinson/acts_as_textcaptcha/badge.svg?branch=master)](https://coveralls.io/github/matthutchinson/acts_as_textcaptcha?branch=master)
+[![Code Climate](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/badges/gpa.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha)
 [![Gem Dependencies](https://img.shields.io/gemnasium/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://gemnasium.com/matthutchinson/acts_as_textcaptcha)
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic

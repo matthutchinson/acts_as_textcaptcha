@@ -24,7 +24,7 @@ module ActsAsTextcaptcha
         end
 
         response = http.get(url.path)
-        if response.body.empty?
+        if response.body.to_s.empty?
           raise ActsAsTextcaptcha::EmptyResponseError
         else
           return parse(response.body)

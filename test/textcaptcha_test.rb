@@ -81,12 +81,10 @@ describe 'Textcaptcha' do
 
   describe 'textcaptcha API' do
 
-    after(:each) do
-      FakeWeb.clean_registry
-    end
-
     it 'should generate a question from the service' do
       @review = Review.new
+      body     = "<captcha><question>Something?</question><answer>f6f7fec07f372b7bd5eb196bbca0f3f4</answer></captcha>"
+      stub_request(:get, %r{http://textcaptcha.com/api/}).and_return(:body => body)
 
       @review.textcaptcha
       @review.textcaptcha_question.wont_be_nil
@@ -102,7 +100,7 @@ describe 'Textcaptcha' do
       @review  = Review.new
       question = 'If tomorrow is Saturday, what day is today?'
       body     = "<captcha><question>#{question}</question><answer>f6f7fec07f372b7bd5eb196bbca0f3f4</answer></captcha>"
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
+      stub_request(:get, %r{http://textcaptcha.com/api/}).and_return(:body => body)
 
       @review.textcaptcha
       @review.textcaptcha_question.must_equal(question)
@@ -113,7 +111,7 @@ describe 'Textcaptcha' do
       @review  = Review.new
       question = 'If tomorrow is Saturday, what day is today?'
       body     = "<captcha><question>#{question}</question><answer>1</answer><answer>2</answer><answer>3</answer></captcha>"
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => body)
+      stub_request(:get, %r{http://textcaptcha.com/api}).and_return(:body => body)
 
       @review.textcaptcha
       @review.textcaptcha_question.must_equal(question)
@@ -122,7 +120,7 @@ describe 'Textcaptcha' do
 
     it 'should fallback to a user defined question when api returns nil' do
       @review = Review.new
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :body => '')
+      stub_request(:get, %r{http://textcaptcha.com/api}).and_return(:body => '')
       @review.textcaptcha
       @review.textcaptcha_question.must_equal('The green hat is what color?')
       find_in_cache(@review.textcaptcha_key).wont_be_nil
@@ -131,7 +129,7 @@ describe 'Textcaptcha' do
     it 'should not generate any question or answer when no user defined questions set' do
       @comment = Comment.new
 
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
+      stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
       @comment.textcaptcha
       @comment.textcaptcha_question.must_equal nil
       @comment.textcaptcha_key.must_equal nil
@@ -140,7 +138,7 @@ describe 'Textcaptcha' do
     it 'should not generate any question or answer when user defined questions set incorrectly' do
       @comment = MovieReview.new
 
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/|, :exception => SocketError)
+      stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
       @comment.textcaptcha
       @comment.textcaptcha_question.must_equal nil
       @comment.textcaptcha_key.must_equal nil

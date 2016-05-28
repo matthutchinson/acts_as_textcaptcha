@@ -19,7 +19,7 @@ elsif ENV['TRAVIS']
 end
 
 require 'minitest/autorun'
-require 'fakeweb'
+require 'webmock/minitest'
 
 require 'rails/all'
 

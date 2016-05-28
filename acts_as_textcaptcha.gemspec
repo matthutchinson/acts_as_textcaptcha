@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # always test against latest rails version
-  s.add_development_dependency('rails', '~> 4.2.1')
+  s.add_development_dependency('rails', '~> 4.2.6')
 
   s.add_development_dependency('mime-types')
   s.add_development_dependency('bundler')
@@ -39,6 +39,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('simplecov')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
-  s.add_development_dependency('fakeweb')
+  s.add_development_dependency('webmock')
   s.add_development_dependency('coveralls')
 end

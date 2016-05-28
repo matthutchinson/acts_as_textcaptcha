@@ -2,15 +2,11 @@ require File.expand_path(File.dirname(__FILE__)+'/test_helper')
 
 describe 'TextcaptchaApi' do
 
-  after(:each) do
-    FakeWeb.clean_registry
-  end
-
   describe 'with a valid xml response' do
 
     before(:each) do
       body = "<captcha><question>1+1?</question><answer>1</answer><answer>2</answer><answer>3</answer></captcha>"
-      FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/abc|, :body => body)
+      stub_request(:get, "http://textcaptcha.com/api/abc").to_return(:body => body)
     end
 
     it 'should fetch and parse an answer from the service' do
@@ -33,18 +29,18 @@ describe 'TextcaptchaApi' do
       Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
       URI::InvalidURIError
     ].each do |error|
-       FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/xyz|, :exception => error)
+       stub_request(:get, "http://textcaptcha.com/api/xyz").to_raise(error)
        ActsAsTextcaptcha::TextcaptchaApi.fetch('xyz').must_equal nil
      end
   end
 
   it 'should return nil when body cannot be parsed as XML' do
-    FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/jibber|, :body => 'here be gibberish')
+    stub_request(:get, "http://textcaptcha.com/api/jibber").to_return(:body => 'here be gibberish')
     ActsAsTextcaptcha::TextcaptchaApi.fetch('jibber').must_equal nil
   end
 
   it 'should return nil when body is empty' do
-    FakeWeb.register_uri(:get, %r|http://textcaptcha\.com/api/empty|, :body => '')
+    stub_request(:get, "http://textcaptcha.com/api/empty").to_return(:body => '')
     ActsAsTextcaptcha::TextcaptchaApi.fetch('empty').must_equal nil
   end
 end
