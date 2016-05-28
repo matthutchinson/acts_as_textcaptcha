@@ -155,8 +155,8 @@ describe 'Textcaptcha' do
     end
 
     it 'should be configured with textcaptcha.yml' do
-      Widget.textcaptcha_config[:api_key].must_equal '6eh1co0j12mi2ogcoggkkok4o'
-      Widget.textcaptcha_config[:questions].length.must_equal 10
+      Widget.textcaptcha_config[:api_key].must_equal('6eh1co0j12mi2ogcoggkkok4o')
+      Widget.textcaptcha_config[:questions].length.must_equal(10)
     end
   end
 
