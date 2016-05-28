@@ -1,28 +1,14 @@
 gem 'rdoc'
 
-# default rake
-task :default => [:test]
-
-# helpful console
-desc "Irb console that requires this gem"
-task :console do
-  require 'irb'
-  require 'irb/completion'
-  require 'acts_as_textcaptcha'
-  ARGV.clear
-  IRB.start
-end
-
-
-# bundler tasks
-require 'bundler'
-Bundler::GemHelper.install_tasks
-
-# run all tests
+require 'bundler/gem_tasks'
 require 'rake/testtask'
-Rake::TestTask.new do |t|
-  t.pattern = "test/*_test.rb"
+Rake::TestTask.new(:test) do |t|
+  t.libs << "test"
+  t.libs << "lib"
+  t.test_files = FileList['test/**/*_test.rb']
 end
+
+task :default => [:test]
 
 # code coverage
 namespace :test do

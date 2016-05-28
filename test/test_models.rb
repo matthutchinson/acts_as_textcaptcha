@@ -1,4 +1,3 @@
-# coding: utf-8
 # models for use in tests
 
 class Widget < ActiveRecord::Base
