@@ -1,4 +1,7 @@
-### Version History
+### ActsAsTextcaptcha Change Log
+
+All notable changes to this project will be documented in this file. This
+project adheres to [Semantic Versioning][Semver].
 
 4.1.3 (28 May 2016)
   * Updated gem dependencies
