@@ -1,5 +1,12 @@
 ### Version History
 
+4.1.3 (28 May 2016)
+  * Updated gem dependencies
+  * Added bin/console
+  * Cleaned up Rakefile
+  * Added MIT license and Code of Conduct
+  * Removed Pry gem (development dependency)
+
 4.1.2 (11 May 2014)
   * Updated gem dependencies
   * Added `rake console` for helpful debugging
