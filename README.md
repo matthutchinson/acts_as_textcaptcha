@@ -49,7 +49,7 @@ logic question for the new record, like so;
     end
 
 Finally, in your form view add the textcaptcha question and answer fields using
-the textcaptcha_fields helper.  Feel free to arrange the HTML within this block
+the textcaptcha_fields helper. Feel free to arrange the HTML within this block
 as you like;
 
     <%= textcaptcha_fields(f) do %>
@@ -64,9 +64,9 @@ form view code, see the html produced from the textcaptcha_fields method in the
 [source
 code](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_helper.rb).
 
-*NOTE:* The steps to configure your app changed with v4.0.0. If you are having
-problems please carefully check the steps below or refer to the [upgrade
-instructions](https://github.com/matthutchinson/acts_as_textcaptcha/wiki/Upgrading-from-3.0.10).
+*NOTE:* These installation steps changed with v4.0.0 of this gem. If you are
+having problems please refer to the 3.0 [upgrade
+guide](https://github.com/matthutchinson/acts_as_textcaptcha/wiki/Upgrading-from-3.0.10).
 
 ### Toggling Textcaptcha
 
@@ -80,7 +80,7 @@ on/off e.g. for logged in users. By default the `perform_textcaptcha?` method
 record](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha.rb#L54).
 
 So out of the box, spam protection is only enabled for creating new records (not
-updating).  Here is a typical example showing how to overwrite the
+updating). Here is a typical example showing how to overwrite the
 `perform_textcaptcha?` method, while maintaining the new record check.
 
     class Comment < ActiveRecord::Base
@@ -96,7 +96,7 @@ updating).  Here is a typical example showing how to overwrite the
 You can configure captchas with the following options;
 
 * *api_key* (_required_) - get a free key from http://textcaptcha.com/api
-* *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no API key has been set.  Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
+* *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no API key has been set. Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
 * *cache_expiry_minutes* (_optional_) - minutes for answers to persist in the cache (default 10 minutes), see [below for details](https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do)
 * *http_read_timeout* (_optional_) - Net::HTTP option, seconds to wait for one block to be read from the remote API
 * *http_open_timeout* (_optional_) - Net::HTTP option, seconds to wait for the connection to open to the remote API
@@ -115,9 +115,9 @@ For example;
 #### YAML config
 
 The gem can be configured for models individually (as shown above) or with a
-config/textcaptcha.yml file.  The config file must have an api_key defined and
+config/textcaptcha.yml file. The config file must have an api_key defined and
 optional array of questions. Options definied inline in model classes take
-preference over the configuration in textcaptcha.yml.  The gem comes with a
+preference over the configuration in textcaptcha.yml. The gem comes with a
 handy rake task to copy over a
 [textcaptcha.yml](http://github.com/matthutchinson/acts_as_textcaptcha/raw/master/config/textcaptcha.yml)
 template to your config directory;
@@ -152,7 +152,7 @@ logic questions in English.
 ## Without Rails or ActiveRecord
 
 Although this gem has been built with Rails in mind, is entirely possible to use
-it without ActiveRecord, or Rails.  As an example, take a look at the
+it without ActiveRecord, or Rails. As an example, take a look at the
 [Contact](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44)
 model used in the test suite
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44).
@@ -161,57 +161,57 @@ Please note that the built-in
 [TextcaptchaCache](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb)
 class directly wraps the
 [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html).
-An alternative  TextcaptchaCache implementation will be necessary if Rails.cache
-is not available.
+An alternative  TextcaptchaCache implementation will be necessary if
+`Rails.cache` is not available.
 
 ## Testing and docs
 
 In development you can run the tests and rdoc tasks like so;
 
-* rake test (all tests)
-* rake test:coverage (all tests with code coverage)
-* rake rdoc (generate docs)
+* `rake test` (all tests)
+* `rake test:coverage` (all tests with code coverage)
+* `rake rdoc` (generate docs)
 
 ## What does the code do?
 
 The gem contains two parts, a module for your ActiveRecord models, and a single
-view helper method.  The ActiveRecord module makes use of two futher classes,
+view helper method. The ActiveRecord module makes use of two futher classes,
 [TextcaptchaApi](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_api.rb)
 and
 [TextcaptchaCache](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb).
 
-A call to @model.textcaptcha in your controller will query the TextCaptcha web
-service.  A GET request is made with Net::HTTP and parsed using the default
-Rails ActiveSupport::XMLMini backend.  A textcaptcha_question and a random cache
-key is assigned to the record.  An array of possible answers is stored in the
-TextcaptchaCache with this random key.  The cached answers have (by default) a
+A call to `@model.textcaptcha` in your controller will query the TextCaptcha web
+service. A GET request is made with Net::HTTP and parsed using the default
+Rails `ActiveSupport::XMLMini` backend. A textcaptcha_question and a random cache
+key is assigned to the record. An array of possible answers is stored in the
+TextcaptchaCache with this random key. The cached answers have (by default) a
 10 minute TTL in your cache. If your forms take more than 10 minutes to be
 completed you can adjust this value setting the `cache_expiry_minutes` option.
 Internally TextcaptchaCache wraps
 [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html)
-and all cache keys are namespaced.
+and all cache keys are name spaced.
 
-On saving, validate_textcaptcha is called on @model.validate checking that the
-@model.textcaptcha_answer matches one of the possible answers (retrieved from
-the cache).  By default, this validation is _only_ carried out on new records,
-i.e. never on edit, only on create.  All attempted answers are case-insensitive
+On saving, `validate_textcaptcha` is called on @model.validate checking that the
+`@model.textcaptcha_answer` matches one of the possible answers (retrieved from
+the cache). By default, this validation is _only_ carried out on new records,
+i.e. never on edit, only on create. All attempted answers are case-insensitive
 and have trailing/leading white-space removed.
 
 Regardless of a correct, or incorrect answer the possible answers are cleared
-from the cache and a new random key is generated and assigned.  An incorrect
-answer will cause a new question to be prompted.  After one correct answer, the
+from the cache and a new random key is generated and assigned. An incorrect
+answer will cause a new question to be prompted. After one correct answer, the
 answer and a mutating key are sent on further form requests, and no question is
 presented in the form.
 
 If an error or timeout occurs during API fetching, ActsAsTextcaptcha will fall
-back to choose a random logic question defined in your options (see above).  If
+back to choose a random logic question defined in your options (see above). If
 the web service fails or no API key is specified AND no alternate questions are
 configured, the @model will not require textcaptcha checking and will pass as
 valid.
 
 For more details on the code please check the
 [documentation](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha).
-Tests are written with [MiniTest](https://rubygems.org/gems/minitest).  Pull
+Tests are written with [MiniTest](https://rubygems.org/gems/minitest). Pull
 requests and bug reports are welcome.
 
 ## Requirements
@@ -231,9 +231,9 @@ class directly wraps the
 [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html)
 object.
 
-## Rails 2 support
+## Rails 2 Support
 
-Support for Rails 2 was dropped with the release of v4.1.0. If you would like to
+Support for Rails 2 was dropped with the release of `v4.1.0`. If you would like to
 continue to use this gem with an older version of Rails (>= 2.3.8), please lock
 the version to `4.0.0`. Like so;
 
@@ -268,7 +268,7 @@ this release for more information.
 ## Usage
 
 This gem is used in a number of production websites and apps. It was originally
-extracted from code developed for [Bugle](http://bugleblogs.com).  If you're
+extracted from code developed for [Bugle](http://bugleblogs.com). If you're
 happily using acts_as_textcaptcha in production, let me know and I'll add you to
 this list!
 
