@@ -26,8 +26,8 @@ captchas, find out more at [TextCaptcha](http://textcaptcha.com/).
 
 Try a [working demo here](https://acts-as-textcaptcha-demo.herokuapp.com)!
 
-**Or** deploy your own example Rails app (configured with acts_as_textcaptcha)
-to Heroku. One-click below, or see
+**Or** click below to deploy your own example Rails app (configured with
+acts_as_textcaptcha) to Heroku. See
 [here](https://github.com/matthutchinson/acts_as_textcaptcha_demo) for more
 details.
 
