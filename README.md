@@ -24,7 +24,14 @@ captchas, find out more at [TextCaptcha](http://textcaptcha.com/).
 
 ## Demo
 
-Try a [working demo here](http://textcaptcha.herokuapp.com)!
+Try a [working demo here](https://acts-as-textcaptcha-demo.herokuapp.com)!
+
+**Or** deploy your own example Rails app (configured with acts_as_textcaptcha)
+to Heroku. One-click below, or see
+[here](https://github.com/matthutchinson/acts_as_textcaptcha_demo) for more
+details.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/matthutchinson/acts_as_textcaptcha_demo/tree/master)
 
 ## Installing
 
@@ -249,7 +256,7 @@ this release for more information.
 
 ## Links
 
-* [Demo](http://textcaptcha.herokuapp.com)
+* [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
 * [Travis CI](http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha)
 * [Test Coverage](https://coveralls.io/r/matthutchinson/acts_as_textcaptcha?branch=master)
 * [Code Climate](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha)
