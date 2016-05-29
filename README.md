@@ -10,10 +10,10 @@ ActsAsTextcaptcha provides spam protection for your Rails models using logic
 questions from the excellent [TextCaptcha](http://textcaptcha.com/) web service
 (by [Rob Tuley](http://openknot.com/me/) of [Openknot](http://openknot.com/)).
 It is also possible to configure your own text captcha questions (instead, or as
-a fall back in the event of any remote API issues).
+a fallback in the event of any API issues).
 
 This gem is actively maintained, has good test coverage and is compatible with
-Rails >= 3.0.0 (including Rails 4). If you have any issues please report them
+Rails >= 3.0.0 (including Rails 4). If you have issues please report them
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/issues/new).
 
 Logic questions from the web service are aimed at a child's age of 7, so they
@@ -39,13 +39,16 @@ First add the following to your Gemfile, then `bundle install`;
 
     gem 'acts_as_textcaptcha'
 
-Next [grab an API key for your website](http://textcaptcha.com/api), then add
-the following code to models you would like to protect;
+Next add the following code to models you would like to protect;
 
     class Comment < ActiveRecord::Base
-      # (this is the simplest way to configure the gem, with an API key only)
-      acts_as_textcaptcha :api_key => 'PASTE_YOUR_TEXTCAPTCHA_API_KEY_HERE'
+      # (this is the simplest way to configure the gem)
+      acts_as_textcaptcha :api_key => 'TEXTCAPTCHA_API_IDENTITY'
     end
+
+`TEXTCAPTCHA_API_IDENTITY` should be some reference to yourself (e.g. an email
+address, domain or similar where if there are problems with your usage you can
+be contacted).
 
 Next in your controller's *new* action you'll want to generate and assign the
 logic question for the new record, like so;
@@ -91,7 +94,7 @@ updating). Here is a typical example showing how to overwrite the
 `perform_textcaptcha?` method, while maintaining the new record check.
 
     class Comment < ActiveRecord::Base
-      acts_as_textcaptcha :api_key => 'YOUR_TEXTCAPTCHA_API_KEY'
+      acts_as_textcaptcha :api_key => 'TEXTCAPTCHA_API_IDENTITY'
 
       def perform_textcaptcha?
         super && user.admin?
@@ -102,8 +105,8 @@ updating). Here is a typical example showing how to overwrite the
 
 You can configure captchas with the following options;
 
-* *api_key* (_required_) - get a free key from http://textcaptcha.com/api
-* *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no API key has been set. Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
+* *api_key* (_required_) - some reference to yourself (to identity you to the textcaptcha.com API)
+* *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no `api_key` has been set. Multiple answers to the same question are comma separated (e.g. 2,two). So do not use commas in your answers!
 * *cache_expiry_minutes* (_optional_) - minutes for answers to persist in the cache (default 10 minutes), see [below for details](https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do)
 * *http_read_timeout* (_optional_) - Net::HTTP option, seconds to wait for one block to be read from the remote API
 * *http_open_timeout* (_optional_) - Net::HTTP option, seconds to wait for the connection to open to the remote API
@@ -111,7 +114,7 @@ You can configure captchas with the following options;
 For example;
 
     class Comment < ActiveRecord::Base
-      acts_as_textcaptcha :api_key              => 'YOUR_TEXTCAPTCHA_API_KEY',
+      acts_as_textcaptcha :api_key              => 'TEXTCAPTCHA_API_IDENTITY',
                           :http_read_timeout    => 60,
                           :http_read_timeout    => 10,
                           :cache_expiry_minutes => 10,
@@ -122,7 +125,7 @@ For example;
 #### YAML config
 
 The gem can be configured for models individually (as shown above) or with a
-config/textcaptcha.yml file. The config file must have an api_key defined and
+config/textcaptcha.yml file. The config file must have an `api_key` defined and
 optional array of questions. Options definied inline in model classes take
 preference over the configuration in textcaptcha.yml. The gem comes with a
 handy rake task to copy over a
@@ -133,7 +136,7 @@ template to your config directory;
 
 #### Configuring _without_ the TextCaptcha web service
 
-To use only your own logic questions, simply ommit the api_key from the
+To use only your own logic questions, simply ommit the `api_key` from the
 configuration and define at least 1 logic question and answer (see above).
 
 ## Translations
@@ -228,7 +231,6 @@ What do you need?
 * [Rails](http://github.com/rails/rails) >= 3.0.0  (including Rails 4)
 * [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) - some basic cache configuration is necessary
 * [Ruby](http://ruby-lang.org/) >= 2.0.0 (tested with stable versions of 2.0, 2.1, 2.2, 2.3) - 1.8/1.9 support ended at version 4.1.1
-* [TextCaptcha API key](http://textcaptcha.com/register) (_optional_, since you can define your own logic questions)
 * [MiniTest](https://rubygems.org/gems/minitest) (_optional_ if you want to run the tests)
 * [SimpleCov](https://rubygems.org/gems/simplecov) (_optional_ if you want to run the tests with code coverage reporting)
 
