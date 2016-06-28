@@ -22,9 +22,9 @@ end
 # rdoc tasks
 require 'rdoc/task'
 RDoc::Task.new do |rd|
-  rd.main     = "README.rdoc"
+  rd.main     = "README.md"
   rd.title    = 'acts_as_textcaptcha'
   rd.rdoc_dir = 'doc'
   rd.options  << "--all"
-  rd.rdoc_files.include("README.rdoc", "LICENSE", "lib/**/*.rb")
+  rd.rdoc_files.include("README.md", "LICENSE.txt", "lib/**/*.rb")
 end
