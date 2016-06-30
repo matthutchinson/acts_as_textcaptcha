@@ -1,13 +1,20 @@
 sudo: false
 language: ruby
 before_install:
-  - mkdir -p ./tmp/test_db
+- mkdir -p ./tmp/test_db
 rvm:
-  - 2.0.0
-  - 2.1.9
-  - 2.2.5
-  - 2.3.1
-
+- 2.0.0
+- 2.1.9
+- 2.2.5
+- 2.3.1
 branches:
   except:
-    - gh-pages
+  - gh-pages
+deploy:
+  provider: rubygems
+  api_key:
+    secure: AUJy9JSNrNcJcZc6JQErh1LtmHrdQBk1W0DYVT0soyBEx5hbKKoIympmrlh9VcZxNpbLfbuCdxl2C0nWMembwx71tLytvM76BqoU2KKTxQQLju8SUAyzGQabkNHr0mzpUDQiC4L16c5k+voCkWtptGkxiVq6eDZExBSzDM8cVMk=
+  gem: acts_as_textcaptcha
+  on:
+    tags: true
+    repo: matthutchinson/acts_as_textcaptcha
