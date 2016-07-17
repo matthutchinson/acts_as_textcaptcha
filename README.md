@@ -13,7 +13,7 @@ It is also possible to configure your own text captcha questions (instead, or as
 a fallback in the event of any API issues).
 
 This gem is actively maintained, has good test coverage and is compatible with
-Rails >= 3.0.0 (including Rails 4). If you have issues please report them
+Rails >= 3.0.0 (including Rails 4 & 5). If you have issues please report them
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/issues/new).
 
 Logic questions from the web service are aimed at a child's age of 7, so they
@@ -41,7 +41,7 @@ First add the following to your Gemfile, then `bundle install`;
 
 Next add the following code to models you would like to protect;
 
-    class Comment < ActiveRecord::Base
+    class Comment < ApplicationRecord
       # (this is the simplest way to configure the gem)
       acts_as_textcaptcha :api_key => 'TEXTCAPTCHA_API_IDENTITY'
     end
@@ -74,11 +74,15 @@ form view code, see the html produced from the textcaptcha_fields method in the
 [source
 code](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_helper.rb).
 
+*NOTE:* The defaults for [cache
+configuration](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores)
+changed with Rails 5. This gem requires a working Rails.cache store to exist.
+
 *NOTE:* These installation steps changed with v4.0.0 of this gem. If you are
 having problems please refer to the 3.0 [upgrade
 guide](https://github.com/matthutchinson/acts_as_textcaptcha/wiki/Upgrading-from-3.0.10).
 
-### Toggling Textcaptcha
+### Toggling TextCaptcha
 
 You can toggle textcaptcha on/off for your models by overriding the
 `perform_textcaptcha?` method. If it returns false, no questions will be fetched
@@ -93,7 +97,7 @@ So out of the box, spam protection is only enabled for creating new records (not
 updating). Here is a typical example showing how to overwrite the
 `perform_textcaptcha?` method, while maintaining the new record check.
 
-    class Comment < ActiveRecord::Base
+    class Comment < ApplicationRecord
       acts_as_textcaptcha :api_key => 'TEXTCAPTCHA_API_IDENTITY'
 
       def perform_textcaptcha?
@@ -113,7 +117,7 @@ You can configure captchas with the following options;
 
 For example;
 
-    class Comment < ActiveRecord::Base
+    class Comment < ApplicationRecord
       acts_as_textcaptcha :api_key              => 'TEXTCAPTCHA_API_IDENTITY',
                           :http_read_timeout    => 60,
                           :http_read_timeout    => 10,
@@ -157,7 +161,7 @@ logic questions in English.
       activemodel:
         attributes:
           comment:
-            textcaptcha_answer: "Textcaptcha answer"
+            textcaptcha_answer: "TextCaptcha answer"
 
 ## Without Rails or ActiveRecord
 
@@ -171,7 +175,7 @@ Please note that the built-in
 [TextcaptchaCache](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_cache.rb)
 class directly wraps the
 [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html).
-An alternative  TextcaptchaCache implementation will be necessary if
+An alternative TextcaptchaCache implementation will be necessary if
 `Rails.cache` is not available.
 
 ## Testing and docs
@@ -228,9 +232,9 @@ requests and bug reports are welcome.
 
 What do you need?
 
-* [Rails](http://github.com/rails/rails) >= 3.0.0  (including Rails 4)
-* [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html) - some basic cache configuration is necessary
-* [Ruby](http://ruby-lang.org/) >= 2.0.0 (tested with stable versions of 2.0, 2.1, 2.2, 2.3) - 1.8/1.9 support ended at version 4.1.1
+* [Rails](http://github.com/rails/rails) >= 3.0.0  (including Rails 4 & 5)
+* [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores) - a basic cache configuration is necessary
+* [Ruby](http://ruby-lang.org/) >= 2.0.0 (tested with stable versions of 2.2, 2.3) - 1.8/1.9 support ended at version 4.1.1
 * [MiniTest](https://rubygems.org/gems/minitest) (_optional_ if you want to run the tests)
 * [SimpleCov](https://rubygems.org/gems/simplecov) (_optional_ if you want to run the tests with code coverage reporting)
 
@@ -249,7 +253,7 @@ the version to `4.0.0`. Like so;
     # in your Gemfile
     gem 'acts_as_textcaptcha', '=4.0.0'
 
-    # or in environment.rb
+    # or in config/environment.rb
     config.gem 'acts_as_textcaptcha', :version => '=4.0.0'
 
 Check out the
