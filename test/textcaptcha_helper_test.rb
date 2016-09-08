@@ -36,8 +36,8 @@ describe 'TextcaptchaHelper' do
     html = render_template
 
     assert_match(/\<label for\=\"note_textcaptcha_answer\"\>1\+1\<\/label\>/, html)
-    assert_match(/\<input value\=\"\" type\=\"text\" name\=\"note\[textcaptcha_answer\]\" id\=\"note_textcaptcha_answer\" \/\>/, html)
-    assert_match(/\<input type\=\"hidden\" value\=\"([0-9a-f]{32})\" name\=\"note\[textcaptcha_key\]\" id\=\"note_textcaptcha_key\" \/\>/, html)
+    assert_match(/\<input(.*)name\=\"note\[textcaptcha_answer\]\"(.*)\/\>/, html)
+    assert_match(/\<input(.*)name\=\"note\[textcaptcha_key\]\"(.*)\/\>/, html)
   end
 
   it 'should render hidden answer and textcaptcha_key when only answer is present' do
@@ -46,8 +46,8 @@ describe 'TextcaptchaHelper' do
     html = render_template
 
     refute_match(/\<label for\=\"note_textcaptcha_answer\"\>1\+1\<\/label\>/, html)
-    assert_match(/\<input type\=\"hidden\" value\=\"2\" name\=\"note\[textcaptcha_answer\]\" id\=\"note_textcaptcha_answer\" \/\>/, html)
-    assert_match(/\<input type\=\"hidden\" value\=\"([0-9a-f]{32})\" name\=\"note\[textcaptcha_key\]\" id\=\"note_textcaptcha_key\" \/\>/, html)
+    assert_match(/\<input(.*)name\=\"note\[textcaptcha_answer\]\"(.*)\/\>/, html)
+    assert_match(/\<input(.*)name\=\"note\[textcaptcha_key\]\"(.*)\/\>/, html)
   end
 
   it 'should not render any question or answer when perform_textcaptcha? is false' do
