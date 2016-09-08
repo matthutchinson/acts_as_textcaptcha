@@ -30,8 +30,12 @@ require './test/test_models'
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'tmp/test_db/acts_as_textcaptcha.sqlite3.db')
 load(File.dirname(__FILE__) + "/schema.rb")
 
-# initialize a Rails.cache (use a basic memory store in tests)
-Rails.cache = ActiveSupport::Cache::MemoryStore.new
+# initialize the Rails cache (use a basic memory store in tests)
+if Rails.version >= '4'
+  Rails.cache = ActiveSupport::Cache::MemoryStore.new
+else
+  RAILS_CACHE = ActiveSupport::Cache::MemoryStore.new
+end
 
 # additional helper methods for use in tests
 def find_in_cache(key)

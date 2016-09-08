@@ -2,9 +2,18 @@ sudo: false
 language: ruby
 before_install:
 - mkdir -p ./tmp/test_db
+gemfile:
+  - gemfiles/rails_3.gemfile
+  - gemfiles/rails_4.gemfile
+  - gemfiles/rails_5.gemfile
 rvm:
+- 2.1.10
 - 2.2.5
 - 2.3.1
+matrix:
+  exclude:
+    - rvm: 2.1.10
+      gemfile: gemfiles/rails_5.gemfile
 branches:
   except:
   - gh-pages

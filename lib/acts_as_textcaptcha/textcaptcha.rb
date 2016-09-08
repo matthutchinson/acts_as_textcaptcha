@@ -12,12 +12,9 @@ module ActsAsTextcaptcha
       cattr_accessor :textcaptcha_config
       attr_accessor  :textcaptcha_question, :textcaptcha_answer, :textcaptcha_key
 
-      if respond_to?(:accessible_attributes)
-        if accessible_attributes.nil? && respond_to?(:attr_protected)
-          attr_protected :textcaptcha_question
-        elsif respond_to?(:attr_accessible)
-          attr_accessible :textcaptcha_answer, :textcaptcha_key
-        end
+      # Rails 3, ensure these attrs are accessible
+      if respond_to?(:accessible_attributes) && respond_to?(:attr_accessible)
+        attr_accessible :textcaptcha_answer, :textcaptcha_key
       end
 
       validate :validate_textcaptcha, :if => :perform_textcaptcha?
