@@ -1,7 +1,5 @@
 sudo: false
 language: ruby
-before_install:
-- mkdir -p ./tmp/test_db
 gemfile:
   - gemfiles/rails_3.gemfile
   - gemfiles/rails_4.gemfile

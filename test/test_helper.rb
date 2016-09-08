@@ -27,7 +27,7 @@ require 'acts_as_textcaptcha'
 require './test/test_models'
 
 # load and initialize test db schema
-ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'tmp/test_db/acts_as_textcaptcha.sqlite3.db')
+ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'tmp/acts_as_textcaptcha_test.sqlite3.db')
 load(File.dirname(__FILE__) + "/schema.rb")
 
 # initialize the Rails cache (use a basic memory store in tests)
