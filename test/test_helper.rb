@@ -2,6 +2,9 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib/acts_as_tex
 
 ENV['RAILS_ENV'] = 'test'
 
+# ensure tmp dir exists
+FileUtils.mkdir_p './tmp'
+
 # confgure test coverage reporting
 if ENV['COVERAGE']
   require 'simplecov'
@@ -20,9 +23,7 @@ end
 
 require 'minitest/autorun'
 require 'webmock/minitest'
-
 require 'rails/all'
-
 require 'acts_as_textcaptcha'
 require './test/test_models'
 
