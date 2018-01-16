@@ -13,9 +13,8 @@ matrix:
   exclude:
     - rvm: 2.1.10
       gemfile: gemfiles/rails_5.gemfile
-branches:
-  except:
-  - gh-pages
+before_install:
+  - gem update --system
 deploy:
   provider: rubygems
   api_key:
