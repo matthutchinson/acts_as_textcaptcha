@@ -131,8 +131,8 @@ describe 'Textcaptcha' do
 
       stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
       @comment.textcaptcha
-      @comment.textcaptcha_question.must_equal nil
-      @comment.textcaptcha_key.must_equal nil
+      assert_nil @comment.textcaptcha_question
+      assert_nil @comment.textcaptcha_key
     end
 
     it 'should not generate any question or answer when user defined questions set incorrectly' do
@@ -140,8 +140,8 @@ describe 'Textcaptcha' do
 
       stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
       @comment.textcaptcha
-      @comment.textcaptcha_question.must_equal nil
-      @comment.textcaptcha_key.must_equal nil
+      assert_nil @comment.textcaptcha_question
+      assert_nil @comment.textcaptcha_key
     end
   end
 

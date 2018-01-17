@@ -20,6 +20,6 @@ describe 'TextcaptchaCache' do
     @cache.read('mykey').must_equal [1,2,3]
     @cache.delete('mykey')
 
-    @cache.read('mykey').must_equal nil
+    assert_nil @cache.read('mykey')
   end
 end

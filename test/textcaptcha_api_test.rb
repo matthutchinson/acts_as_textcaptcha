@@ -30,17 +30,17 @@ describe 'TextcaptchaApi' do
       URI::InvalidURIError
     ].each do |error|
        stub_request(:get, "http://textcaptcha.com/api/xyz").to_raise(error)
-       ActsAsTextcaptcha::TextcaptchaApi.fetch('xyz').must_equal nil
+       assert_nil ActsAsTextcaptcha::TextcaptchaApi.fetch('xyz')
      end
   end
 
   it 'should return nil when body cannot be parsed as XML' do
     stub_request(:get, "http://textcaptcha.com/api/jibber").to_return(:body => 'here be gibberish')
-    ActsAsTextcaptcha::TextcaptchaApi.fetch('jibber').must_equal nil
+    assert_nil ActsAsTextcaptcha::TextcaptchaApi.fetch('jibber')
   end
 
   it 'should return nil when body is empty' do
     stub_request(:get, "http://textcaptcha.com/api/empty").to_return(:body => '')
-    ActsAsTextcaptcha::TextcaptchaApi.fetch('empty').must_equal nil
+    assert_nil ActsAsTextcaptcha::TextcaptchaApi.fetch('empty')
   end
 end
