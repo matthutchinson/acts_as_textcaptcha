@@ -1,6 +1,6 @@
 ## ActAsTextcaptcha
 
-[![Gem Version](https://img.shields.io/gem/v/matthutchinson/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/matthutchinson/acts_as_textcaptcha)
+[![Gem Version](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
 [![Travis Build Status](https://travis-ci.org/matthutchinson/acts_as_textcaptcha.svg?branch=master)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/matthutchinson/acts_as_textcaptcha.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 [![Test Coverage](https://img.shields.io/codeclimate/c/matthutchinson/acts_as_textcaptcha.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
