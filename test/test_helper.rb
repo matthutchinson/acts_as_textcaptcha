@@ -16,9 +16,6 @@ if ENV['COVERAGE']
     SimpleCov.result.format!
     `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
   end
-elsif ENV['TRAVIS']
-  require 'coveralls'
-  Coveralls.wear!
 end
 
 require 'minitest/autorun'

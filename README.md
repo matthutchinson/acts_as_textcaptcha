@@ -1,10 +1,10 @@
 ## ActAsTextcaptcha
 
 [![Gem Version](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
-[![Travis Build Status](https://img.shields.io/travis/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
-[![Coverage Status](https://coveralls.io/repos/github/matthutchinson/acts_as_textcaptcha/badge.svg?branch=master)](https://coveralls.io/github/matthutchinson/acts_as_textcaptcha?branch=master)
-[![Code Climate](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/badges/gpa.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha)
-[![Gem Dependencies](https://img.shields.io/gemnasium/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://gemnasium.com/matthutchinson/acts_as_textcaptcha)
+[![Travis Build Status](https://travis-ci.org/lolcommits/acts_as_textcaptcha.svg?branch=master)](https://travis-ci.org/lolcommits/acts_as_textcaptcha)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/lolcommits/acts_as_textcaptcha.svg)](https://codeclimate.com/github/lolcommits/acts_as_textcaptcha/maintainability)
+[![Test Coverage](https://img.shields.io/codeclimate/c/lolcommits/acts_as_textcaptcha.svg)](https://codeclimate.com/github/lolcommits/acts_as_textcaptcha/test_coverage)
+[![Gem Dependency Status](https://gemnasium.com/badges/github.com/lolcommits/acts_as_textcaptcha.svg)](https://gemnasium.com/github.com/lolcommits/acts_as_textcaptcha)
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic
 questions from the excellent [TextCaptcha](http://textcaptcha.com/) web service
@@ -263,8 +263,8 @@ this release for further instructions.
 
 * [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
 * [Travis CI](http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha)
-* [Test Coverage](https://coveralls.io/r/matthutchinson/acts_as_textcaptcha?branch=master)
-* [Code Climate](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha)
+* [Maintainability](https://codeclimate.com/github/lolcommits/acts_as_textcaptcha/maintainability)
+* [Test Coverage](https://codeclimate.com/github/lolcommits/acts_as_textcaptcha/test_coverage)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
 * [Wiki](http://wiki.github.com/matthutchinson/acts_as_textcaptcha/)
 * [Issues](http://github.com/matthutchinson/acts_as_textcaptcha/issues)
