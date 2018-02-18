@@ -3,7 +3,6 @@
 [![Gem Version](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
 [![Travis Build Status](https://travis-ci.org/matthutchinson/acts_as_textcaptcha.svg?branch=master)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/matthutchinson/acts_as_textcaptcha.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
-[![Test Coverage](https://img.shields.io/codeclimate/c/matthutchinson/acts_as_textcaptcha.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 [![Gem Dependency Status](https://gemnasium.com/badges/github.com/matthutchinson/acts_as_textcaptcha.svg)](https://gemnasium.com/github.com/matthutchinson/acts_as_textcaptcha)
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic
@@ -177,7 +176,6 @@ model used in the test suite
 In development you can run the tests and rdoc tasks like so;
 
 * `rake test` (all tests)
-* `rake test:coverage` (all tests with code coverage reporting)
 * `appraisal rake test` (all tests with all gemfile variations)
 * `appraisal rails-3 rake test` (all tests using a specific gemfile)
 * `rake rdoc` (generate docs)
@@ -264,7 +262,6 @@ this release for further instructions.
 * [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
 * [Travis CI](http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha)
 * [Maintainability](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
-* [Test Coverage](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
 * [Wiki](http://wiki.github.com/matthutchinson/acts_as_textcaptcha/)
 * [Issues](http://github.com/matthutchinson/acts_as_textcaptcha/issues)

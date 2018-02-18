@@ -30,13 +30,14 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test}/*`.split("\n")
   s.require_paths = ["lib"]
 
+  s.required_ruby_version = ">= 2.1"
+
   # always test against latest rails version
   s.add_development_dependency('rails', '~> 5.1.4')
 
   s.add_development_dependency('mime-types')
   s.add_development_dependency('bundler')
   s.add_development_dependency('minitest')
-  s.add_development_dependency('simplecov')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('sqlite3')
   s.add_development_dependency('webmock')

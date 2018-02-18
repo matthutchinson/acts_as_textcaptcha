@@ -5,14 +5,10 @@ gemfile:
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
 rvm:
-- 2.2.9
-- 2.3.6
-- 2.4.3
-- 2.5.0
-matrix:
-  exclude:
-    - rvm: 2.1.10
-      gemfile: gemfiles/rails_5.gemfile
+  - 2.2.9
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
 before_install:
   - gem update --system
 deploy:
@@ -23,12 +19,3 @@ deploy:
   on:
     tags: true
     repo: matthutchinson/acts_as_textcaptcha
-env:
-  global:
-    - CC_TEST_REPORTER_ID=3ff570478529bcdd11ef42d33229702118aa36b17a3de01c3f6d5a9c58fc7a4c
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

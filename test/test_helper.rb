@@ -5,19 +5,6 @@ ENV['RAILS_ENV'] = 'test'
 # ensure tmp dir exists
 FileUtils.mkdir_p './tmp'
 
-# confgure test coverage reporting
-if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter '/test/'
-    add_filter '/vendor/'
-  end
-  SimpleCov.at_exit do
-    SimpleCov.result.format!
-    `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
-  end
-end
-
 require 'minitest/autorun'
 require 'webmock/minitest'
 require 'rails/all'

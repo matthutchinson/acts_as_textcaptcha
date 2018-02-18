@@ -12,15 +12,6 @@ end
 
 task :default => [:test]
 
-# code coverage
-namespace :test do
-  desc "Run all tests and generate a code coverage report (simplecov)"
-  task :coverage do
-    ENV['COVERAGE'] = 'true'
-    Rake::Task['test'].execute
-  end
-end
-
 # rdoc tasks
 require 'rdoc/task'
 RDoc::Task.new do |rd|
