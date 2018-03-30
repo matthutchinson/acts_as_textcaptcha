@@ -2,7 +2,7 @@
 
 [![Gem Version](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
 [![Travis Build Status](https://travis-ci.org/matthutchinson/acts_as_textcaptcha.svg?branch=master)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/matthutchinson/acts_as_textcaptcha.svg)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/db61b57be5b466b300ab/maintainability)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 [![Gem Dependency Status](https://gemnasium.com/badges/github.com/matthutchinson/acts_as_textcaptcha.svg)](https://gemnasium.com/github.com/matthutchinson/acts_as_textcaptcha)
 
 ActsAsTextcaptcha provides spam protection for your Rails models using logic
