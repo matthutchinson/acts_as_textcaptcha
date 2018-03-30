@@ -41,7 +41,7 @@ project adheres to [Semantic Versioning][Semver].
 (further change log details for older releases are unavailable)
 
 [Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...HEAD
-[4.1.3]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0
+[4.2.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.2...v4.1.3
 [4.1.2]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.1...v4.1.2
 [4.1.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.0...v4.1.1
