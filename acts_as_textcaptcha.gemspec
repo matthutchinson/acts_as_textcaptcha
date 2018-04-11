@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.1"
 
   # always test against latest rails version
-  s.add_development_dependency('rails', '~> 5.1.5')
+  s.add_development_dependency('rails', '~> 5.2.0')
 
   s.add_development_dependency('mime-types')
   s.add_development_dependency('bundler')
