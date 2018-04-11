@@ -4,13 +4,22 @@ require 'rake/testtask'
 
 gem 'rdoc'
 
+# run tests with code coverage
+namespace :test do
+  desc 'Run all tests and generate a coverage report'
+  task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task[:test].execute
+  end
+end
+
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList['test/**/*_test.rb']
 end
 
-task :default => [:test]
+task :default => ['test:coverage']
 
 # rdoc tasks
 require 'rdoc/task'

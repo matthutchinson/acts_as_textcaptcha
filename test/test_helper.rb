@@ -1,3 +1,14 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/test/"
+  end
+  SimpleCov.at_exit do
+    SimpleCov.result.format!
+    `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
+  end
+end
+
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib/acts_as_textcaptcha'))
 
 ENV['RAILS_ENV'] = 'test'
