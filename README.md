@@ -8,19 +8,18 @@
 ActsAsTextcaptcha provides spam protection for your Rails models using logic
 questions from the excellent [TextCaptcha](http://textcaptcha.com/) web service
 (by [Rob Tuley](https://twitter.com/robtuley). It is also possible to configure your
-own captcha questions (instead, or as a fallback in the event of any API
-issues).
-
-This gem is actively maintained, has good test coverage and is compatible with
-Rails >= 3 (including Rails 4 & 5) and Ruby >= 2.1. If you have issues
-please report them
-[here](https://github.com/matthutchinson/acts_as_textcaptcha/issues/new).
+own captcha questions instead, or as a fallback in the event of any API
+issue.
 
 Logic questions from the web service are aimed at a child's age of 7, so they
 can be solved easily by even the most cognitively impaired users. As they
 involve human logic, questions cannot be solved by a robot. There are both
 advantages and disadvantages in using logic questions over image based
 captchas, find out more at [TextCaptcha](http://textcaptcha.com/).
+
+This gem is actively maintained, has good test coverage and is compatible with
+Rails >= 3 and Ruby >= 2.1. If you have issues please report them
+[here](https://github.com/matthutchinson/acts_as_textcaptcha/issues/new).
 
 ## Demo
 
@@ -229,7 +228,7 @@ requests and bug reports are welcome.
 
 What do you need?
 
-* [Rails](http://github.com/rails/rails) >= 3  (including Rails 4 & 5)
+* [Rails](http://github.com/rails/rails) >= 3
 * [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores) - a basic cache configuration is necessary
 * [Ruby](http://ruby-lang.org/) >= 2.1
 
@@ -239,19 +238,6 @@ class directly wraps the
 [Rails.cache](http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html).
 An alternative TextcaptchaCache implementation will be necessary if
 `Rails.cache` is not available.
-
-
-## Rails 2 Support
-
-Support for Rails 2 was dropped with the release of `v4.1.0`. If you would like
-to continue to use this gem with an older version of Rails (>= 2.3.8), please
-lock your Gemfile with version `4.0.0`. Like so;
-
-    # in your Gemfile
-    gem 'acts_as_textcaptcha', '=4.0.0'
-
-    # or in config/environment.rb
-    config.gem 'acts_as_textcaptcha', :version => '=4.0.0'
 
 Check out the
 [README](https://github.com/matthutchinson/acts_as_textcaptcha/tree/v4.0.0) for
