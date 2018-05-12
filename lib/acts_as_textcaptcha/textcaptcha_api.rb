@@ -1,61 +1,55 @@
-# simple wrapper for the textcaptcha.com API service
-# loads and parses captcha question and answers
-
-require 'rexml/document'
+require "json"
 
 module ActsAsTextcaptcha
-
-  # raised if an empty response is returned
-  class EmptyResponseError < StandardError; end;
-
   class TextcaptchaApi
+    BASE_URL = "http://textcaptcha.com"
 
-    ENDPOINT = 'http://textcaptcha.com/api/'
-
-    def self.fetch(api_key, options = {})
-      begin
-        url = uri_parser.parse("#{ENDPOINT}#{api_key}")
-        http = Net::HTTP.new(url.host, url.port)
-        if options[:http_open_timeout]
-          http.open_timeout = options[:http_open_timeout]
-        end
-        if options[:http_read_timeout]
-          http.read_timeout = options[:http_read_timeout]
-        end
-
-        response = http.get(url.path)
-        if response.body.to_s.empty?
-          raise ActsAsTextcaptcha::EmptyResponseError
-        else
-          return parse(response.body)
-        end
-      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-        Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
-        Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
-        URI::InvalidURIError, ActsAsTextcaptcha::EmptyResponseError,
-        REXML::ParseException
-        # rescue from these errors and continue
-      end
-    end
-
-    def self.parse(xml)
-      parsed_xml = ActiveSupport::XmlMini.parse(xml)['captcha']
-      question = parsed_xml['question']['__content__']
-      if parsed_xml['answer'].is_a?(Array)
-        answers = parsed_xml['answer'].collect { |a| a['__content__'] }
+    def initialize(api_key: nil, api_endpoint: nil, raise_errors: false)
+      if api_endpoint
+        self.uri = URI(api_endpoint)
       else
-        answers = [parsed_xml['answer']['__content__']]
+        self.uri = URI("#{BASE_URL}/#{api_key}.json")
       end
-
-      [question, answers]
+      self.raise_errors = raise_errors || false
+    rescue URI::InvalidURIError => exception
+      raise ApiKeyError.new(api_key, exception)
     end
 
+    def fetch
+      parse(get.to_s)
+    end
 
     private
 
-    def self.uri_parser
-      # URI.parse is deprecated in 1.9.2
-      URI.const_defined?(:Parser) ? URI::Parser.new : URI
-    end
+      attr_accessor :uri, :raise_errors
+
+      def get
+        response = Net::HTTP.new(uri.host, uri.port).get(uri.path)
+        if response.code == "200"
+          response.body
+        else
+          handle_error ResponseError.new(uri, "status: #{response.code}")
+        end
+      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
+        Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
+        Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+        Net::ProtocolError => exception
+        handle_error ResponseError.new(uri, exception)
+      end
+
+      def parse(response)
+        JSON.parse(response) unless response.empty?
+      rescue JSON::ParserError
+        handle_error ParseError.new(uri)
+      end
+
+      def handle_error(error)
+        if raise_errors
+          raise error
+        else
+          Rails.logger.error("#{error.class} #{error.message}")
+          nil
+        end
+      end
   end
 end

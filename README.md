@@ -109,18 +109,17 @@ updating). Here is a typical example showing how to overwrite the
 
 You can configure captchas with the following options;
 
-* *api_key* (_required_) - reference to yourself (e.g. your email - to identify calls to the textcaptcha.com API)
+* *api_key* (_required_) - reference to yourself (e.g. your email - to identify calls to the textcaptcha.com API).
 * *questions* (_optional_) - array of question and answer hashes (see below) A random question from this array will be asked if the web service fails OR if no `api_key` has been set. Multiple answers to the same question are comma separated (e.g. 2,two). Don't use commas in your answers!
-* *cache_expiry_minutes* (_optional_) - minutes for answers to persist in the cache (default 10 minutes), see [below for details](https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do)
-* *http_read_timeout* (_optional_) - Net::HTTP option, seconds to wait for one block to be read from the remote API
-* *http_open_timeout* (_optional_) - Net::HTTP option, seconds to wait for the connection to open to the remote API
+* *cache_expiry_minutes* (_optional_) - minutes for answers to persist in the cache (default 10 minutes), see [below for details](https://github.com/matthutchinson/acts_as_textcaptcha#what-does-the-code-do).
+* *raise_errors* (_optional_) - if true, errors will be raised if the API endpoint fails to respond correctly (default false).
+* *api_endpoint* (_optional_) - set your own JSON API endpoint to fetch questions and answers from (see below).
 
 For example;
 
     class Comment < ApplicationRecord
-      acts_as_textcaptcha :api_key              => 'TEXTCAPTCHA_API_IDENTITY',
-                          :http_read_timeout    => 60,
-                          :http_read_timeout    => 10,
+      acts_as_textcaptcha :api_key              => 'TEXTCAPTCHA_API_IDENTITY_KEY',
+                          :raise_errors         => false,
                           :cache_expiry_minutes => 10,
                           :questions            => [{ 'question' => '1+1', 'answers' => '2,two' },
                                                     { 'question' => 'The green hat is what color?', 'answers' => 'green' }]
@@ -139,10 +138,22 @@ template to your config directory;
 
     rake textcaptcha:config
 
-#### Configuring _without_ the TextCaptcha web service
+#### Configuring without the TextCaptcha web service
 
 To use only your own logic questions, simply omit the `api_key` from the
 configuration and define at least one logic question and answer (see above).
+
+You can also set the optional `api_endpoint` config to fetch questions and
+answers from your own JSON API URL. This URL must respond with a json object
+like this:
+
+    {
+      "q": "What number is 4th in the series 39, 11, 31 and nineteen?",
+      "a": ["1f0e3dad99908345f7439f8ffabdffc4","1d56cec552bf111de57687e4b5f8c795"]
+    }
+
+With `"a"` set to an array of answers as MD5 checksums of the lower-cased
+strings. The `api_key` option is ignored if `api_endpoint` is set.
 
 ## Translations
 
@@ -167,9 +178,8 @@ logic questions in English.
 ## Without ActiveRecord
 
 It is possible to use this gem without ActiveRecord. As an example, take a look at the
-[Contact](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44)
-model used in the test suite
-[here](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/test_models.rb#L44).
+[Contact](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/test/helpers/models.rb#L56)
+model used in the test suite.
 
 ## Testing and docs
 

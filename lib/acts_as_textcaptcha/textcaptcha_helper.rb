@@ -1,21 +1,21 @@
 module ActsAsTextcaptcha
   module TextcaptchaHelper
 
-    # builds html form fields for the textcaptcha
     def textcaptcha_fields(f, &block)
-      model        = f.object
-      captcha_html = ''
-      if model.perform_textcaptcha?
-        if model.textcaptcha_key
-          captcha_html += f.hidden_field(:textcaptcha_key)
-          if model.textcaptcha_question
-            captcha_html += capture(&block)
-          elsif model.textcaptcha_answer
-            captcha_html += f.hidden_field(:textcaptcha_answer)
-          end
-        end
+      if f.object.perform_textcaptcha? && f.object.textcaptcha_key
+        build_textcaptcha_form_elements(f, &block)
       end
+    end
 
+    private
+
+    def build_textcaptcha_form_elements(f, &block)
+      captcha_html = f.hidden_field(:textcaptcha_key)
+      if f.object.textcaptcha_question
+        captcha_html += capture(&block)
+      elsif f.object.textcaptcha_answer
+        captcha_html += f.hidden_field(:textcaptcha_answer)
+      end
       captcha_html.html_safe
     end
   end

@@ -1,198 +1,98 @@
-require File.expand_path(File.dirname(__FILE__)+'/test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-describe 'Textcaptcha' do
+class TextcaptchaTest < Minitest::Test
 
-  describe 'validations' do
+  def test_answer_submitted_after_expiry_time
+    comment = FastComment.new
+    comment.textcaptcha
+    assert_equal comment.textcaptcha_question, '1+1'
+    comment.textcaptcha_answer = 'two'
+    sleep(0.01)
 
-    before(:each) do
-      @note = Note.new
-      @note.textcaptcha
-    end
-
-    it 'should validate an ActiveRecord object (with multiple correct answers)' do
-      @note.textcaptcha_question.must_equal('1+1')
-      @note.valid?.must_equal false
-      @note.errors[:textcaptcha_answer].first.must_equal('is incorrect, try another question instead')
-
-      @note.textcaptcha_answer = 'two'
-      @note.valid?.must_equal true
-      @note.errors[:textcaptcha_answer].must_be_empty
-
-      @note.textcaptcha_answer = '2'
-      @note.valid?.must_equal true
-      @note.errors[:textcaptcha_answer].must_be_empty
-    end
-
-    it 'should strip whitespace and downcase answer' do
-      @note.textcaptcha_answer = ' tWo '
-      @note.valid?.must_equal true
-      @note.errors[:textcaptcha_answer].must_be_empty
-    end
-
-    it 'should always be valid when record has been saved' do
-      @note.textcaptcha_answer = '2'
-      @note.save!
-      @note.textcaptcha
-
-      @note.textcaptcha_answer = 'wrong answer'
-      @note.new_record?.must_equal false
-      @note.valid?.must_equal true
-      @note.errors[:textcaptcha_answer].must_be_empty
-    end
-
-    it 'should always be valid when perform_textcaptcha? is false' do
-      @note.turn_off_captcha = true
-      @note.valid?.must_equal true
-      @note.errors[:textcaptcha_answer].must_be_empty
-
-      @note.save.must_equal true
-    end
-
-    it 'should validate a non ActiveRecord object' do
-      @contact = Contact.new
-      @contact.textcaptcha
-
-      @contact.textcaptcha_question.must_equal('one+1')
-      @contact.textcaptcha_answer = 'wrong'
-      @contact.valid?.must_equal false
-
-      @contact.textcaptcha_answer = 'two'
-      @contact.valid?.must_equal true
-      @contact.errors[:textcaptcha_answer].must_be_empty
-    end
+    refute comment.valid?
+    assert_equal comment.errors[:textcaptcha_answer].first,
+      'was not submitted quickly enough, try another question instead'
   end
 
-  describe 'with fast expiry time' do
+  def test_fetches_q_and_a_from_api
+    stub_api_with(valid_json_response)
 
-    before(:each) do
-      @comment = FastComment.new
-    end
+    review = Review.new
+    review.textcaptcha
+    refute_equal review.textcaptcha_question, 'The green hat is what color?'
+    refute_nil review.textcaptcha_question
 
-    it 'should work' do
-      @comment.textcaptcha
-      @comment.textcaptcha_question.must_equal('1+1')
-      @comment.textcaptcha_answer = 'two'
-      sleep(0.01)
+    refute_nil find_in_cache(review.textcaptcha_key)
 
-      @comment.valid?.must_equal false
-      @comment.errors[:textcaptcha_answer].first.must_equal('was not submitted quickly enough, try another question instead')
-    end
+    refute review.valid?
+    assert_equal review.errors[:textcaptcha_answer].first,
+      'is incorrect, try another question instead'
   end
 
-  describe 'textcaptcha API' do
+  def test_parses_answers_from_json_response
+    review  = Review.new
+    stub_api_with(valid_json_response)
 
-    it 'should generate a question from the service' do
-      @review = Review.new
-      body     = "<captcha><question>Something?</question><answer>f6f7fec07f372b7bd5eb196bbca0f3f4</answer></captcha>"
-      stub_request(:get, %r{http://textcaptcha.com/api/}).and_return(:body => body)
-
-      @review.textcaptcha
-      @review.textcaptcha_question.wont_be_nil
-      @review.textcaptcha_question.wont_equal('The green hat is what color?')
-
-      find_in_cache(@review.textcaptcha_key).wont_be_nil
-
-      @review.valid?.must_equal false
-      @review.errors[:textcaptcha_answer].first.must_equal('is incorrect, try another question instead')
-    end
-
-    it 'should parse a single answer from XML response' do
-      @review  = Review.new
-      question = 'If tomorrow is Saturday, what day is today?'
-      body     = "<captcha><question>#{question}</question><answer>f6f7fec07f372b7bd5eb196bbca0f3f4</answer></captcha>"
-      stub_request(:get, %r{http://textcaptcha.com/api/}).and_return(:body => body)
-
-      @review.textcaptcha
-      @review.textcaptcha_question.must_equal(question)
-      find_in_cache(@review.textcaptcha_key).must_equal(['f6f7fec07f372b7bd5eb196bbca0f3f4'])
-    end
-
-    it 'should parse multiple answers from XML response' do
-      @review  = Review.new
-      question = 'If tomorrow is Saturday, what day is today?'
-      body     = "<captcha><question>#{question}</question><answer>1</answer><answer>2</answer><answer>3</answer></captcha>"
-      stub_request(:get, %r{http://textcaptcha.com/api}).and_return(:body => body)
-
-      @review.textcaptcha
-      @review.textcaptcha_question.must_equal(question)
-      find_in_cache(@review.textcaptcha_key).length.must_equal(3)
-    end
-
-    it 'should fallback to a user defined question when api returns nil' do
-      @review = Review.new
-      stub_request(:get, %r{http://textcaptcha.com/api}).and_return(:body => '')
-      @review.textcaptcha
-      @review.textcaptcha_question.must_equal('The green hat is what color?')
-      find_in_cache(@review.textcaptcha_key).wont_be_nil
-    end
-
-    it 'should not generate any question or answer when no user defined questions set' do
-      @comment = Comment.new
-
-      stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
-      @comment.textcaptcha
-      assert_nil @comment.textcaptcha_question
-      assert_nil @comment.textcaptcha_key
-    end
-
-    it 'should not generate any question or answer when user defined questions set incorrectly' do
-      @comment = MovieReview.new
-
-      stub_request(:get, %r{http://textcaptcha.com/api/}).to_raise(SocketError)
-      @comment.textcaptcha
-      assert_nil @comment.textcaptcha_question
-      assert_nil @comment.textcaptcha_key
-    end
+    review.textcaptcha
+    assert_equal review.textcaptcha_question, "What is Jennifer\'s name?"
+    assert_equal find_in_cache(review.textcaptcha_key).length, 1
   end
 
-  describe 'configuration' do
+  def test_assigns_user_defined_question_when_api_fetch_returns_nil
+    stub_request(:get, 'http://textcaptcha.com/api_key.json').
+      and_return(body: '')
 
-    it 'should be configured with inline hash' do
-      Review.textcaptcha_config.must_equal({ :api_key   => '8u5ixtdnq9csc84cok0owswgo',
-                                             :questions => [{ :question => 'The green hat is what color?', :answers => 'green' }]})
-    end
-
-    it 'should be configured with textcaptcha.yml' do
-      Widget.textcaptcha_config[:api_key].must_equal('6eh1co0j12mi2ogcoggkkok4o')
-      Widget.textcaptcha_config[:questions].length.must_equal(10)
-    end
+    review = Review.new
+    review.textcaptcha
+    assert_equal review.textcaptcha_question, 'The green hat is what color?'
+    refute_nil find_in_cache(review.textcaptcha_key)
   end
 
-  describe 'with strong parameters' do
+  def test_assigns_no_q_and_a_when_no_user_defined_question_set_and_api_fails
+    stub_request(:get, 'http://textcaptcha.com/api_key.json').
+      to_raise(SocketError)
 
-    it 'should work with accessible_attr widget ' do
-      @widget = StrongAccessibleWidget.new
-
-      @widget.textcaptcha
-      @widget.textcaptcha_question.must_equal('1+1')
-      @widget.valid?.must_equal false
-    end
-
-    it 'should work with protected_attr widget ' do
-      @widget = StrongProtectedWidget.new
-
-      @widget.textcaptcha
-      @widget.textcaptcha_question.must_equal('1+1')
-      @widget.valid?.must_equal false
-    end
+    comment = Comment.new
+    comment.textcaptcha
+    assert_nil comment.textcaptcha_question
+    assert_nil comment.textcaptcha_key
   end
 
-  describe 'when missing config' do
+  def test_assigns_no_q_and_a_when_user_defined_question_set_incorrectly_and_api_fails
+    stub_request(:get, 'http://textcaptcha.com/api_key.json')
+      .to_raise(SocketError)
 
-    it 'should raise an error' do
-      YAML.stub :load, -> { raise 'some bad things happened' } do
+    comment = MovieReview.new
+    comment.textcaptcha
+    assert_nil comment.textcaptcha_question
+    assert_nil comment.textcaptcha_key
+  end
 
-        error = assert_raises(ArgumentError) do
-          class NoConfig
-            include ActiveModel::Validations
-            include ActiveModel::Conversion
-            extend ActsAsTextcaptcha::Textcaptcha
+  def test_configuration_with_hash
+    assert_equal Review.textcaptcha_config, {
+      api_key: 'api_key',
+      questions: [
+        { question: 'The green hat is what color?', answers: 'green' }
+      ]
+    }
+  end
+
+  def test_configuration_with_textcaptcha_yml
+    assert_equal Widget.textcaptcha_config[:api_key], 'TEST_TEXTCAPTCHA_API_IDENT'
+    assert_equal Widget.textcaptcha_config[:questions].length, 10
+  end
+
+  def test_raises_error_when_config_is_missing
+    YAML.stub :load, -> { raise "bad things" } do
+      exception = assert_raises(ArgumentError) do
+        # using eval here, sorry :(
+        eval <<-CLASS
+          class SomeWidget < ApplicationRecord
             acts_as_textcaptcha
           end
-        end
-
-        error.message.must_match(/could not find any textcaptcha options/)
+        CLASS
       end
+      assert_match(/could not find any textcaptcha options/, exception.message)
     end
   end
 end

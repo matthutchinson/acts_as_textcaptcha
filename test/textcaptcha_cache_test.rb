@@ -1,25 +1,34 @@
-require File.expand_path(File.dirname(__FILE__)+'/test_helper')
+require File.expand_path(File.dirname(__FILE__) + '/test_helper')
 
-describe 'TextcaptchaCache' do
+class ActsAsTextcaptcha::TextcaptchaCacheTest < Minitest::Test
 
-  before(:each) do
-    @cache = ActsAsTextcaptcha::TextcaptchaCache.new
-    @cache.write('mykey', [1,2,3])
+  def setup
+    cache.write('mykey', [1,2,3])
   end
 
-  it 'should write to the cache' do
-    @cache.write('my-new-key', 'abc')
-    @cache.read('my-new-key').must_equal 'abc'
+  def test_reading_from_cache
+    assert_equal cache.read('mykey'), [1,2,3]
   end
 
-  it 'should read from the cache' do
-    @cache.read('mykey').must_equal [1,2,3]
+  def test_writing_to_cache
+    cache.write('my-new-key', 'abc')
+    assert_equal cache.read('my-new-key'), 'abc'
   end
 
-  it 'should delete from the cache' do
-    @cache.read('mykey').must_equal [1,2,3]
-    @cache.delete('mykey')
+  def test_deleting_from_cache
+    assert_equal cache.read('mykey'), [1,2,3]
+    cache.delete('mykey')
 
-    assert_nil @cache.read('mykey')
+    assert_nil cache.read('mykey')
   end
+
+  def test_cache_keys_use_a_prefix
+    assert_equal Rails.cache.read("#{ActsAsTextcaptcha::TextcaptchaCache::KEY_PREFIX}mykey"), [1,2,3]
+  end
+
+  private
+
+    def cache
+      @cache ||= ActsAsTextcaptcha::TextcaptchaCache.new
+    end
 end

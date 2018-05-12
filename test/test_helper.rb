@@ -1,39 +1,44 @@
-if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter "/test/"
-  end
-  SimpleCov.at_exit do
-    SimpleCov.result.format!
-    `open ./coverage/index.html` if RUBY_PLATFORM =~ /darwin/
-  end
-end
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + './../lib/acts_as_textcaptcha'))
 
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__)+'./../lib/acts_as_textcaptcha'))
-
-ENV['RAILS_ENV'] = 'test'
-
-# ensure tmp dir exists
-FileUtils.mkdir_p './tmp'
-
+# testing libs
+require 'simplecov' if ENV['COVERAGE']
 require 'minitest/autorun'
 require 'webmock/minitest'
-require 'rails/all'
+require './test/helpers/rails'
 require 'acts_as_textcaptcha'
-require './test/test_models'
+require './test/helpers/models'
 
-# load and initialize test db schema
-ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'tmp/acts_as_textcaptcha_test.sqlite3.db')
-load(File.dirname(__FILE__) + "/schema.rb")
+# test helper methods
 
-# initialize the Rails cache (use a basic memory store in tests)
-if Rails.version >= '4'
-  Rails.cache = ActiveSupport::Cache::MemoryStore.new
-else
-  RAILS_CACHE = ActiveSupport::Cache::MemoryStore.new
+def clear_rails_log
+  LOGGER_IO.truncate(0)
 end
 
-# additional helper methods for use in tests
+def assert_log_matches(lines)
+  LOGGER_IO.rewind
+  logged_lines = LOGGER_IO.readlines
+  lines.each_with_index do |line, index|
+    assert_match line, logged_lines[index]
+  end
+end
+
 def find_in_cache(key)
-  Rails.cache.read("#{ActsAsTextcaptcha::TextcaptchaCache::CACHE_KEY_PREFIX}#{key}")
+  Rails.cache.read("#{ActsAsTextcaptcha::TextcaptchaCache::KEY_PREFIX}#{key}")
+end
+
+def stub_api_with(response_body, api_key: 'api_key', api_endpoint: nil, http_status: 200)
+  api_endpoint ||= "http://textcaptcha.com/#{api_key}.json"
+  stub_request(:get, api_endpoint).to_return(
+    status: http_status,
+    body: response_body
+  )
+end
+
+def valid_json_response
+  json_response("single_answer.json")
+end
+
+def json_response(filename)
+  fixture_dir = File.expand_path(File.dirname(__FILE__)+"/fixtures/")
+  File.read("#{fixture_dir}/responses/#{filename}")
 end
