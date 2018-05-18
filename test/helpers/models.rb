@@ -1,3 +1,8 @@
+# build config file from template if it does not exist
+unless File.exist?('./config/textcaptcha.yml')
+  ActsAsTextcaptcha::TextcaptchaConfig.create_yml_file
+end
+
 # models for use in tests
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true

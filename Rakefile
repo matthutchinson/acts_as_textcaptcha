@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler/gem_tasks'
 require 'rake/testtask'
+load './lib/tasks/textcaptcha.rake'
 
 gem 'rdoc'
 

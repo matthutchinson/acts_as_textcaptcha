@@ -3,45 +3,66 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "acts_as_textcaptcha/version"
 
-Gem::Specification.new do |s|
-  s.name        = "acts_as_textcaptcha"
-  s.version     = ActsAsTextcaptcha::VERSION
-  s.authors     = ["Matthew Hutchinson"]
-  s.email       = ["matt@hiddenloop.com"]
-  s.homepage    = "http://github.com/matthutchinson/acts_as_textcaptcha"
-  s.license     = 'MIT'
-  s.summary     = %q{Spam protection for your models via logic questions and the textcaptcha.com API}
+Gem::Specification.new do |spec|
+  spec.name     = "acts_as_textcaptcha"
+  spec.version  = ActsAsTextcaptcha::VERSION
+  spec.authors  = ["Matthew Hutchinson"]
+  spec.email    = ["matt@hiddenloop.com"]
+  spec.homepage = "http://github.com/matthutchinson/acts_as_textcaptcha"
+  spec.license  = 'MIT'
+  spec.summary  = <<-EOF
+  Spam protection for your models via logic questions and the TextCaptcha API
+  EOF
 
-  s.description = %q{Simple question/answer based spam protection for your Rails models.
-  You can define your own logic questions and/or fetch questions from the textcaptcha.com API.
-  The questions involve human logic and are tough for spam bots to crack.
-  For more reasons on why logic questions are a good idea visit; http://textcaptcha.com/why}
+  spec.description = <<-EOF
+  Simple question/answer based spam protection for your Rails models. You can
+  define your own logic questions and/or fetch questions from the TextCaptcha
+  API. The questions involve human logic and are tough for spam bots to crack.
+  For reasons on why logic questions are a good idea visit:
+  http://textcaptcha.com/why
+  EOF
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
-  # 'allowed_push_host' to allow pushing to a single host or delete this section
-  # to allow pushing to any host.
-  if s.respond_to?(:metadata)
-    s.metadata['allowed_push_host'] = "https://rubygems.org"
+  spec.metadata = {
+    "homepage_uri"    => "https://github.com/matthutchinson/acts_as_textcaptcha",
+    "changelog_uri"   => "https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha",
+    "bug_tracker_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha/issues",
+  }
+
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata["allowed_push_host"] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test}/*`.split("\n")
-  s.require_paths = ["lib"]
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.test_files    = `git ls-files -- {test}/*`.split("\n")
+  spec.bindir        = "bin"
+  spec.require_paths = ["lib"]
 
-  s.required_ruby_version = ">= 2.1"
+  # documentation
+  spec.has_rdoc         = true
+  spec.extra_rdoc_files = ["README.md", "LICENSE"]
+  spec.rdoc_options << "--title" << "ActAsTextcaptcha" << "--main" << "README.md" << "-ri"
 
-  # always test against latest rails version
-  s.add_development_dependency('rails', '~> 5.2.0')
+  # non-gem dependecies
+  spec.required_ruby_version = ">= 2.1"
 
-  s.add_development_dependency('mime-types')
-  s.add_development_dependency('bundler')
-  s.add_development_dependency('minitest')
-  s.add_development_dependency('rdoc')
-  s.add_development_dependency('sqlite3')
-  s.add_development_dependency('webmock')
-  s.add_development_dependency('simplecov')
-  s.add_development_dependency('appraisal')
-  s.add_development_dependency('pry-byebug')
+  # dev gems
+  spec.add_development_dependency('bundler')
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency('pry-byebug')
+
+  # docs
+  spec.add_development_dependency('rdoc')
+
+  # testing
+  spec.add_development_dependency('minitest')
+  spec.add_development_dependency('rails', '~> 5.2.0')
+  spec.add_development_dependency('sqlite3')
+  spec.add_development_dependency('webmock')
+  spec.add_development_dependency('simplecov')
+  spec.add_development_dependency('appraisal')
 end
