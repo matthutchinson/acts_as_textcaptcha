@@ -5,12 +5,12 @@ namespace :textcaptcha do
 
   desc "Creates an example textcaptcha config at config/textcaptcha.yml"
   task :config do
-    dest = File.join((Rails.root ? Rails.root : '.'), 'config', 'textcaptcha.yml')
-    if File.exist?(dest)
-      puts "Ooops, a textcaptcha config file at #{dest} already exists ... aborting."
+    path = File.join((Rails.root ? Rails.root : '.'), 'config', 'textcaptcha.yml')
+    if File.exist?(path)
+      puts "Ooops, a textcaptcha config file at #{path} already exists ... aborting."
     else
-      ActsAsTextcaptcha::TextcaptchaConfig.create_yml_file(dest)
-      puts "Done, config generated at #{dest}\nEdit this file to add your TextCaptcha API key (see http://textcaptcha.com)."
+      ActsAsTextcaptcha::TextcaptchaConfig.create(path: path)
+      puts "Done, config generated at #{path}\nEdit this file to add your TextCaptcha API key (see http://textcaptcha.com)."
     end
   end
 end

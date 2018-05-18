@@ -9,14 +9,14 @@ module ActsAsTextcaptcha
 
     private
 
-    def build_textcaptcha_form_elements(f, &block)
-      captcha_html = f.hidden_field(:textcaptcha_key)
-      if f.object.textcaptcha_question
-        captcha_html += capture(&block)
-      elsif f.object.textcaptcha_answer
-        captcha_html += f.hidden_field(:textcaptcha_answer)
+      def build_textcaptcha_form_elements(f, &block)
+        captcha_html = f.hidden_field(:textcaptcha_key)
+        if f.object.textcaptcha_question
+          captcha_html += capture(&block)
+        elsif f.object.textcaptcha_answer
+          captcha_html += f.hidden_field(:textcaptcha_answer)
+        end
+        captcha_html.html_safe
       end
-      captcha_html.html_safe
-    end
   end
 end

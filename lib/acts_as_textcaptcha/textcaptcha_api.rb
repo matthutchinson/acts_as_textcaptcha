@@ -1,8 +1,9 @@
-require "json"
+require 'json'
 
 module ActsAsTextcaptcha
   class TextcaptchaApi
-    BASE_URL = "http://textcaptcha.com"
+
+    BASE_URL = 'http://textcaptcha.com'
 
     def initialize(api_key: nil, api_endpoint: nil, raise_errors: false)
       if api_endpoint
@@ -25,7 +26,7 @@ module ActsAsTextcaptcha
 
       def get
         response = Net::HTTP.new(uri.host, uri.port).get(uri.path)
-        if response.code == "200"
+        if response.code == '200'
           response.body
         else
           handle_error ResponseError.new(uri, "status: #{response.code}")

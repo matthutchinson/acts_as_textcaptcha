@@ -1,11 +1,6 @@
 module ActsAsTextcaptcha
   class TextcaptchaConfig
 
-    def self.create_yml_file(dest = './config/textcaptcha.yml')
-      FileUtils.mkdir_p(File.dirname(dest))
-      File.open(dest, 'w') { |f| f.write(YAML) }
-    end
-
     YAML = <<-CONFIG
 development: &common_settings
   api_key: 'TEXTCAPTCHA_API_IDENT' # see http://textcaptcha.com for details
@@ -42,5 +37,10 @@ test:
 production:
   <<: *common_settings
 CONFIG
+
+    def self.create(path: './config/textcaptcha.yml')
+      FileUtils.mkdir_p(File.dirname(path))
+      File.open(path, 'w') { |f| f.write(YAML) }
+    end
   end
 end
