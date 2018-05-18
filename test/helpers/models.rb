@@ -1,4 +1,4 @@
-# build config file from template if it does not exist
+# build config file (used by some models) from template if it does not exist
 unless File.exist?('./config/textcaptcha.yml')
   ActsAsTextcaptcha::TextcaptchaConfig.create_yml_file
 end
