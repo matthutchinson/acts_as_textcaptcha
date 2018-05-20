@@ -9,6 +9,25 @@ adheres to [Semantic Versioning](Semver).
 
 - Your contribution here!
 
+## [4.4.0] - 2018-05-20
+### Changed
+- Fetch from JSON endpoint, rather than XML
+- Regular MiniTest used for tests
+- Update README, LICENSE, CHANGELOG, gemspec etc.
+
+### Added
+- Test against Rails 5.1.5
+- API/network errors logged by default
+- Allow API/network errors to be raised with `raise_errors` option
+- Allow endpoint to be configured with `api_endpoint` option
+
+## [4.3.0] - 2018-02-18
+### Changed
+- Update README, fixed Code Climate
+
+### Removed
+- Support for Ruby 2.0
+
 ## [4.2.0] - 2018-01-17
 ### Changed
 - Updated Rubies for Travis CI.
@@ -53,7 +72,9 @@ adheres to [Semantic Versioning](Semver).
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...HEAD
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.0...HEAD
+[4.4.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.3.0...v4.4.0
+[4.3.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.2...v4.1.3
 [4.1.2]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.1...v4.1.2
