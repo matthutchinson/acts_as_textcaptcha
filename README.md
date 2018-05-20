@@ -6,16 +6,15 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/maintainability)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/test_coverage)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 
-ActsAsTextcaptcha provides spam protection for Rails models with logic
-questions from the [TextCaptcha](http://textcaptcha.com/) service (by [Rob
-Tuley](https://twitter.com/robtuley). Questions are aimed at a child's age of 7
-so they can be easily solved by humans but still proove difficult for robots.
+ActsAsTextcaptcha provides spam protection for Rails models with a text-based
+logic question captcha. Questions are fetched from [Rob
+Tuley's](https://twitter.com/robtuley)
+[textcaptcha.com](http://textcaptcha.com/). They can be solved easily by humans
+but are tough for robots to crack.
 
-The gem can be configured to use your own logic questions instead, or as a
-fallback to handle API or network issues.
-
-There are advantages and disadvantages in using logic question captchas, find
-out more at [textcaptcha.com](http://textcaptcha.com/).
+The gem can also be configured with your own questions; as an alternative, or as
+a fallback to handle any API issues. For reasons on why logic based captchas
+are a good idea visit [textcaptcha.com](http://textcaptcha.com).
 
 ## Requirements
 
@@ -39,7 +38,7 @@ Add this line to your Gemfile and run `bundle install`:
 gem 'acts_as_textcaptcha'
 ```
 
-Next, for models you'd like to protect add:
+Add this to models you'd like to protect:
 
 ```ruby
 class Comment < ApplicationRecord
@@ -48,10 +47,9 @@ class Comment < ApplicationRecord
 end
 ```
 
-(Rob)[https://twitter.com/robtuley] requests that your
+[Rob](https://twitter.com/robtuley) requests that your
 `TEXTCAPTCHA_API_IDENTITY` be some reference to yourself (e.g. an email address,
-domain or similar where if there are problems with your usage you can be
-contacted).
+domain or similar) so you can be contacted should any usage problem occur.
 
 In your controller's `new` action call the `textcaptcha` method:
 
@@ -63,7 +61,7 @@ end
 ```
 
 Finally add the question and answer fields to your form using the
-`textcaptcha_fields` helper. Arrange the HTML within this block as you like;
+`textcaptcha_fields` helper. Arrange the HTML within this block as you like.
 
 ```ruby
 <%= textcaptcha_fields(f) do %>
@@ -74,19 +72,19 @@ Finally add the question and answer fields to your form using the
 <% end %>
 ```
 
-If you'd rather NOT use this helper and prefer to write your own form elements,
-take a look at the HTML this helper produces
+If you'd prefer to construct your own form elements, take a look at the HTML
+produced
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_helper.rb).
 
 ## Configuration
 
-The following options are available, only `api_key` is required:
+The following options are available (only `api_key` is required):
 
-* *api_key* (_required_) - a reference to yourself (e.g. your email or domain).
-* *questions* (_optional_) - array of your own question and answers (see below).
-* *cache_expiry_minutes* (_optional_) - time valid answers will persist in the cache (default 10 minutes).
-* *raise_errors* (_optional_) - if true, API or networks errors will be raised (default false, errors are logged).
-* *api_endpoint* (_optional_) - set your own JSON API endpoint to fetch questions and answers from (see below).
+* **api_key** (_required_) - a reference to yourself (e.g. your email or domain).
+* **questions** (_optional_) - array of your own questions and answers (see below).
+* **cache_expiry_minutes** (_optional_) - how long valid answers are cached for (default 10 minutes).
+* **raise_errors** (_optional_) - if true, API or network errors are raised (default false, errors logged).
+* **api_endpoint** (_optional_) - set your own JSON API endpoint to fetch from (see below).
 
 For example:
 
@@ -104,8 +102,8 @@ end
 
 ### YAML config
 
-You can apply an app wide config with a `config/textcaptcha.yml` file. The gem
-comes with a rake task to create this file from a
+You can apply an app wide config with a `config/textcaptcha.yml` file. Use this
+rake task to add one from a
 [template](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_config.rb):
 
     $ bundle exec rake textcaptcha:config
@@ -114,12 +112,12 @@ comes with a rake task to create this file from a
 
 ### Config without the TextCaptcha service
 
-To use only your own logic questions, omit the `api_key` and set them in the
-config (see above). Multiple answers to the same question should be comma
-separated e.g. 2,two (so do not include commas in answers).
+To use __only__ your own logic questions, omit the `api_key` and set them in the
+config (see above). Multiple answers to the same question must be comma
+separated e.g. `2,two` (so do not include commas in answers).
 
-You can optionally set your own `api_endpoint` to fetch from. The URL must
-respond with a JSON object like this:
+You can optionally set your own `api_endpoint` to fetch questions and answers
+from. The URL must respond with a JSON object like this:
 
 ```ruby
 {
@@ -128,19 +126,17 @@ respond with a JSON object like this:
 }
 ```
 
-With `"a"` an array of MD5'd, lower-cased strings. The `api_key` option is
-ignored if `api_endpoint` is set.
+With `"a"` being an array of answer strings, MD5'd, and lower-cased. The
+`api_key` option is ignored if an `api_endpoint` is set.
 
 ### Toggling TextCaptcha
 
-Toggle the captcha challenge by overriding the `perform_textcaptcha?` method (in
-models) e.g. disable for logged in users. By default the method checks if the
-object is a new (unsaved) record.
+Enable or disable captchas by overriding the `perform_textcaptcha?` method (in
+models). By default the method checks if the object is a new (unsaved) record.
+So spam protection is __only__ enabled for creating new records (not updating).
 
-So (by default) spam protection is __only__ enabled for creating new records
-(not updating).
-
-An example overriding the behaviour but maintaining the new record check.
+Here's an example overriding the default behaviour but maintaining the new
+record check.
 
 ```ruby
 class Comment < ApplicationRecord
@@ -154,8 +150,7 @@ end
 
 ## Translations
 
-The gem uses the standard Rails I18n translation approach (with a fall-back to
-English).
+The following strings are translatable (with Rails I18n translations):
 
 ```yaml
 en:
@@ -173,12 +168,12 @@ en:
         textcaptcha_answer: "TextCaptcha answer"
 ```
 
-**NOTE**: The TextCaptcha web service only provides logic questions in English.
+**NOTE**: The textcaptcha.com API only provides logic questions in English.
 
 ## Handling Errors
 
-The API may be unresponsive or returning unexpected data. You should consider
-handling the following errors:
+The API may be unresponsive or return an unexpected response. If you've set
+`raise_errors: true`, consider handling these errors:
 
 * `ActsAsTextcaptcha::ResponseError`
 * `ActsAsTextcaptcha::ParseError`
@@ -202,8 +197,8 @@ MiniTest is used for testing. Run the test suite with:
 This gem uses [appraisal](https://github.com/thoughtbot/appraisal) to test
 against multiple versions of Rails.
 
-* `appraisal rake test` (all tests with all Gemfile variations)
-* `appraisal rails-3 rake test` (all tests using a specific gemfile)
+* `appraisal rake test` (run tests against all Gemfile variations)
+* `appraisal rails-3 rake test` (run tests against a specific Gemfile)
 
 ## Docs
 

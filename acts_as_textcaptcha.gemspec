@@ -10,16 +10,13 @@ Gem::Specification.new do |spec|
   spec.email    = ["matt@hiddenloop.com"]
   spec.homepage = "http://github.com/matthutchinson/acts_as_textcaptcha"
   spec.license  = 'MIT'
-  spec.summary  = <<-EOF
-  Spam protection for your models via logic questions and the TextCaptcha API
-  EOF
+  spec.summary  = "A text-based logic question captcha for Rails"
 
   spec.description = <<-EOF
-  Simple question/answer based spam protection for your Rails models. You can
-  define your own logic questions and/or fetch questions from the TextCaptcha
-  API. The questions involve human logic and are tough for spam bots to crack.
-  For reasons on why logic questions are a good idea visit:
-  http://textcaptcha.com/why
+  ActsAsTextcaptcha provides spam protection for Rails models with a text-based
+  logic question captcha. Questions are fetched from Rob Tuley's textcaptcha.com
+  They can be solved easily by humans but are tough for robots to crack. For
+  reasons on why logic based captchas are a good idea visit textcaptcha.com
   EOF
 
   spec.metadata = {
