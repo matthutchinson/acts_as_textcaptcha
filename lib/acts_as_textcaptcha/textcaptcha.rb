@@ -132,7 +132,7 @@ module ActsAsTextcaptcha
         if options.is_a?(Hash)
           options
         else
-          YAML.load(read_textcaptcha_config)[Rails.env]
+          YAML.load(ERB.new(read_textcaptcha_config).result)[Rails.env]
         end
       rescue
         raise ArgumentError.new('could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file')

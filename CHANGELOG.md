@@ -9,7 +9,7 @@ adheres to [Semantic Versioning](Semver).
 
 - Your contribution here!
 
-## [4.4.0] - 2018-05-20
+## [4.4.1] - 2018-05-20
 ### Changed
 - Fetch from JSON endpoint, rather than XML
 - Regular MiniTest used for tests
@@ -72,8 +72,8 @@ adheres to [Semantic Versioning](Semver).
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.0...HEAD
-[4.4.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.3.0...v4.4.0
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.1...HEAD
+[4.4.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.3.0...v4.4.1
 [4.3.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.2...v4.1.3
