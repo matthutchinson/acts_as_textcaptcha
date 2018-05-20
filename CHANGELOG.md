@@ -1,44 +1,57 @@
-### ActsAsTextcaptcha Change Log
+# ChangeLog
 
-All notable changes to this project will be documented in this file. This
-project adheres to [Semantic Versioning][Semver].
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](KeepAChangelog) and this project
+adheres to [Semantic Versioning](Semver).
 
 ## [Unreleased]
 
-  * Your contribution here!
+- Your contribution here!
 
-## [4.2.0][] (17 Jan 2018)
-  * Updated Rubies for Travis CI
-  * Update tests to remove MiniTest warnings
-  * Latest Rails (~> 5.1.4) now set in gemspec
+## [4.2.0] - 2018-01-17
+### Changed
+- Updated Rubies for Travis CI.
+- Update tests to remove MiniTest warnings.
+- Latest Rails (~> 5.1.4) now set in gemspec.
 
-## [4.1.3][] (28 May 2016)
-  * Updated gem dependencies
-  * Switched from FakeWeb to Webmock
-  * Added bin/console
-  * Cleaned up Rakefile
-  * Added MIT license and Code of Conduct
-  * README now in markdown, badges fixed up
-  * Removed Pry gem (development dependency)
+## [4.1.3] - 2016-0-28
+### Changed
+- Updated gem dependencies.
+- Switched from FakeWeb to Webmock.
+- Cleaned up Rakefile.
+- README now in markdown, badges fixed up.
 
-## [4.1.2][] (11 May 2014)
-  * Updated gem dependencies
-  * Added `rake console` for helpful debugging
+### Added
+- bin/console
+- MIT license and Code of Conduct.
 
-## [4.1.1][] (13 January 2014)
-  * Dropped gem [signing & cert](http://tinyurl.com/p98owwz)
+### Removed
+- Pry gem (dev dependency)
 
-## [4.1.0][] (2 January 2014)
-  * Dropping support for Rails 2
-  * README updated
-  * CHANGELOG (this file) added
+## [4.1.2] - 2014-05-11
+### Changed
+- Updated gem dependencies.
 
-## [4.0.0][] (1 January 2014)
-  * Using a cache store to persist answers between requests
-  * README updated
-  * Test coverage improved
+### Added
+- `rake console` for helpful debugging.
 
-(further change log details for older releases are unavailable)
+## [4.1.1] 2014-01-13
+### Removed
+- gem [signing & cert](http://tinyurl.com/p98owwz).
+
+## [4.1.0] - 2014-01-02
+### Added
+- CHANGELOG (this file) added.
+
+### Removed
+- Support for Rails 2.
+
+## [4.0.0] - 2014-01-01
+### Changed
+- Using a cache store to persist answers between requests.
+- README updated.
+- Test coverage improved.
 
 [Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...HEAD
 [4.2.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0
@@ -47,5 +60,5 @@ project adheres to [Semantic Versioning][Semver].
 [4.1.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v3.0.11...v4.0.0
-
-[Semver]: http://semver.org
+[KeepAChangelog]: http://keepachangelog.com/en/1.0.0/
+[Semver]: http://semver.org/spec/v2.0.0.html

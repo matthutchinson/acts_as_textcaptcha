@@ -7,6 +7,5 @@
 /pkg/
 /spec/reports/
 /tmp/
-coverage
-config
+/coverage/
 *.gemfile.lock
