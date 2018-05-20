@@ -21,6 +21,9 @@ adheres to [Semantic Versioning](Semver).
 - Allow API/network errors to be raised with `raise_errors` option
 - Allow endpoint to be configured with `api_endpoint` option
 
+### Removed
+- Coveralls (now Code Climate & SimpleCov)
+
 ## [4.3.0] - 2018-02-18
 ### Changed
 - Update README, fixed Code Climate
