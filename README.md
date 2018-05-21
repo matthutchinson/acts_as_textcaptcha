@@ -6,8 +6,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/maintainability)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/test_coverage)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 
-ActsAsTextcaptcha provides spam protection for Rails models with a text-based
-logic question captcha. Questions are fetched from [Rob
+ActsAsTextcaptcha provides spam protection for Rails models with text-based
+logic question captchas. Questions are fetched from [Rob
 Tuley's](https://twitter.com/robtuley)
 [textcaptcha.com](http://textcaptcha.com/). They can be solved easily by humans
 but are tough for robots to crack.

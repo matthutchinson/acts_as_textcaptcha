@@ -13,10 +13,10 @@ Gem::Specification.new do |spec|
   spec.summary  = "A text-based logic question captcha for Rails"
 
   spec.description = <<-EOF
-  ActsAsTextcaptcha provides spam protection for Rails models with a text-based
-  logic question captcha. Questions are fetched from Rob Tuley's textcaptcha.com
-  They can be solved easily by humans but are tough for robots to crack. For
-  reasons on why logic based captchas are a good idea visit textcaptcha.com
+  ActsAsTextcaptcha provides spam protection for Rails models with text-based
+  logic question captchas. Questions are fetched from Rob Tuley's
+  textcaptcha.com They can be solved easily by humans but are tough for robots
+  to crack.
   EOF
 
   spec.metadata = {
