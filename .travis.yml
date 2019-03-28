@@ -6,7 +6,6 @@ gemfile:
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
 rvm:
-  - 2.3.8
   - 2.4.5
   - 2.5.5
   - 2.6.2
@@ -21,6 +20,9 @@ deploy:
 env:
   global:
     - CC_TEST_REPORTER_ID=3ff570478529bcdd11ef42d33229702118aa36b17a3de01c3f6d5a9c58fc7a4c
+before_install:
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install bundler -v '< 2'
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter

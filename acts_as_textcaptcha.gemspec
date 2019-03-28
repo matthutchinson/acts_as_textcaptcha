@@ -40,7 +40,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # documentation
-  spec.has_rdoc         = true
   spec.extra_rdoc_files = ["README.md", "LICENSE"]
   spec.rdoc_options << "--title" << "ActAsTextcaptcha" << "--main" << "README.md" << "-ri"
 
@@ -57,7 +56,7 @@ Gem::Specification.new do |spec|
 
   # testing
   spec.add_development_dependency('minitest')
-  spec.add_development_dependency('rails', '~> 5.2.0')
+  spec.add_development_dependency('rails', '~> 5.2.3')
   spec.add_development_dependency('sqlite3')
   spec.add_development_dependency('webmock')
   spec.add_development_dependency('simplecov')
