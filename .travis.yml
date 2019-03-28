@@ -1,5 +1,6 @@
 sudo: false
 language: ruby
+script: 'bundle exec rake test'
 gemfile:
   - gemfiles/rails_3.gemfile
   - gemfiles/rails_4.gemfile
@@ -9,7 +10,6 @@ rvm:
   - 2.4.5
   - 2.5.5
   - 2.6.2
-
 deploy:
   provider: rubygems
   api_key:
