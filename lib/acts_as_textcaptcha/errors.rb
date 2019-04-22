@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActsAsTextcaptcha
   class ResponseError < StandardError
     def initialize(url, exception)

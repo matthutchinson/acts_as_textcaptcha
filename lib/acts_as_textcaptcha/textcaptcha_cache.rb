@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A simple cache for storing Textcaptcha answers, Rails.cache is used as the
 # backend (ActiveSupport::Cache)
 
