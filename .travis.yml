@@ -5,10 +5,14 @@ gemfile:
   - gemfiles/rails_3.gemfile
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
+
 rvm:
-  - 2.4.5
+  - 2.3.8
+  - 2.4.6
   - 2.5.5
-  - 2.6.2
+  - 2.6.3
+  - ruby-head
+
 deploy:
   provider: rubygems
   api_key:

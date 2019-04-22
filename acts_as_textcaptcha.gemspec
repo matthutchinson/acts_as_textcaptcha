@@ -44,7 +44,7 @@ Gem::Specification.new do |spec|
   spec.rdoc_options << "--title" << "ActAsTextcaptcha" << "--main" << "README.md" << "-ri"
 
   # non-gem dependecies
-  spec.required_ruby_version = ">= 2.1"
+  spec.required_ruby_version = ">= 2.3"
 
   # dev gems
   spec.add_development_dependency('bundler')
