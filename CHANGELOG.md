@@ -9,6 +9,13 @@ adheres to [Semantic Versioning](Semver).
 
 - Your contribution here!
 
+## [4.5.0] - 2019-04-22
+### Added
+- `# frozen_string_literal: true` to all Ruby files
+
+### Removed
+- Support for Ruby < 2.3 (earlier versions no longer supported)
+
 ## [4.4.1] - 2018-05-20
 ### Changed
 - Fetch from JSON endpoint, rather than XML
@@ -75,7 +82,8 @@ adheres to [Semantic Versioning](Semver).
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.1...HEAD
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.0...HEAD
+[4.5.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.1...v4.5.0
 [4.4.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.3.0...v4.4.1
 [4.3.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.1.3...v4.2.0

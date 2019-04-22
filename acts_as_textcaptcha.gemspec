@@ -20,19 +20,12 @@ Gem::Specification.new do |spec|
   EOF
 
   spec.metadata = {
-    "homepage_uri"    => "https://github.com/matthutchinson/acts_as_textcaptcha",
-    "changelog_uri"   => "https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CHANGELOG.md",
-    "source_code_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha",
-    "bug_tracker_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha/issues",
+    "homepage_uri"      => "https://github.com/matthutchinson/acts_as_textcaptcha",
+    "changelog_uri"     => "https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CHANGELOG.md",
+    "source_code_uri"   => "https://github.com/matthutchinson/acts_as_textcaptcha",
+    "bug_tracker_uri"   => "https://github.com/matthutchinson/acts_as_textcaptcha/issues",
+    "allowed_push_host" => "https://rubygems.org"
   }
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "https://rubygems.org"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.test_files    = `git ls-files -- {test}/*`.split("\n")
