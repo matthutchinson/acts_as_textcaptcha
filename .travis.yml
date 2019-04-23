@@ -13,6 +13,10 @@ rvm:
   - 2.6.3
   - ruby-head
 
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+
 deploy:
   provider: rubygems
   api_key:
