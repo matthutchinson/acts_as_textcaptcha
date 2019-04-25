@@ -1,7 +1,7 @@
 ## ActAsTextcaptcha
 
 [![Gem](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
-[![Travis](https://img.shields.io/travis/matthutchinson/acts_as_textcaptcha/master.svg?style=flat)](https://travis-ci.org/matthutchinson/acts_as_textcaptcha)
+[![Travis](https://img.shields.io/travis/com/matthutchinson/acts_as_textcaptcha/master.svg?style=flat)](https://travis-ci.com/matthutchinson/acts_as_textcaptcha)
 [![Depfu](https://img.shields.io/depfu/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://depfu.com/github/matthutchinson/acts_as_textcaptcha)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/maintainability)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/test_coverage)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
@@ -218,7 +218,7 @@ Bug [reports](https://github.com/matthutchinson/acts_as_textcaptcha/issues) and
 [pull requests](https://github.com/matthutchinson/acts_as_textcaptcha/pulls) are
 welcome on GitHub. When submitting pull requests, remember to add tests covering
 any new behaviour, and ensure all tests are passing on
-[Travis](https://travis-ci.org/matthutchinson/acts_as_textcaptcha). Read the
+[Travis](https://travis-ci.com/matthutchinson/acts_as_textcaptcha). Read the
 [contributing
 guidelines](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CONTRIBUTING.md)
 for more details.
@@ -247,7 +247,7 @@ The code is available as open source under the terms of
 ## Links
 
 * [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
-* [Travis CI](http://travis-ci.org/#!/matthutchinson/acts_as_textcaptcha)
+* [Travis CI](http://travis-ci.com/#!/matthutchinson/acts_as_textcaptcha)
 * [Maintainability](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 * [Test Coverage](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
