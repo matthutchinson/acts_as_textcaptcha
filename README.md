@@ -247,7 +247,7 @@ The code is available as open source under the terms of
 ## Links
 
 * [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
-* [Travis CI](http://travis-ci.com/#!/matthutchinson/acts_as_textcaptcha)
+* [Travis CI](http://travis-ci.com/matthutchinson/acts_as_textcaptcha)
 * [Maintainability](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 * [Test Coverage](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
