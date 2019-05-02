@@ -47,8 +47,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency('rdoc')
 
   # testing
-  spec.add_development_dependency('minitest')
   spec.add_development_dependency('rails', '~> 5.2.3')
+  spec.add_development_dependency('minitest')
   spec.add_development_dependency('sqlite3')
   spec.add_development_dependency('webmock')
   spec.add_development_dependency('simplecov')
