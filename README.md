@@ -18,7 +18,7 @@ are a good idea visit [textcaptcha.com](http://textcaptcha.com).
 
 ## Requirements
 
-* [Ruby](http://ruby-lang.org/) >= 2.3
+* [Ruby](http://ruby-lang.org/) >= 2.4
 * [Rails](http://github.com/rails/rails) >= 3
 * [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores)
 

@@ -9,6 +9,9 @@ adheres to [Semantic Versioning][Semver].
 
 - Your contribution here!
 
+### Removed
+- Support for Ruby < 2.4 (EOL versions not supported)
+
 ## [4.5.0] - 2019-04-22
 ### Added
 - `# frozen_string_literal: true` to all Ruby files
