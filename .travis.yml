@@ -5,12 +5,14 @@ gemfile:
   - gemfiles/rails_3.gemfile
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
+  - gemfiles/rails_6.gemfile
 
 rvm:
   - 2.3.8
-  - 2.4.6
-  - 2.5.5
-  - 2.6.3
+  - 2.4.9
+  - 2.5.7
+  - 2.6.5
+  - 2.7.0
   - ruby-head
 
 matrix:

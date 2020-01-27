@@ -67,6 +67,8 @@ class TextcaptchaHelperTest < Minitest::Test
       <% end %>
       ERB
 
-      ViewTemplate.new([], assigns, @controller).render(inline: html_erb)
+      ViewTemplate.with_empty_template_cache.new(
+        ActionView::LookupContext.new([]), assigns, @controller
+      ).render(inline: html_erb)
     end
 end
