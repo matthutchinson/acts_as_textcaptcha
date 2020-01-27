@@ -67,8 +67,16 @@ class TextcaptchaHelperTest < Minitest::Test
       <% end %>
       ERB
 
-      ViewTemplate.with_empty_template_cache.new(
-        ActionView::LookupContext.new([]), assigns, @controller
-      ).render(inline: html_erb)
+      template(assigns).render(inline: html_erb)
+    end
+
+    def template(assigns)
+      if Gem::Version.new(Rails.version) < Gem::Version.new(6)
+        ViewTemplate.new([], assigns, @controller)
+      else
+        ViewTemplate.with_empty_template_cache.new(
+          ActionView::LookupContext.new([]), assigns, @controller
+        )
+      end
     end
 end
