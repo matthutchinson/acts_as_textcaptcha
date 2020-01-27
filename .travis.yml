@@ -17,6 +17,17 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
+  exclude:
+    - rvm: 2.4.9
+      gemfile: gemfiles/rails_6.gemfile
+    - rvm: 2.7.0
+      gemfile: gemfiles/rails_3.gemfile
+    - rvm: 2.7.0
+      gemfile: gemfiles/rails_4.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/rails_3.gemfile
+    - rvm: ruby-head
+      gemfile: gemfiles/rails_4.gemfile
 
 deploy:
   provider: rubygems
