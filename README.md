@@ -25,8 +25,7 @@ are a good idea visit [textcaptcha.com](http://textcaptcha.com).
 ## Demo
 
 Try a [working demo here](https://acts-as-textcaptcha-demo.herokuapp.com)!
-**Or** one-click deploy your own demo app at Heroku. See
-[here](https://github.com/matthutchinson/acts_as_textcaptcha_demo) for details.
+Or one-click deploy your own [demo app](https://github.com/matthutchinson/acts_as_textcaptcha_demo) to Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/matthutchinson/acts_as_textcaptcha_demo/tree/master)
 
