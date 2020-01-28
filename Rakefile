@@ -1,7 +1,6 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require "rdoc/task"
-load './lib/tasks/textcaptcha.rake'
 
 # generate docs
 RDoc::Task.new do |rd|
