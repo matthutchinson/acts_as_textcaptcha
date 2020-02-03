@@ -20,7 +20,7 @@ are a good idea visit [textcaptcha.com](http://textcaptcha.com).
 
 * [Ruby](http://ruby-lang.org/) >= 2.4
 * [Rails](http://github.com/rails/rails) >= 3
-* [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores)
+* A valid [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores) (not `:null_store`)
 
 ## Demo
 
@@ -59,7 +59,7 @@ def new
 end
 ```
 
-Finally add the question and answer fields to your form using the
+Add the question and answer fields to your form using the
 `textcaptcha_fields` helper. Arrange the HTML within this block as you like.
 
 ```ruby
@@ -74,6 +74,17 @@ Finally add the question and answer fields to your form using the
 If you'd prefer to construct your own form elements, take a look at the HTML
 produced
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/lib/acts_as_textcaptcha/textcaptcha_helper.rb).
+
+Finally set a valid [cache
+store](https://guides.rubyonrails.org/caching_with_rails.html#cache-stores) (not `:null_store`) for your environments:
+
+```ruby
+# e.g. in each config/environments/*.rb
+config.cache_store = :memory_store
+```
+
+You can run `rails dev:cache` on a modern generated Rails app to enable
+a memory store cache in the development environment.
 
 ## Configuration
 
