@@ -10,7 +10,7 @@ rvm:
   - 2.4.9
   - 2.5.7
   - 2.6.5
-  - 2.7.0
+  - 2.7.1
   - ruby-head
 
 matrix:
@@ -19,9 +19,9 @@ matrix:
   exclude:
     - rvm: 2.4.9
       gemfile: gemfiles/rails_6.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.1
       gemfile: gemfiles/rails_3.gemfile
-    - rvm: 2.7.0
+    - rvm: 2.7.1
       gemfile: gemfiles/rails_4.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/rails_3.gemfile
