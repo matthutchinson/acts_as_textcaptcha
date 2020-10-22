@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path(File.dirname(__FILE__) + "/test_helper")
+require File.expand_path("#{File.dirname(__FILE__)}/test_helper")
 
 class TextcaptchaConfigTest < Minitest::Test
   CONFIG_PATH = "./tmp/test/config/textcaptcha.yml"

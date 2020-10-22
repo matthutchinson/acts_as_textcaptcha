@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path(File.dirname(__FILE__) + "/test_helper")
+require File.expand_path("#{File.dirname(__FILE__)}/test_helper")
 
 class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
   def test_raises_error_for_invalid_api_key

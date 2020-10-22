@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path(File.dirname(__FILE__) + "/test_helper")
+require File.expand_path("#{File.dirname(__FILE__)}/test_helper")
 
 class TextcaptchaTest < Minitest::Test
   def test_answer_submitted_after_expiry_time

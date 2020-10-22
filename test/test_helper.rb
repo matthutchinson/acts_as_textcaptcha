@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "./../lib/acts_as_textcaptcha"))
+$LOAD_PATH.unshift(File.expand_path("#{File.dirname(__FILE__)}/../lib/acts_as_textcaptcha"))
 
 # testing libs
 require "simplecov" if ENV["COVERAGE"]
@@ -41,6 +41,6 @@ def valid_json_response
 end
 
 def json_response(filename)
-  fixture_dir = File.expand_path(File.dirname(__FILE__) + "/fixtures/")
+  fixture_dir = File.expand_path("#{File.dirname(__FILE__)}/fixtures/")
   File.read("#{fixture_dir}/responses/#{filename}")
 end
