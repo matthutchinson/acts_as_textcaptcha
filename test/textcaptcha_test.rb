@@ -87,7 +87,7 @@ class TextcaptchaTest < Minitest::Test
     YAML.stub :load, -> { raise "bad things" } do
       exception = assert_raises(ArgumentError) do
         # using eval here, sorry :(
-        eval <<-CLASS
+        eval <<-CLASS, binding, __FILE__, __LINE__ + 1
           class SomeWidget < ApplicationRecord
             acts_as_textcaptcha
           end
