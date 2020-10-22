@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails/all"
 
 # init cache, StringIO logger, and test models/db

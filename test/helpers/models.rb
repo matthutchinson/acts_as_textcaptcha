@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # build config file (used by some models) from template if it does not exist
 ActsAsTextcaptcha::TextcaptchaConfig.create unless File.exist?("./config/textcaptcha.yml")
 

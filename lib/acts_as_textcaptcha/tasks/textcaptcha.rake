@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails"
 require "acts_as_textcaptcha/textcaptcha_config"
 
