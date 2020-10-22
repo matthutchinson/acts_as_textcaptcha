@@ -115,9 +115,11 @@ module ActsAsTextcaptcha
         end
       end
 
+      # rubocop:disable Style/ClassVars
       def textcaptcha_cache
         @@textcaptcha_cache ||= TextcaptchaCache.new
       end
+      # rubocop:enable Style/ClassVars
     end
 
     private
