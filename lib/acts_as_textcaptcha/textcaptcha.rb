@@ -50,11 +50,11 @@ module ActsAsTextcaptcha
       end
 
       def config_q_and_a
-        if textcaptcha_config[:questions]
-          random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
-          answers = (random_question[:answers] || "").split(",").map! { |answer| safe_md5(answer) }
-          { "q" => random_question[:question], "a" => answers } if random_question && answers.present?
-        end
+        return unless textcaptcha_config[:questions]
+
+        random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
+        answers = (random_question[:answers] || "").split(",").map! { |answer| safe_md5(answer) }
+        { "q" => random_question[:question], "a" => answers } if random_question && answers.present?
       end
 
       # check textcaptcha, if incorrect, generate a new textcaptcha
@@ -134,6 +134,7 @@ module ActsAsTextcaptcha
     rescue StandardError
       raise ArgumentError, "could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file"
     end
+
     # rubocop:enable Security/YAMLLoad
 
     def read_textcaptcha_config
