@@ -53,7 +53,7 @@ module ActsAsTextcaptcha
         return unless textcaptcha_config[:questions]
 
         random_question = textcaptcha_config[:questions][rand(textcaptcha_config[:questions].size)].symbolize_keys!
-        answers = (random_question[:answers] || "").split(",").map! { |answer| safe_md5(answer) }
+        answers = (random_question[:answers] || "").split(",").map { |answer| safe_md5(answer) }
         { "q" => random_question[:question], "a" => answers } if random_question && answers.present?
       end
 
