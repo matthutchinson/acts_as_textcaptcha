@@ -124,6 +124,7 @@ module ActsAsTextcaptcha
 
     private
 
+    # rubocop:disable Security/YAMLLoad
     def build_textcaptcha_config(options)
       if options.is_a?(Hash)
         options
@@ -133,6 +134,7 @@ module ActsAsTextcaptcha
     rescue StandardError
       raise ArgumentError, "could not find any textcaptcha options, in config/textcaptcha.yml or model - run rake textcaptcha:config to generate a template config file"
     end
+    # rubocop:enable Security/YAMLLoad
 
     def read_textcaptcha_config
       File.read("#{Rails.root || "."}/config/textcaptcha.yml")
