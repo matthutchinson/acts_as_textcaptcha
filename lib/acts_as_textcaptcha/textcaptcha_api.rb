@@ -33,9 +33,9 @@ module ActsAsTextcaptcha
         handle_error ResponseError.new(uri, "status: #{response.code}")
       end
     rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-           Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-           Net::ProtocolError => e
+        Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
+        Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+        Net::ProtocolError => e
       handle_error ResponseError.new(uri, e)
     end
 
@@ -46,12 +46,10 @@ module ActsAsTextcaptcha
     end
 
     def handle_error(error)
-      if raise_errors
-        raise error
-      else
-        Rails.logger.error("#{error.class} #{error.message}")
-        nil
-      end
+      raise error if raise_errors
+
+      Rails.logger.error("#{error.class} #{error.message}")
+      nil
     end
   end
 end
