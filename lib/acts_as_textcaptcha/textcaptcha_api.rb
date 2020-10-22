@@ -33,9 +33,9 @@ module ActsAsTextcaptcha
         handle_error ResponseError.new(uri, "status: #{response.code}")
       end
     rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-        Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
-        Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-        Net::ProtocolError => e
+           Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
+           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+           Net::ProtocolError => e
       handle_error ResponseError.new(uri, e)
     end
 
