@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 ActiveRecord::Schema.define(version: 0) do
-
   create_table :widgets, force: true do |t|
     t.string :name
   end

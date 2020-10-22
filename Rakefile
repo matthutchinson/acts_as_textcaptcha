@@ -1,14 +1,14 @@
-require 'bundler/gem_tasks'
-require 'rake/testtask'
+require "bundler/gem_tasks"
+require "rake/testtask"
 require "rdoc/task"
-require 'rubocop/rake_task'
+require "rubocop/rake_task"
 
 # generate docs
 RDoc::Task.new do |rd|
-  rd.main     = "README.md"
-  rd.title    = 'ActsAsTextcaptcha'
-  rd.rdoc_dir = 'doc'
-  rd.options  << "--all"
+  rd.main = "README.md"
+  rd.title = "ActsAsTextcaptcha"
+  rd.rdoc_dir = "doc"
+  rd.options << "--all"
   rd.rdoc_files.include("README.md", "LICENSE", "lib/**/*.rb")
 end
 
@@ -21,17 +21,17 @@ end
 
 # Run lint
 RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ['--display-cop-names']
+  t.options = ["--display-cop-names"]
 end
 
 # run tests with code coverage (default)
 namespace :test do
   desc "Run all tests and features and generate a code coverage report"
   task :coverage do
-    ENV['COVERAGE'] = 'true'
-    Rake::Task['test'].execute
-    Rake::Task['rubocop'].execute
+    ENV["COVERAGE"] = "true"
+    Rake::Task["test"].execute
+    Rake::Task["rubocop"].execute
   end
 end
 
-task :default => ['test:coverage']
+task default: ["test:coverage"]

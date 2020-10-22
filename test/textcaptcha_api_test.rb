@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-require File.expand_path(File.dirname(__FILE__) + '/test_helper')
+require File.expand_path(File.dirname(__FILE__) + "/test_helper")
 
 class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
-
   def test_raises_error_for_invalid_api_key
     bad_key = "x b a d"
     error = assert_raises(ActsAsTextcaptcha::ApiKeyError) do
       textcaptcha_api(api_key: bad_key).fetch
     end
-    assert_match(/^Api key \'#{bad_key}\' is invalid/, error.message)
+    assert_match(/^Api key '#{bad_key}' is invalid/, error.message)
   end
 
   def test_fetch_and_parse_q_and_a
@@ -33,9 +32,9 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
       Errno::EHOSTUNREACH, EOFError, Errno::ECONNREFUSED, Errno::ETIMEDOUT,
       Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
     ].each do |error|
-      stub_request(:get, /http:\/\/textcaptcha.com/).to_raise(error)
+      stub_request(:get, %r{http://textcaptcha.com}).to_raise(error)
       assert_nil textcaptcha_api.fetch
-     end
+    end
   end
 
   def test_returns_nil_when_non_200_response_code_received
@@ -50,9 +49,9 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
 
   def test_logs_error_to_rails_logger_if_raise_errors_not_set
     clear_rails_log
-    stub_request(:get, /http:\/\/textcaptcha.com/).to_raise(Timeout::Error)
+    stub_request(:get, %r{http://textcaptcha.com}).to_raise(Timeout::Error)
     textcaptcha_api(raise_errors: false).fetch
-    assert_log_matches [/ActsAsTextcaptcha::ResponseError fetching \'.*\' failed - Exception from WebMock/]
+    assert_log_matches [/ActsAsTextcaptcha::ResponseError fetching '.*' failed - Exception from WebMock/]
   end
 
   def test_returns_nil_when_empty_response_received
@@ -61,11 +60,11 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
   end
 
   def test_raises_response_error_if_raise_errors_set
-    stub_request(:get, /http:\/\/textcaptcha.com/).to_raise(Timeout::Error)
+    stub_request(:get, %r{http://textcaptcha.com}).to_raise(Timeout::Error)
     error = assert_raises(ActsAsTextcaptcha::ResponseError) do
       textcaptcha_api(raise_errors: true).fetch
     end
-    assert_match(/^fetching \'.*\' failed - Exception from WebMock/, error.message)
+    assert_match(/^fetching '.*' failed - Exception from WebMock/, error.message)
   end
 
   def test_raises_parse_error_if_raise_errors_set
@@ -73,16 +72,16 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
     error = assert_raises(ActsAsTextcaptcha::ParseError) do
       textcaptcha_api(raise_errors: true).fetch
     end
-    assert_match(/^parsing JSON from \'.*\' failed/, error.message)
+    assert_match(/^parsing JSON from '.*' failed/, error.message)
   end
 
   private
 
-    def textcaptcha_api(api_key: 'api_key', api_endpoint: nil, raise_errors: false)
-      @textcaptcha_api ||= ActsAsTextcaptcha::TextcaptchaApi.new(
-        api_key: api_key,
-        api_endpoint: api_endpoint,
-        raise_errors: raise_errors
-      )
-    end
+  def textcaptcha_api(api_key: "api_key", api_endpoint: nil, raise_errors: false)
+    @textcaptcha_api ||= ActsAsTextcaptcha::TextcaptchaApi.new(
+      api_key: api_key,
+      api_endpoint: api_endpoint,
+      raise_errors: raise_errors
+    )
+  end
 end

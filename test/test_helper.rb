@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + './../lib/acts_as_textcaptcha'))
+$LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__) + "./../lib/acts_as_textcaptcha"))
 
 # testing libs
-require 'simplecov' if ENV['COVERAGE']
-require 'minitest/autorun'
-require 'webmock/minitest'
-require './test/helpers/rails'
-require 'acts_as_textcaptcha'
-require './test/helpers/models'
+require "simplecov" if ENV["COVERAGE"]
+require "minitest/autorun"
+require "webmock/minitest"
+require "./test/helpers/rails"
+require "acts_as_textcaptcha"
+require "./test/helpers/models"
 
 # test helper methods
 
@@ -28,7 +28,7 @@ def find_in_cache(key)
   Rails.cache.read("#{ActsAsTextcaptcha::TextcaptchaCache::KEY_PREFIX}#{key}")
 end
 
-def stub_api_with(response_body, api_key: 'api_key', api_endpoint: nil, http_status: 200)
+def stub_api_with(response_body, api_key: "api_key", api_endpoint: nil, http_status: 200)
   api_endpoint ||= "http://textcaptcha.com/#{api_key}.json"
   stub_request(:get, api_endpoint).to_return(
     status: http_status,
@@ -41,6 +41,6 @@ def valid_json_response
 end
 
 def json_response(filename)
-  fixture_dir = File.expand_path(File.dirname(__FILE__)+"/fixtures/")
+  fixture_dir = File.expand_path(File.dirname(__FILE__) + "/fixtures/")
   File.read("#{fixture_dir}/responses/#{filename}")
 end
