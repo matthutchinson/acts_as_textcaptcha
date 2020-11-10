@@ -1,11 +1,12 @@
-require 'rails'
-require 'acts_as_textcaptcha/textcaptcha_config'
+# frozen_string_literal: true
+
+require "rails"
+require "acts_as_textcaptcha/textcaptcha_config"
 
 namespace :textcaptcha do
-
   desc "Creates an example textcaptcha config at config/textcaptcha.yml"
   task :config do
-    path = File.join((Rails.root ? Rails.root : '.'), 'config', 'textcaptcha.yml')
+    path = File.join((Rails.root || "."), "config", "textcaptcha.yml")
     if File.exist?(path)
       puts "Ooops, a textcaptcha config file at #{path} already exists ... aborting."
     else
