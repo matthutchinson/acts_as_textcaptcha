@@ -1,5 +1,6 @@
 # Common configuration.
 AllCops:
+  NewCops: enable
   Include:
     - .simplecov
     - "**/*.rb"
@@ -9,6 +10,7 @@ AllCops:
     - "**/Rakefile"
   Exclude:
     - bin/console
+    - "vendor/bundle/**/*"
     - "pkg/gems/**/*"
   # Default formatter will be used if no -f/--format option is given.
   DefaultFormatter: progress

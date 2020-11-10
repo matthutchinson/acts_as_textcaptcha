@@ -21,7 +21,7 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList["test/**/*_test.rb"]
 end
 
-# Run lint
+# run lint
 RuboCop::RakeTask.new(:rubocop) do |t|
   t.options = ["--display-cop-names"]
 end
@@ -36,4 +36,4 @@ namespace :test do
   end
 end
 
-task default: ["test:coverage"]
+task default: [:rubocop, "test:coverage"]

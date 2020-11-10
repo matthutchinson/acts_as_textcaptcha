@@ -9,12 +9,12 @@
 ActsAsTextcaptcha provides spam protection for Rails models with text-based
 logic question captchas. Questions are fetched from [Rob
 Tuley's](https://twitter.com/robtuley)
-[textcaptcha.com](http://textcaptcha.com/). They can be solved easily by humans
+[textcaptcha.com](https://textcaptcha.com/). They can be solved easily by humans
 but are tough for robots to crack.
 
 The gem can also be configured with your own questions; as an alternative, or as
 a fallback to handle any API issues. For reasons on why logic based captchas
-are a good idea visit [textcaptcha.com](http://textcaptcha.com).
+are a good idea visit [textcaptcha.com](https://textcaptcha.com).
 
 ## Requirements
 
@@ -252,7 +252,7 @@ The code is available as open source under the terms of
 ## Who's who?
 
 * [ActsAsTextcaptcha](http://github.com/matthutchinson/acts_as_textcaptcha) and [little robot drawing](http://www.flickr.com/photos/hiddenloop/4541195635/) by [Matthew Hutchinson](http://matthewhutchinson.net)
-* [TextCaptcha](http://textcaptcha.com) API and service by [Rob Tuley](https://twitter.com/robtuley)
+* [TextCaptcha](https://textcaptcha.com) API and service by [Rob Tuley](https://twitter.com/robtuley)
 
 ## Links
 

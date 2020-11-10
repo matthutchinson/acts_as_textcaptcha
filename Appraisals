@@ -4,16 +4,16 @@ appraise "rails-3" do
 end
 
 appraise "rails-4" do
-  gem "rails", "4.2.11.1"
+  gem "rails", "4.2.11.3"
   gem "sqlite3", "~> 1.3.5"
 end
 
 appraise "rails-5" do
-  gem "rails", "5.2.4.1"
+  gem "rails", "5.2.4.4"
   gem "sqlite3", "~> 1.4.2"
 end
 
 appraise "rails-6" do
-  gem "rails", "6.0.2.1"
+  gem "rails", "6.0.3.4"
   gem "sqlite3", "~> 1.4.2"
 end

@@ -4,7 +4,7 @@ module ActsAsTextcaptcha
   class TextcaptchaConfig
     YAML = <<~CONFIG
       development: &common_settings
-        api_key: 'TEXTCAPTCHA_API_IDENT' # see http://textcaptcha.com for details
+        api_key: 'TEXTCAPTCHA_API_IDENT' # see https://textcaptcha.com for details
         # api_endpoint: nil        # Optional API URL to fetch questions and answers from
         # raise_errors: false      # Optional flag, if true errors will be raised if the API endpoint fails
         # cache_expiry_minutes: 10 # Optional minutes for captcha answers to persist in the cache (default 10 minutes)

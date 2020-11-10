@@ -11,7 +11,7 @@ namespace :textcaptcha do
       puts "Ooops, a textcaptcha config file at #{path} already exists ... aborting."
     else
       ActsAsTextcaptcha::TextcaptchaConfig.create(path: path)
-      puts "Done, config generated at #{path}\nEdit this file to add your TextCaptcha API key (see http://textcaptcha.com)."
+      puts "Done, config generated at #{path}\nEdit this file to add your TextCaptcha API key (see https://textcaptcha.com)."
     end
   end
 end

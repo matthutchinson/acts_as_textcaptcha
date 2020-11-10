@@ -54,8 +54,8 @@ Gem::Specification.new do |spec|
   # testing
   spec.add_development_dependency("appraisal")
   spec.add_development_dependency("minitest")
-  spec.add_development_dependency("rails", "~> 6.0.2.1")
-  spec.add_development_dependency("simplecov", "~> 0.17.1")
+  spec.add_development_dependency("rails", "~> 6.0.3.4")
+  spec.add_development_dependency("simplecov", "~> 0.19.1")
   spec.add_development_dependency("sqlite3")
   spec.add_development_dependency("webmock")
 end
