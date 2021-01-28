@@ -9,6 +9,13 @@ adheres to [Semantic Versioning][Semver].
 
 - Your contribution here!
 
+## [4.5.2] - 2021-01-28
+### Changed
+- CI covers Latest Rails version 6,5,4 and Ruby 3,2.7,2.6,2.5
+### Removed
+- Support for Ruby < 2.5 (EOL versions not supported)
+- No longer testing against Rails 3 in CI
+
 ## [4.5.1] - 2020-01-28
 ### Fixed
 - add Rails Railtie to fix rake task loading
@@ -88,7 +95,8 @@ adheres to [Semantic Versioning][Semver].
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.1...HEAD
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.2...HEAD
+[4.5.2]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.1...v4.5.0
 [4.4.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.3.0...v4.4.1

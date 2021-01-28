@@ -18,8 +18,8 @@ are a good idea visit [textcaptcha.com](https://textcaptcha.com).
 
 ## Requirements
 
-* [Ruby](http://ruby-lang.org/) >= 2.4
-* [Rails](http://github.com/rails/rails) >= 3
+* [Ruby](http://ruby-lang.org/) >= 2.5
+* [Rails](http://github.com/rails/rails) >= 4
 * A valid [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores) (not `:null_store`)
 
 ## Demo
