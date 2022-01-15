@@ -59,7 +59,26 @@ def new
 end
 ```
 
-Add the question and answer fields to your form using the
+Be sure to permit (or require and permit) the textcaptcha params
+`:textcaptcha_answer, :textcaptcha_key` in your create (or update) action:
+
+```ruby
+def create
+  @comment = Comment.create(commment_params)
+  # ... etc
+end
+
+private
+
+def commment_params
+  params.require(:comment).permit(:textcaptcha_answer, :textcaptcha_key, :name, :comment_text)
+end
+```
+
+**NOTE**: if the captcha is submitted incorrectly, a new captcha will be
+automatically generated on the `@comment` object.
+
+Finally, add the question and answer fields to your form using the
 `textcaptcha_fields` helper. Arrange the HTML within this block as you like.
 
 ```ruby
@@ -79,12 +98,11 @@ Finally set a valid [cache
 store](https://guides.rubyonrails.org/caching_with_rails.html#cache-stores) (not `:null_store`) for your environments:
 
 ```ruby
-# e.g. in each config/environments/*.rb
+# e.g. in config/environments/*.rb
 config.cache_store = :memory_store
 ```
 
-You can run `rails dev:cache` on a modern generated Rails app to enable
-a memory store cache in the development environment.
+You can run `rails dev:cache` on to enable a memory store cache in the development environment.
 
 ## Configuration
 
