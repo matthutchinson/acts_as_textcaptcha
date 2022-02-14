@@ -84,7 +84,7 @@ class TextcaptchaTest < Minitest::Test
   end
 
   def test_raises_error_when_config_is_missing
-    YAML.stub :load, -> { raise "bad things" } do
+    YAML.stub :safe_load, -> { raise "bad things" } do
       exception = assert_raises(ArgumentError) do
         # using eval here, sorry :(
         eval <<-CLASS, binding, __FILE__, __LINE__ + 1
