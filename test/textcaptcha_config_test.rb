@@ -14,9 +14,7 @@ class TextcaptchaConfigTest < Minitest::Test
     refute_nil ActsAsTextcaptcha::TextcaptchaConfig.create(path: CONFIG_PATH)
     assert File.exist?(CONFIG_PATH)
 
-    # rubocop:disable Security/YAMLLoad
     example_config = YAML.safe_load(File.read(CONFIG_PATH), aliases: true)
-    # rubocop:enable Security/YAMLLoad
     assert_equal example_config.keys, %w(development test production)
   end
 end

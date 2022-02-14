@@ -25,7 +25,8 @@ Gem::Specification.new do |spec|
     "changelog_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CHANGELOG.md",
     "source_code_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha",
     "bug_tracker_uri" => "https://github.com/matthutchinson/acts_as_textcaptcha/issues",
-    "allowed_push_host" => "https://rubygems.org"
+    "allowed_push_host" => "https://rubygems.org",
+    "rubygems_mfa_required" => "true"
   }
 
   spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

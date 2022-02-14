@@ -41,7 +41,7 @@ module ActsAsTextcaptcha
 
     def self.create(path: "./config/textcaptcha.yml")
       FileUtils.mkdir_p(File.dirname(path))
-      File.open(path, "w") { |f| f.write(YAML) }
+      File.write(path, YAML)
     end
   end
 end
