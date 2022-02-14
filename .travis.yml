@@ -40,7 +40,7 @@ matrix:
 deploy:
   provider: rubygems
   api_key:
-    secure: AUJy9JSNrNcJcZc6JQErh1LtmHrdQBk1W0DYVT0soyBEx5hbKKoIympmrlh9VcZxNpbLfbuCdxl2C0nWMembwx71tLytvM76BqoU2KKTxQQLju8SUAyzGQabkNHr0mzpUDQiC4L16c5k+voCkWtptGkxiVq6eDZExBSzDM8cVMk=
+    secure: LuFTzJbG6XJUpzVTbzj2OFty8Gj+5gZdExsNXhArwMgDI4MVVvUayZK3W+8zkzmU/di7gaMZdx127IT/KoluIr7mGinQEXWt8GoHtummmWGU3CY7zu6gLoLs9thNNVSG86YahaM6RukCm8XNph8MhqbMGpibjPjVlqDh/R+EGdI=
   gem: acts_as_textcaptcha
   on:
     tags: true
