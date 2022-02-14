@@ -9,6 +9,11 @@ adheres to [Semantic Versioning][Semver].
 
 - Your contribution here!
 
+## [4.6.0] - 2022-02-14
+### Changed
+- CI covers Latest Rails version 7 and Ruby 3.1
+- Use `YAML.safe_load` and allow aliases
+
 ## [4.5.2] - 2021-01-28
 ### Changed
 - CI covers Latest Rails version 6,5,4 and Ruby 3,2.7,2.6,2.5
@@ -95,7 +100,8 @@ adheres to [Semantic Versioning][Semver].
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.2...HEAD
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.6.0...HEAD
+[4.6.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.2...v4.6.0
 [4.5.2]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.1...v4.5.2
 [4.5.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.0...v4.5.1
 [4.5.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.4.1...v4.5.0

@@ -4,6 +4,7 @@ gemfile:
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
   - gemfiles/rails_6.gemfile
+  - gemfiles/rails_7.gemfile
 
 rvm:
   - 2.5.8
@@ -26,6 +27,10 @@ matrix:
       gemfile: gemfiles/rails_4.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/rails_5.gemfile
+    - rvm: 2.5.8
+      gemfile: gemfiles/rails_7.gemfile
+    - rvm: 2.6.6
+      gemfile: gemfiles/rails_7.gemfile
 
 deploy:
   provider: rubygems
