@@ -24,10 +24,7 @@ are a good idea visit [textcaptcha.com](https://textcaptcha.com).
 
 ## Demo
 
-Try a [working demo here](https://acts-as-textcaptcha-demo.herokuapp.com)!
-Or one-click deploy your own [demo app](https://github.com/matthutchinson/acts_as_textcaptcha_demo) to Heroku.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/matthutchinson/acts_as_textcaptcha_demo/tree/master)
+Try a [working demo here](https://acts-as-textcaptcha.hiddenloop.dev)!
 
 ## Installation
 
@@ -274,7 +271,7 @@ The code is available as open source under the terms of
 
 ## Links
 
-* [Demo](https://acts-as-textcaptcha-demo.herokuapp.com)
+* [Demo](https://acts-as-textcaptcha.hiddenloop.dev)
 * [Travis CI](http://travis-ci.com/matthutchinson/acts_as_textcaptcha)
 * [Maintainability](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
 * [Test Coverage](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
