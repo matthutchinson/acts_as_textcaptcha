@@ -14,7 +14,7 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
   def test_fetch_and_parse_q_and_a
     stub_api_with(valid_json_response)
     q_and_a = textcaptcha_api.fetch
-    assert_equal q_and_a["q"], "What is Jennifer\'s name?"
+    assert_equal q_and_a["q"], "What is Jennifer's name?"
     assert_equal q_and_a["a"], ["1660fe5c81c4ce64a2611494c439e1ba"]
   end
 
@@ -22,7 +22,7 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
     my_api_endpoint = "http://myserver.com/my-api.json"
     stub_api_with(valid_json_response, api_endpoint: my_api_endpoint)
     q_and_a = textcaptcha_api(api_endpoint: my_api_endpoint).fetch
-    assert_equal q_and_a["q"], "What is Jennifer\'s name?"
+    assert_equal q_and_a["q"], "What is Jennifer's name?"
     assert_equal q_and_a["a"], ["1660fe5c81c4ce64a2611494c439e1ba"]
   end
 

@@ -7,11 +7,8 @@ module ActsAsTextcaptcha
     BASE_URL = "http://textcaptcha.com"
 
     def initialize(api_key: nil, api_endpoint: nil, raise_errors: false)
-      self.uri = if api_endpoint
-                   URI(api_endpoint)
-                 else
-                   URI("#{BASE_URL}/#{api_key}.json")
-                 end
+      self.uri = URI(api_endpoint || "#{BASE_URL}/#{api_key}.json")
+
       self.raise_errors = raise_errors || false
     rescue URI::InvalidURIError => e
       raise ApiKeyError.new(api_key, e)

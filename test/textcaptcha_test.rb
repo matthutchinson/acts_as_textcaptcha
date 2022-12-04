@@ -35,7 +35,7 @@ class TextcaptchaTest < Minitest::Test
     stub_api_with(valid_json_response)
 
     review.textcaptcha
-    assert_equal review.textcaptcha_question, "What is Jennifer\'s name?"
+    assert_equal review.textcaptcha_question, "What is Jennifer's name?"
     assert_equal find_in_cache(review.textcaptcha_key).length, 1
   end
 

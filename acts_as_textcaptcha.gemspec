@@ -30,7 +30,6 @@ Gem::Specification.new do |spec|
   }
 
   spec.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.test_files = `git ls-files -- {test}/*`.split("\n")
   spec.bindir = "bin"
   spec.require_paths = ["lib"]
 
