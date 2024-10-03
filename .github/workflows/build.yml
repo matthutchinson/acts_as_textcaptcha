@@ -22,5 +22,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+        rubygems: latest
     - name: Run tests
       run: bundle exec apprasial rake test
