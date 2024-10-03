@@ -25,4 +25,4 @@ jobs:
         bundler-cache: true
         rubygems: latest
     - name: Run tests
-      run: bundle exec appraisal rake test
+      run: bundle exec rake
