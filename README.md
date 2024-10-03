@@ -1,10 +1,8 @@
 ## ActAsTextcaptcha
 
+[![Build](https://img.shields.io/github/actions/workflow/status/matthutchinson/acts_as_textcaptcha/build.yml?branch=main&style=flat)](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/build.yml)
 [![Gem](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
-[![Travis](https://img.shields.io/travis/com/matthutchinson/acts_as_textcaptcha/master.svg?style=flat)](https://travis-ci.com/matthutchinson/acts_as_textcaptcha)
 [![Depfu](https://img.shields.io/depfu/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://depfu.com/github/matthutchinson/acts_as_textcaptcha)
-[![Maintainability](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/maintainability)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/c67969dd7b921477bdcc/test_coverage)](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 
 ActsAsTextcaptcha provides spam protection for Rails models with text-based
 logic question captchas. Questions are fetched from [Rob
@@ -18,8 +16,8 @@ are a good idea visit [textcaptcha.com](https://textcaptcha.com).
 
 ## Requirements
 
-* [Ruby](http://ruby-lang.org/) >= 2.5
-* [Rails](http://github.com/rails/rails) >= 4
+* [Ruby](http://ruby-lang.org/) >= 3.1
+* [Rails](http://github.com/rails/rails) >= 6.1
 * A valid [Rails.cache](http://guides.rubyonrails.org/caching_with_rails.html#cache-stores) (not `:null_store`)
 
 ## Demo
@@ -207,8 +205,7 @@ The API may be unresponsive or return an unexpected response. If you've set
 ## Development
 
 Check out this repo and run `bin/setup`, this will install gem dependencies and
-generate docs. Use `bundle exec rake` to run tests and generate a coverage
-report.
+generate docs. Use `bundle exec rake` to run tests.
 
 You can also run `bin/console` for an interactive prompt to experiment with the
 code.
@@ -254,10 +251,11 @@ Covenant](http://contributor-covenant.org) code of conduct. See
 [here](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CODE_OF_CONDUCT.md)
 for more details.
 
-## Todo
+## Ideas
 
+* Check if AI models can beat this approach
 * Allow translatable user supplied questions and answers in config
-* Allow `Net::HTTP` to be swapped out for any another HTTP client.
+* Allow `Net::HTTP` to be swapped out for any HTTP client.
 
 ## License
 
@@ -271,10 +269,8 @@ The code is available as open source under the terms of
 
 ## Links
 
+* [CI](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/build.yml)
 * [Demo](https://acts-as-textcaptcha.hiddenloop.dev)
-* [Travis CI](http://travis-ci.com/matthutchinson/acts_as_textcaptcha)
-* [Maintainability](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/maintainability)
-* [Test Coverage](https://codeclimate.com/github/matthutchinson/acts_as_textcaptcha/test_coverage)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
 * [Wiki](http://wiki.github.com/matthutchinson/acts_as_textcaptcha/)
 * [Issues](http://github.com/matthutchinson/acts_as_textcaptcha/issues)

@@ -3,7 +3,6 @@
 $LOAD_PATH.unshift(File.expand_path("#{File.dirname(__FILE__)}/../lib/acts_as_textcaptcha"))
 
 # testing libs
-require "simplecov" if ENV["COVERAGE"]
 require "minitest/autorun"
 require "webmock/minitest"
 require "./test/helpers/rails"

@@ -38,15 +38,11 @@ Gem::Specification.new do |spec|
   spec.rdoc_options << "--title" << "ActAsTextcaptcha" << "--main" << "README.md" << "-ri"
 
   # non-gem dependecies
-  spec.required_ruby_version = ">= 2.5"
+  spec.required_ruby_version = ">= 3.1"
 
   # dev gems
   spec.add_development_dependency("bundler")
-  spec.add_development_dependency("pry-byebug")
   spec.add_development_dependency "rake"
-
-  # Lint
-  spec.add_development_dependency("rubocop")
 
   # docs
   spec.add_development_dependency("rdoc")
@@ -54,8 +50,7 @@ Gem::Specification.new do |spec|
   # testing
   spec.add_development_dependency("appraisal")
   spec.add_development_dependency("minitest")
-  spec.add_development_dependency("rails", "~> 7.0.2.2")
-  spec.add_development_dependency("simplecov", "~> 0.19.1")
+  spec.add_development_dependency("rails", "~> 7.2.1")
   spec.add_development_dependency("sqlite3")
   spec.add_development_dependency("webmock")
 end
