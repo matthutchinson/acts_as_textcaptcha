@@ -5,11 +5,7 @@ require "rails/all"
 # init cache, StringIO logger, and test models/db
 LOGGER_IO = StringIO.new
 Rails.logger = Logger.new(LOGGER_IO)
-if Rails.version >= "4"
-  Rails.cache = ActiveSupport::Cache::MemoryStore.new
-else
-  RAILS_CACHE = ActiveSupport::Cache::MemoryStore.new
-end
+Rails.cache = ActiveSupport::Cache::MemoryStore.new
 
 # set Rails test env
 ENV["RAILS_ENV"] = "test"
