@@ -1,6 +1,6 @@
 ## ActAsTextcaptcha
 
-[![Build](https://img.shields.io/github/actions/workflow/status/matthutchinson/acts_as_textcaptcha/build.yml?branch=main&style=flat)](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/build.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/matthutchinson/acts_as_textcaptcha/ci.yml?branch=main&style=flat)](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/ci.yml)
 [![Gem](https://img.shields.io/gem/v/acts_as_textcaptcha.svg?style=flat)](http://rubygems.org/gems/acts_as_textcaptcha)
 [![Depfu](https://img.shields.io/depfu/matthutchinson/acts_as_textcaptcha.svg?style=flat)](https://depfu.com/github/matthutchinson/acts_as_textcaptcha)
 
@@ -239,9 +239,7 @@ remember to check it hasn't already been raised.
 Bug [reports](https://github.com/matthutchinson/acts_as_textcaptcha/issues) and
 [pull requests](https://github.com/matthutchinson/acts_as_textcaptcha/pulls) are
 welcome on GitHub. When submitting pull requests, remember to add tests covering
-any new behaviour, and ensure all tests are passing on
-[Travis](https://travis-ci.com/matthutchinson/acts_as_textcaptcha). Read the
-[contributing
+any new behaviour, and ensure all tests are passing. Read the [contributing
 guidelines](https://github.com/matthutchinson/acts_as_textcaptcha/blob/master/CONTRIBUTING.md)
 for more details.
 
@@ -269,7 +267,7 @@ The code is available as open source under the terms of
 
 ## Links
 
-* [CI](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/build.yml)
+* [CI](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/ci.yml)
 * [Demo](https://acts-as-textcaptcha.hiddenloop.dev)
 * [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
 * [Wiki](http://wiki.github.com/matthutchinson/acts_as_textcaptcha/)

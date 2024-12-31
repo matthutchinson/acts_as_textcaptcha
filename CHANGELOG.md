@@ -9,6 +9,11 @@ adheres to [Semantic Versioning][Semver].
 
 - Your contribution here!
 
+## [4.7.1] - 2024-12-31
+### Changed
+- CI covers Latest Rails version 8
+- Push gems with bundler
+
 ## [4.7.0] - 2024-10-03
 ### Changed
 - CI covers Latest Rails version 7, 6 and Ruby 3.1 -> 3.4
