@@ -27,7 +27,7 @@ jobs:
       - name: Run Rubocop
         run: bundle exec rubocop -c .rubocop.yml --parallel
   test:
-    name: ${{ format('Unit tests (Ruby {0})', matrix.ruby-version) }}
+    name: ${{ format('Unit tests (Ruby {0}, {1})', matrix.ruby-version, matrix.gemfile) }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -36,7 +36,9 @@ jobs:
           - "3.2"
           - "3.3"
           - "3.4"
-
+        gemfile:
+          - Gemfile
+          - gemfiles/rails_7.gemfile
     continue-on-error: true
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
