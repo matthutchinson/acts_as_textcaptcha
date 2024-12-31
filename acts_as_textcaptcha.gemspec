@@ -7,17 +7,17 @@ require "acts_as_textcaptcha/version"
 Gem::Specification.new do |spec|
   spec.name     = "acts_as_textcaptcha"
   spec.version  = ActsAsTextcaptcha::VERSION
-  spec.authors  = ["Matthew Hutchinson"]
-  spec.email    = ["matt@hiddenloop.com"]
+  spec.authors  = [ "Matthew Hutchinson" ]
+  spec.email    = [ "matt@hiddenloop.com" ]
   spec.homepage = "http://github.com/matthutchinson/acts_as_textcaptcha"
   spec.license  = "MIT"
   spec.summary  = "A text-based logic question captcha for Rails"
   spec.files    = Dir["lib/**/*", "config/**/*", "LICENSE", "README.md"]
 
-  spec.require_paths = ["lib"]
+  spec.require_paths = [ "lib" ]
 
   spec.required_ruby_version = ">= 3.1"
-  spec.extra_rdoc_files = ["README.md", "LICENSE"]
+  spec.extra_rdoc_files = [ "README.md", "LICENSE" ]
   spec.rdoc_options << "--title" << "ActAsTextcaptcha" << "--main" << "README.md" << "-ri"
 
   spec.description = <<-DESCRIPTION

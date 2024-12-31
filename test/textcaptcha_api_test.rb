@@ -15,7 +15,7 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
     stub_api_with(valid_json_response)
     q_and_a = textcaptcha_api.fetch
     assert_equal q_and_a["q"], "What is Jennifer's name?"
-    assert_equal q_and_a["a"], ["1660fe5c81c4ce64a2611494c439e1ba"]
+    assert_equal q_and_a["a"], [ "1660fe5c81c4ce64a2611494c439e1ba" ]
   end
 
   def test_fetch_and_parse_q_and_a_from_defined_endpoint
@@ -23,7 +23,7 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
     stub_api_with(valid_json_response, api_endpoint: my_api_endpoint)
     q_and_a = textcaptcha_api(api_endpoint: my_api_endpoint).fetch
     assert_equal q_and_a["q"], "What is Jennifer's name?"
-    assert_equal q_and_a["a"], ["1660fe5c81c4ce64a2611494c439e1ba"]
+    assert_equal q_and_a["a"], [ "1660fe5c81c4ce64a2611494c439e1ba" ]
   end
 
   def test_returns_nil_when_net_http_errors
@@ -51,7 +51,7 @@ class ActsAsTextcaptcha::TextcaptchaApiTest < Minitest::Test
     clear_rails_log
     stub_request(:get, %r{http://textcaptcha.com}).to_raise(Timeout::Error)
     textcaptcha_api(raise_errors: false).fetch
-    assert_log_matches [/ActsAsTextcaptcha::ResponseError fetching '.*' failed - Exception from WebMock/]
+    assert_log_matches [ /ActsAsTextcaptcha::ResponseError fetching '.*' failed - Exception from WebMock/ ]
   end
 
   def test_returns_nil_when_empty_response_received
