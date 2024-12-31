@@ -42,6 +42,10 @@ jobs:
         exclude:
         - ruby-version: "3.4"
           gemfile: gemfiles/rails_6.gemfile
+        include:
+        - ruby-version: "3.1"
+          gemfile: gemfiles/rails_6.gemfile
+
     continue-on-error: true
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}
