@@ -267,11 +267,10 @@ The code is available as open source under the terms of
 
 ## Links
 
-* [CI](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/ci.yml)
 * [Demo](https://acts-as-textcaptcha.hiddenloop.dev)
-* [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
-* [Wiki](http://wiki.github.com/matthutchinson/acts_as_textcaptcha/)
-* [Issues](http://github.com/matthutchinson/acts_as_textcaptcha/issues)
-* [Report a bug](http://github.com/matthutchinson/acts_as_textcaptcha/issues/new)
 * [Gem](http://rubygems.org/gems/acts_as_textcaptcha)
 * [GitHub](http://github.com/matthutchinson/acts_as_textcaptcha)
+* [CI](https://github.com/matthutchinson/acts_as_textcaptcha/actions/workflows/ci.yml)
+* [RDoc](http://rdoc.info/projects/matthutchinson/acts_as_textcaptcha)
+* [Issues](http://github.com/matthutchinson/acts_as_textcaptcha/issues)
+* [Report a bug](http://github.com/matthutchinson/acts_as_textcaptcha/issues/new)
