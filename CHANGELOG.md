@@ -112,7 +112,8 @@ adheres to [Semantic Versioning][Semver].
 - README updated.
 - Test coverage improved.
 
-[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.7.0...HEAD
+[Unreleased]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.7.1...HEAD
+[4.7.1]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.7.0...v4.7.1
 [4.7.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.2...v4.6.0
 [4.5.2]: https://github.com/matthutchinson/acts_as_textcaptcha/compare/v4.5.1...v4.5.2
